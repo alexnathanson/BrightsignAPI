@@ -1,0 +1,34 @@
+# Configuration file
+# Lines beginning with "#" are comments
+# Basic structure is "parameter = value"
+
+# Video output mode
+# Set this to change the player’s output mode
+# Default is 1920x1080x50p
+
+video_output_mode = 1920x1080x50p
+
+# playback_mode 
+# set to normal, master or slave
+# Default is normal
+
+playback_mode = normal
+#master_ip = 172.16.1.81
+
+#sync_group = bsgroup
+
+# IP address of the machine
+# must be set for master and slave modes
+
+ip_mode = hdcp
+
+#ip = 172.16.1.21
+
+# Netmask, may be needed for syncing
+#netmask = 255.255.0.0
+
+# Gateway, may be needed for syncing
+#gateway = 10.71.1.1
+
+# enable node (true or false)
+enable_node = true
