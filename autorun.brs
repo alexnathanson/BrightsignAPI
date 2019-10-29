@@ -64,6 +64,7 @@ end function
 
 function enableNode()
 	m.r=CreateObject("roRectangle", 0,0,1920,1080)
+	' the inspector server is only accessible via Chrome browser
 	is = {
 	    port: 3000
 	}
