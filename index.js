@@ -152,6 +152,10 @@ function checkDirectory(files){
     }
     indexLog("Download Queue:");
     indexLog(downloadQueue);
+
+    //getOldList();
+    //removeOldFiles();
+
     readyToDownload = true;
 }
 
@@ -161,6 +165,22 @@ function indexLog(arg){
     }
   }
 
-function removeOldFiles(){
+function getOldList(){
+  let toRemove = [];
 
+  return toRemove;
+}
+
+function removeOldFiles(anArray){
+
+    //synchronously delete old files
+    for(let r = 0;r<anArray.length;r++){
+      let remPath = localDirectory + anArray[r];
+      fs.unlinkSync(remPath, (err) => {
+        if (err) {
+            console.log("failed to delete local file:"+err);
+        } else {
+            console.log('successfully deleted local file');                                
+        }
+    }
 }
