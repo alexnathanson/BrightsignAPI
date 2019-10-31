@@ -22,7 +22,7 @@ let fs = require('fs');
 
 //get file list from remote server
 //arguments: base IP, directory structure, callback
-let dirList = new HTMLDirectory('http://172.16.1.17','/31D73S000475/Update/',getLocalFiles);
+let dirList = new HTMLDirectory('http://172.16.1.17','/31D73S000475/media/',getLocalFiles);
 dirList.log=true;
 
 let writer,soFar,contentLength;
