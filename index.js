@@ -7,7 +7,7 @@
 //turn on and off console logging
 let ilog = true;
 let readyToDownload = false;
-let localDirectory = '/storage/sd/';
+let localDirectory = '/storage/sd/media/';
 
 //an array to hold remote file names
 let downloadQueue = [];
@@ -23,6 +23,7 @@ let fs = require('fs');
 //get file list from remote server
 //arguments: base IP, directory structure, callback
 let dirList = new HTMLDirectory('http://172.16.1.17','/31D73S000475/Update/',getLocalFiles);
+dirList.log=true;
 
 let writer,soFar,contentLength;
 
@@ -159,16 +160,7 @@ function indexLog(arg){
       console.log(arg);
     }
   }
-/*
-function addSpace(aString){
-  //replace % with spaces in files names
-  let splitString = aString.split('%20');
-  let spacedString = "";
-  for(let s=0;s< splitString.length;s++){
-    if(s!=0){
-      spacedString +=" ";
-    }
-    spacedString+= splitString[s];
-  }
-  return spacedString;
-}*/
+
+function removeOldFiles(){
+
+}
