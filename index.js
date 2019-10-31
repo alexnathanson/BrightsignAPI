@@ -4,11 +4,16 @@
 
 'use strict';
 
-
+//turn on and off console logging
+let ilog = true;
+let readyToDownload = false;
 let localDirectory = '/storage/sd/';
+
+//an array to hold remote file names
 let downloadQueue = [];
+let downloadIndex = 0;
 
-
+//https://docs.brightsign.biz/display/DOC/system
 let systemClass = require("@brightsign/system");
 let system = new systemClass();
 
@@ -16,46 +21,82 @@ let system = new systemClass();
 let fs = require('fs');
 
 //get file list from remote server
-let dirList = new HTMLDirectory('http://172.16.1.17','/31D73S000475/Update/');
+//arguments: base IP, directory structure, callback
+let dirList = new HTMLDirectory('http://172.16.1.17','/31D73S000475/Update/',getLocalFiles);
 
-dirList.getDir();
-getLocalFiles();//figure out the call back here...
+let writer,soFar,contentLength;
 
-let fileName = 'CRKAV03_190730_Crazy-Indonesian_SC.mp4'
+indexLog('version 0.0.1');
 
-let writer = fs.createWriteStream(localDirectory + fileName, {defaultEncoding:'binary'});
+downloadProcess();
+
+function downloadProcess(){
+
+  /*gets the file list from the remote server and
+  call the callback to compare it to the local files*/
+  dirList.getDir();
+
+  //check if its ready to download every 5 seconds
+  let checkDownloadState = setInterval(function(){
+      if(readyToDownload == true){
+        clearInterval(checkDownloadState);
+
+        downloadIndex = 0;
+        downloadIncrement();
+      }
+  }, 5000);
+}
+
+//add the spaces back in...might not be necessary 100% of the time
+/*if(downloadQueue[f].includes('%')){
+  downloadQueue[f] = addSpace(downloadQueue[f]);
+}*/
+
+function downloadIncrement(){
+  if(downloadIndex <= downloadQueue.length-1){
+        downloadFiles(downloadQueue[downloadIndex]);
+  } else {
+    //restart the listener
+    downloadProcess();
+  }
+  downloadIndex++;
+}
+
+function downloadFiles(name){
+  
+  writer = fs.createWriteStream(localDirectory + name, {defaultEncoding:'binary'});
 
 // Replace this with your own url:
 //must include http://
-const VIDEO_URL = 'http://172.16.1.17/31D73S000475/Update/' + fileName;/*'http://brightsignbiz.s3.amazonaws.com/videos/Overview-video-series3-07012016.mp4';*/
+//const VIDEO_URL = 'http://172.16.1.17/31D73S000475/Update/' + fileName;/*'http://brightsignbiz.s3.amazonaws.com/videos/Overview-video-series3-07012016.mp4';*/
 
-let soFar;
-let contentLength;
+  let VIDEO_URL = 'http://172.16.1.17/31D73S000475/Update/' + name;
+  // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
+  // arrive. XMLHttpRequest will cause device to run out of memory when used with
+  // large video files.
+  fetch(VIDEO_URL).then(function (res) {
+    soFar = 0;
+    contentLength = res.headers.get('Content-Length');
+    // Content length might not be known, that is normal.
+    if (contentLength)
+      indexLog("Content length is " + contentLength);
+    else
+      indexLog("Content length is not known");
 
-// Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
-// arrive. XMLHttpRequest will cause device to run out of memory when used with
-// large video files.
-fetch(VIDEO_URL).then(function (res) {
-  soFar = 0;
-  contentLength = res.headers.get('Content-Length');
-  // Content length might not be known, that is normal.
-  if (contentLength)
-    console.log("Content length is " + contentLength);
-  else
-    console.log("Content length is not known");
-
-  return pump(res.body.getReader());
-})
-.catch(function (e) {
-  console.log(e);
-});
+    return pump(res.body.getReader());
+  })
+  .catch(function (e) {
+    indexLog(e);
+  });
+}
 
 function pump(reader) {
   return reader.read().then(function (result) {
     if (result.done) {
-      console.log("All done! " + soFar + "bytes total");
+      indexLog("All done! " + soFar + "bytes total");
       writer.end();
       //void reboot();//must be rebooted, else it wont play
+      downloadIncrement();
       return;
     }
 
@@ -71,16 +112,16 @@ function pump(reader) {
 
 function updateProgress() {
   if (contentLength)
-    console.log((soFar/contentLength*100).toFixed(2) + "% is downloaded");
+    indexLog((soFar/contentLength*100).toFixed(2) + "% is downloaded" + downloadIndex +'/'+downloadQueue.length);
   else
-    console.log(soFar + " bytes are downloaded");
+    indexLog(soFar + " bytes are downloaded " + downloadIndex +'/'+downloadQueue.length);
 }
 
 function getLocalFiles(){
   fs.readdir(localDirectory, function (err, files) {
     //handling error
     if (err) {
-        return console.log('Unable to scan directory: ' + err);
+        return indexLog('Unable to scan directory: ' + err);
     } else {
       checkDirectory(files);
     }
@@ -88,16 +129,18 @@ function getLocalFiles(){
 }
 
 function checkDirectory(files){
-  console.log(files);
-  console.log(dirList.list.length);
+  indexLog('local files:');
+  indexLog(files);
+  indexLog(dirList.list.length);
+  downloadQueue = [];
     for(let f = 0;f<dirList.list.length;f++){
       //listing all files using forEach
       let dwnld = true;
       files.forEach(function (file) {
-        console.log(file);
         // Do whatever you want to do with the file
         if(dirList.list[f]==file){
           dwnld = false;
+          indexLog(file);
         }
       });
 
@@ -106,6 +149,26 @@ function checkDirectory(files){
         downloadQueue.push(dirList.list[f]);
       }
     }
-    console.log("Download Queue:");
-    console.log(downloadQueue);
+    indexLog("Download Queue:");
+    indexLog(downloadQueue);
+    readyToDownload = true;
 }
+
+function indexLog(arg){
+    if(ilog == true){
+      console.log(arg);
+    }
+  }
+/*
+function addSpace(aString){
+  //replace % with spaces in files names
+  let splitString = aString.split('%20');
+  let spacedString = "";
+  for(let s=0;s< splitString.length;s++){
+    if(s!=0){
+      spacedString +=" ";
+    }
+    spacedString+= splitString[s];
+  }
+  return spacedString;
+}*/
