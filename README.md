@@ -4,11 +4,9 @@
 syncs media content to server directory
 
 ## to do:
-* delete local files to match server
 * self-identify serial number to find correct directory
 * brightscript player api
 * GPIO and UDP interactivity
-* html control interface
+* html control interface with screen capture and local file list
 * websockets interface to turn on debugging mode?
 * test on other BS hardware
-* create diagnostic system to 1)get current local file list 2)screen cap
