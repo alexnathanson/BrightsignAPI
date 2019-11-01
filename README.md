@@ -2,8 +2,8 @@
 
 ## overview
 syncs media content to server directory
-* continuously checks server directory for changes
-** server directory is /[deviceID]/media
+* continuously checks server directory for changes<br>
+** server directory is /[deviceID]/media<br>
 ** [deviceID] is automatically detected and does not need to be changed by the user
 * downloads new files
 * deletes old files
