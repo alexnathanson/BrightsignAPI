@@ -7,7 +7,6 @@ syncs media content to server directory
 * deletes old files
 
 ## to do:
-* self-identify serial number to find correct directory
 * brightscript player api
 * GPIO and UDP interactivity
 * html control interface with screen capture and local file list
