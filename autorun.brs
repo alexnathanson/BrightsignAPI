@@ -106,8 +106,9 @@ end function
 
 function getVideoFile() as string
 	print "Checking for video file."
-	'redirected to "/media/" from "/" based on server structure
-	files = ListDir("/media/")
+	'changed from "/"
+	files = ListDir("/")
+	print files
 	vFile = ""
 	for each file in files
 		if left(file, 1) <> "." then 

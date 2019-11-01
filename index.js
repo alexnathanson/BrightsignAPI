@@ -11,7 +11,9 @@ let ilog = true;
 let BS = new BS_API();
 
 let readyToDownload = false;
-let localDirectory = '/storage/sd/media/';
+let localDirectory = '/storage/sd/';
+
+let mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3'];
 
 //an array to hold remote files that need to be downloaded
 let downloadQueue = [];
@@ -100,7 +102,6 @@ function pump(reader) {
     if (result.done) {
       indexLog("All done! " + soFar + "bytes total");
       writer.end();
-      //void reboot();//must be rebooted, else it wont play
       downloadIncrement();
       return;
     }
@@ -128,9 +129,25 @@ function getLocalFiles(){
     if (err) {
         return indexLog('Unable to scan directory: ' + err);
     } else {
-      checkDirectory(files);
+      //filter local files by data type before comparing directories
+      checkDirectory(filterMediaType(files));
     }
   });
+}
+
+function filterMediaType(anArray){
+  let mediaFiles = [];
+
+  anArray.forEach(function(file){
+    let uFile = file.toUpperCase();
+    mediaTypes.forEach(function(type){
+      if(uFile.includes(type)){
+        mediaFiles.push(file);
+      }
+    });
+  });
+
+  return mediaFiles;
 }
 
 function checkDirectory(files){
@@ -144,7 +161,7 @@ function checkDirectory(files){
         // Do whatever you want to do with the file
         if(dirList.list[f]==file){
           dwnld = false;
-          indexLog(file);
+          //indexLog(file);
         }
       });
 
@@ -203,6 +220,8 @@ function removeFiles(anArray){
   }
 }
 
+
+//this doesn't actually do anything atm
 function parseConfig(){
   fs.read('/storage/sd/config.txt', function (err, file) {
       //handling error

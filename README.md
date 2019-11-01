@@ -9,7 +9,7 @@ syncs media content to server directory
 * deletes old files
 
 ## to do:
-* brightscript player api
+* continue building out brightscript player api
 * parse config file so only the config file needs to be changed by the users
 * GPIO and UDP interactivity
 * html control interface with screen capture and local file list

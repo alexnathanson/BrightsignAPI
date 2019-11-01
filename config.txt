@@ -33,6 +33,6 @@ ip_mode = hdcp
 # enable node (true or false)
 enable_node = true
 
-# enable content sync with server
+# enable content sync with server (doesn't do anything yet...)
 server_sync = true
 sync_server = 192.168.1.185
