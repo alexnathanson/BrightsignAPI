@@ -1,14 +1,17 @@
 //check contents of the remote directory and compares it to local storage
 //deletes old files and downloads new files
 
+let version = '0.0.1';
+
 'use strict';
 
 //turn on and off console logging
 let ilog = true;
+
 let readyToDownload = false;
 let localDirectory = '/storage/sd/media/';
 
-//an array to hold remote file names
+//an array to hold remote files that need to be downloaded
 let downloadQueue = [];
 let downloadIndex = 0;
 
@@ -19,25 +22,26 @@ let system = new systemClass();
 // Uses node.js fs module to save files into sd card.
 let fs = require('fs');
 
-
+//172.16.1.17
 let remoteServerBase = 'http://192.168.1.185';
+
+//this needs to be automated...
 let remoteServerDirectory = '/31D73S000475/media/';
 
 //get file list from remote server
 //arguments: base IP, directory structure, callback
-//172.16.1.17
 let dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,getLocalFiles);
 dirList.log=true;
 
+//the variables are used in the download process
 let writer,soFar,contentLength;
 
-indexLog('version 0.0.1');
+indexLog(version);
 
 //check the various directories, remove old files, and download new files
 downloadProcess();
 
 function downloadProcess(){
-
   /*gets the file list from the remote server and
   call the callback to compare it to the local files*/
   dirList.getDir();
@@ -53,16 +57,13 @@ function downloadProcess(){
   }, 5000);
 }
 
-//add the spaces back in...might not be necessary 100% of the time
-/*if(downloadQueue[f].includes('%')){
-  downloadQueue[f] = addSpace(downloadQueue[f]);
-}*/
-
+//increments through all the files that need to be downloaded
 function downloadIncrement(){
   if(downloadIndex <= downloadQueue.length-1){
         downloadFiles(downloadQueue[downloadIndex]);
   } else {
-    //restart the listener
+    /*if all files have been downloaded restart the listener
+    to detect remote updates*/
     downloadProcess();
   }
   downloadIndex++;
