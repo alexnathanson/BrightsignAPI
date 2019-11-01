@@ -23,6 +23,7 @@ let system = new systemClass();
 let fs = require('fs');
 
 //172.16.1.17
+//replace with your server IP. must include http://
 let remoteServerBase = 'http://192.168.1.185';
 
 //this needs to be automated...
@@ -72,10 +73,6 @@ function downloadIncrement(){
 function downloadFiles(name){
   
   writer = fs.createWriteStream(localDirectory + name, {defaultEncoding:'binary'});
-
-// Replace this with your own url:
-//must include http://
-//const VIDEO_URL = 'http://172.16.1.17/31D73S000475/Update/' + fileName;/*'http://brightsignbiz.s3.amazonaws.com/videos/Overview-video-series3-07012016.mp4';*/
 
   let VIDEO_URL = remoteServerBase + remoteServerDirectory + name;
   // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
