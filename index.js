@@ -220,7 +220,6 @@ function removeFiles(anArray){
   }
 }
 
-
 //this doesn't actually do anything atm
 function parseConfig(){
   fs.read('/storage/sd/config.txt', function (err, file) {

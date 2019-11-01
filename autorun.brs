@@ -346,6 +346,11 @@ sub main()
                 r = CreateObject("roRegex", " ", "")
                 tokens = r.Split(s)
                 setAudioVolume(tokens[1].toInt())
+            'format for UDP "file [filename]"
+            else if left(msg, 4) = "file" then
+	 			m.video.PlayFile(right(msg, len(msg)-5))
+	 			print right(msg, len(msg)-5)
+	 			' print
             end if
 		end if 
 	end if
