@@ -11,3 +11,4 @@ syncs media content to server directory
 * html control interface
 * websockets interface to turn on debugging mode?
 * test on other BS hardware
+* create diagnostic system to 1)get current local file list 2)screen cap

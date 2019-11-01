@@ -1,6 +1,5 @@
-//check contents of directory and compare to local storage
-//update contents accordingly
-//create diagnostic system to 1)get current local file list 2)screen cap
+//check contents of the remote directory and compares it to local storage
+//deletes old files and downloads new files
 
 'use strict';
 
@@ -20,15 +19,21 @@ let system = new systemClass();
 // Uses node.js fs module to save files into sd card.
 let fs = require('fs');
 
+
+let remoteServerBase = 'http://192.168.1.185';
+let remoteServerDirectory = '/31D73S000475/media/';
+
 //get file list from remote server
 //arguments: base IP, directory structure, callback
-let dirList = new HTMLDirectory('http://172.16.1.17','/31D73S000475/media/',getLocalFiles);
+//172.16.1.17
+let dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,getLocalFiles);
 dirList.log=true;
 
 let writer,soFar,contentLength;
 
 indexLog('version 0.0.1');
 
+//check the various directories, remove old files, and download new files
 downloadProcess();
 
 function downloadProcess(){
@@ -71,7 +76,7 @@ function downloadFiles(name){
 //must include http://
 //const VIDEO_URL = 'http://172.16.1.17/31D73S000475/Update/' + fileName;/*'http://brightsignbiz.s3.amazonaws.com/videos/Overview-video-series3-07012016.mp4';*/
 
-  let VIDEO_URL = 'http://172.16.1.17/31D73S000475/Update/' + name;
+  let VIDEO_URL = remoteServerBase + remoteServerDirectory + name;
   // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
   // arrive. XMLHttpRequest will cause device to run out of memory when used with
   // large video files.
@@ -152,9 +157,8 @@ function checkDirectory(files){
     }
     indexLog("Download Queue:");
     indexLog(downloadQueue);
-
-    //getOldList();
-    //removeOldFiles();
+    
+    removeFiles(getDelList(files,dirList.list));
 
     readyToDownload = true;
 }
@@ -165,22 +169,37 @@ function indexLog(arg){
     }
   }
 
-function getOldList(){
-  let toRemove = [];
+function getDelList(localList,remoteList){
+  let delIt = [];
+  localList.forEach(function (oldFile) {
+    let keepIt = false;
+    remoteList.forEach(function(newFile){
+      if (oldFile==newFile){
+        keepIt = true;
+      }
+    });
+    if(keepIt==false){
+      delIt.push(oldFile);
+    }
+  });
 
-  return toRemove;
+  indexLog("Remove Queue:");
+  indexLog(delIt);
+  
+  return delIt;
 }
 
-function removeOldFiles(anArray){
+function removeFiles(anArray){
 
-    //synchronously delete old files
-    for(let r = 0;r<anArray.length;r++){
-      let remPath = localDirectory + anArray[r];
-      fs.unlinkSync(remPath, (err) => {
-        if (err) {
-            console.log("failed to delete local file:"+err);
-        } else {
-            console.log('successfully deleted local file');                                
-        }
-    }
+  //synchronously delete old files
+  for(let r = 0;r<anArray.length;r++){
+    let remPath = localDirectory + anArray[r];
+    fs.unlinkSync(remPath, (err) => {
+      if (err) {
+          console.log("failed to delete local file:"+err);
+      } else {
+          console.log('successfully deleted local file');                                
+      }
+    });
+  }
 }
