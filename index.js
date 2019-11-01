@@ -24,10 +24,12 @@ let fs = require('fs');
 
 //172.16.1.17
 //replace with your server IP. must include http://
+//maybe pull this from the config file...
 let remoteServerBase = 'http://192.168.1.185';
 
-//this needs to be automated...
-let remoteServerDirectory = '/31D73S000475/media/';
+//https://docs.brightsign.biz/display/DOC/BSDeviceInfo
+let device_info = new BSDeviceInfo();
+let remoteServerDirectory = '/' + device_info.deviceUniqueId + '/media/';
 
 //get file list from remote server
 //arguments: base IP, directory structure, callback
@@ -200,4 +202,24 @@ function removeFiles(anArray){
       }
     });
   }
+}
+
+function parseConfig(){
+  fs.readdir('/storage', function (err, files) {
+      //handling error
+      if (err) {
+          return indexLog('Unable to scan directory: ' + err);
+      } else {
+        console.log('files');
+      }
+  });
+
+  fs.readdir('.', function (err, files) {
+      //handling error
+      if (err) {
+          return indexLog('Unable to scan directory: ' + err);
+      } else {
+        console.log('files');
+      }
+  });
 }
