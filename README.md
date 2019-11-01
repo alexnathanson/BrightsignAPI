@@ -10,6 +10,7 @@ syncs media content to server directory
 
 ## to do:
 * brightscript player api
+* parse config file so only the config file needs to be changed by the users
 * GPIO and UDP interactivity
 * html control interface with screen capture and local file list
 * websockets interface to turn on debugging mode?

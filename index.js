@@ -8,6 +8,8 @@ let version = '0.0.1';
 //turn on and off console logging
 let ilog = true;
 
+let BS = new BS_API();
+
 let readyToDownload = false;
 let localDirectory = '/storage/sd/media/';
 
@@ -15,21 +17,18 @@ let localDirectory = '/storage/sd/media/';
 let downloadQueue = [];
 let downloadIndex = 0;
 
-//https://docs.brightsign.biz/display/DOC/system
-let systemClass = require("@brightsign/system");
-let system = new systemClass();
-
 // Uses node.js fs module to save files into sd card.
 let fs = require('fs');
+
+let configDict = {};
+//parseConfig();
 
 //172.16.1.17
 //replace with your server IP. must include http://
 //maybe pull this from the config file...
 let remoteServerBase = 'http://192.168.1.185';
 
-//https://docs.brightsign.biz/display/DOC/BSDeviceInfo
-let device_info = new BSDeviceInfo();
-let remoteServerDirectory = '/' + device_info.deviceUniqueId + '/media/';
+let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 
 //get file list from remote server
 //arguments: base IP, directory structure, callback
@@ -137,7 +136,6 @@ function getLocalFiles(){
 function checkDirectory(files){
   indexLog('local files:');
   indexLog(files);
-  indexLog(dirList.list.length);
   downloadQueue = [];
     for(let f = 0;f<dirList.list.length;f++){
       //listing all files using forEach
@@ -158,6 +156,7 @@ function checkDirectory(files){
     indexLog("Download Queue:");
     indexLog(downloadQueue);
     
+    //remove the old files from the local device
     removeFiles(getDelList(files,dirList.list));
 
     readyToDownload = true;
@@ -205,21 +204,13 @@ function removeFiles(anArray){
 }
 
 function parseConfig(){
-  fs.readdir('/storage', function (err, files) {
+  fs.read('/storage/sd/config.txt', function (err, file) {
       //handling error
       if (err) {
-          return indexLog('Unable to scan directory: ' + err);
+          return console.log('Unable to read config file: ' + err);
       } else {
-        console.log('files');
-      }
-  });
-
-  fs.readdir('.', function (err, files) {
-      //handling error
-      if (err) {
-          return indexLog('Unable to scan directory: ' + err);
-      } else {
-        console.log('files');
+        //do something with the file
+        console.log(file);
       }
   });
 }

@@ -6,7 +6,7 @@
 # Set this to change the player’s output mode
 # Default is 1920x1080x50p
 
-video_output_mode = 1920x1080x50p
+video_output_mode = 1920x1080x60p
 
 # playback_mode 
 # set to normal, master or slave
