@@ -9,6 +9,7 @@ let version = '0.0.1';
 let ilog = true;
 
 let BS = new BS_API();
+BS.initialize();
 
 let readyToDownload = false;
 let localDirectory = '/storage/sd/';

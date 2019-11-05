@@ -38,7 +38,6 @@ class BS_API{
 		this.tickerW = 600;
 		this.tickerH = 30;
 		this.ticker = new BSTicker(this.tickerX,this.tickerY, this.tickerW,this.tickerH);
-		this.ticker.AddString(this.myIP);
 
   	/*******NODE JS Modules******************************************************/
   		this.os = require( 'os' );
@@ -53,9 +52,12 @@ class BS_API{
 	}
 
 	initialize(){
-		this.asyncScreenShot();
+		this.ticker.AddString(this.myIP);
+
+		//this.asyncScreenShot();
 	}
 	parseConfig(){
+		fs.readFile(filename, “utf8");
 	}
 
 	reboot(){
@@ -88,7 +90,7 @@ class BS_API{
 		this.socket.send(Buffer.from(aMessage), this.sendPort, 'localhost'); 
 	}
 
-	displayIP(){
+	showIP(){
 		this.ticker.SetRectangle(this.tickerX,this.tickerY, this.tickerW,this.tickerH)
 	}
 	hideIP(){
