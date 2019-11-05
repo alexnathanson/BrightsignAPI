@@ -24,11 +24,15 @@ let fs = require('fs');
 
 let configDict = {};
 //parseConfig();
+/*
+let dgram = require('dgram');
+let sUDP = dgram.createSocket('udp4');
+sUDP.send(Buffer.from('abc'), 13131, 'localhost');*/ 
 
 //172.16.1.17
 //replace with your server IP. must include http://
 //maybe pull this from the config file...
-let remoteServerBase = 'http://192.168.1.185';
+let remoteServerBase = 'http://172.16.1.17';
 
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 
@@ -63,7 +67,7 @@ function downloadProcess(){
 
 //increments through all the files that need to be downloaded
 function downloadIncrement(){
-  if(downloadIndex <= downloadQueue.length-1){
+  if(downloadIndex < downloadQueue.length){//was <= len +1
         downloadFiles(downloadQueue[downloadIndex]);
   } else {
     /*if all files have been downloaded restart the listener
@@ -102,6 +106,10 @@ function pump(reader) {
     if (result.done) {
       indexLog("All done! " + soFar + "bytes total");
       writer.end();
+      
+      //play a file
+      playFile(dirList.list[0]);
+
       downloadIncrement();
       return;
     }
@@ -206,7 +214,6 @@ function getDelList(localList,remoteList){
 }
 
 function removeFiles(anArray){
-
   //synchronously delete old files
   for(let r = 0;r<anArray.length;r++){
     let remPath = localDirectory + anArray[r];
@@ -217,6 +224,11 @@ function removeFiles(anArray){
           console.log('successfully deleted local file');                                
       }
     });
+  }
+  /*if there are no files to download and
+  if files were deleted play the first file*/
+  if(downloadQueue.length==0 && anArray.length>0){
+    playFile(dirList.list[0]);
   }
 }
 
@@ -231,4 +243,8 @@ function parseConfig(){
         console.log(file);
       }
   });
+}
+
+function playFile(aFileName){
+  BS.dgramSend("file " + aFileName);
 }

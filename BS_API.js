@@ -1,9 +1,7 @@
+
 /*
 this class combines Brightsign JS API, Brightscript-JavaScript Objects,
-and (in the future) Brightscript interaction via UDP to create
-a more complete functional API with consistant syntax.
-
-Usefule Node JS modules are not presently included here
+and Node JS modules to create a more complete functional API with consistant syntax.
 */
 
 class BS_API{
@@ -14,9 +12,14 @@ class BS_API{
 	/*******BS-JS API******************************************************/
 
 		//https://docs.brightsign.biz/display/DOC/system
-		this.systemClass = require("@brightsign/system");
-		this.system = new this.systemClass();
-	
+		this.SystemClass = require("@brightsign/system");
+		this.system = new this.SystemClass();
+
+		//https://docs.brightsign.biz/display/DOC/screenshot
+		this.ScreenshotClass = require("@brightsign/screenshot");
+		this.screenshot = new this.ScreenshotClass();
+		//this.screenshotParams = {"fileName":"SD:/screenshots/screenshot.jpg","quality":75};
+
 	/*******BS-JS OBJECTS*************************************************
 		BS-JS Objects are supposedly being replaced with the BS-JS API,
 		but are still being offerred for backwards compatibility purposes*/
@@ -28,9 +31,30 @@ class BS_API{
 		//using the equivalent GPIO object in brightscript can cause unpredictable GPIO behaviour
 		this.gpio = new BSControlPort("BrightSign");
 		this.gpioEventCallbacks = [];
-  
+
+		//https://docs.brightsign.biz/display/DOC/BSTicker
+		this.tickerX = 10;
+		this.tickerY = 110;
+		this.tickerW = 600;
+		this.tickerH = 30;
+		this.ticker = new BSTicker(this.tickerX,this.tickerY, this.tickerW,this.tickerH);
+		this.ticker.AddString(this.myIP);
+
+  	/*******NODE JS Modules******************************************************/
+  		this.os = require( 'os' );
+		this.networkInterfaces = this.os.networkInterfaces( );
+  		this.myIP= this.networkInterfaces.eth0[0]['address'];
+
+  		//https://nodejs.org/api/dgram.html
+		this.dgram = require('dgram');
+		this.socket = this.dgram.createSocket('udp4');
+		this.sendPort = 13131;
+		this.dgramMessage = 'abc';
 	}
 
+	initialize(){
+		this.asyncScreenShot();
+	}
 	parseConfig(){
 	}
 
@@ -53,5 +77,22 @@ class BS_API{
 
 	setGPIOEventCallbacks(){
 
+	}
+
+	asyncScreenShot(){
+		//this.screenshot.takeAsyncScreenshot(screenshotParams);
+		setInterval(this.screenshot.takeAsyncScreenshot(screenshotParams), 10000);
+	}
+
+	dgramSend(aMessage){
+		this.socket.send(Buffer.from(aMessage), this.sendPort, 'localhost'); 
+	}
+
+	displayIP(){
+		this.ticker.SetRectangle(this.tickerX,this.tickerY, this.tickerW,this.tickerH)
+	}
+	hideIP(){
+		//hides the ticker offscreen. not sure how to fully remove it
+		this.ticker.SetRectangle(-100,-100,1,1)
 	}
 }

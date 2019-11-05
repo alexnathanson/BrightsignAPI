@@ -10,6 +10,7 @@ syncs media content to server directory
 
 ## to do:
 * control playback - check if it works with audio as well as video
+* display IP address somewhere convienant
 * continue building out brightscript player api
 * parse config file so only the config file needs to be changed by the users
 * GPIO and UDP interactivity

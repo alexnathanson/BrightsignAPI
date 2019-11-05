@@ -347,6 +347,7 @@ sub main()
                 tokens = r.Split(s)
                 setAudioVolume(tokens[1].toInt())
             'format for UDP "file [filename]"
+            ' maybe make seperate ones for video and add error handling'
             else if left(msg, 4) = "file" then
 	 			m.video.PlayFile(right(msg, len(msg)-5))
 	 			print right(msg, len(msg)-5)
