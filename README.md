@@ -10,10 +10,9 @@ syncs media content to server directory
 
 ## to do:
 * control playback - check if it works with audio as well as video
-* display IP address somewhere convienant
-* continue building out brightscript player api
+* toggle IP address display
 * parse config file so only the config file needs to be changed by the users
-* GPIO and UDP interactivity
+* GPIO interactivity
 * html control interface with screen capture and local file list
 * websockets interface to turn on debugging mode?
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
