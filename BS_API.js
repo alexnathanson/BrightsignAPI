@@ -57,7 +57,7 @@ class BS_API{
 		//this.asyncScreenShot();
 	}
 	parseConfig(){
-		fs.readFile(filename, “utf8");
+		//fs.readFile(filename, “utf8");
 	}
 
 	reboot(){
