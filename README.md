@@ -8,6 +8,14 @@ syncs media content to server directory
 * downloads new files
 * deletes old files
 
+media controls and interactivity
+* UDP on port 13131
+* GPIO
+
+diagnostic functions
+* displays IP address on screen
+* enables diagnostic console on port 3000 (chrome browsers only)
+
 ## to do:
 * control playback - check if it works with audio as well as video
 * toggle IP address display
