@@ -1,12 +1,23 @@
 # brightscriptNodeServer
 
 ## overview
-syncs media content to server directory
-* continuously checks server directory for changes<br>
-** server directory is /[deviceID]/media<br>
-** [deviceID] is automatically detected and does not need to be changed by the user
+### syncs media content to server directory
+* continuously checks server directory for changes
+  * server directory is /[deviceID]/media
+  * [deviceID] is automatically detected and does not need to be changed by the user
 * downloads new files
 * deletes old files
+
+### media controls and interactivity
+* UDP on port 13131
+* GPIO
+
+### diagnostic functions
+* displays IP address on screen
+* enables diagnostic console on port 3000 (chrome browsers only)
+
+### Brightsign APIs as a class
+* the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
 ## to do:
 * config file
