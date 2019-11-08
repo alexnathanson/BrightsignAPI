@@ -23,32 +23,29 @@ let downloadIndex = 0;
 // Uses node.js fs module to save files into sd card.
 let fs = require('fs');
 
-let configDict = {};
-//parseConfig();
-/*
-let dgram = require('dgram');
-let sUDP = dgram.createSocket('udp4');
-sUDP.send(Buffer.from('abc'), 13131, 'localhost');*/ 
+let configFile = new ParseConfig(localDirectory+'config.txt');
+configFile.loadConfig(configured);
 
-//172.16.1.17
-//replace with your server IP. must include http://
-//maybe pull this from the config file...
-let remoteServerBase = 'http://172.16.1.17';
-
+let remoteServerBase;
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
-
-//get file list from remote server
-//arguments: base IP, directory structure, callback
-let dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,getLocalFiles);
-dirList.log=true;
+let dirList;
 
 //the variables are used in the download process
 let writer,soFar,contentLength;
 
-indexLog(version);
+function configured(){
+  remoteServerBase = configFile.configDict['sync_server'];
+  //console.log(remoteServerBase);
+  //get file list from remote server
+//arguments: base IP, directory structure, callback
+  dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,getLocalFiles);
+  dirList.log=true;
 
-//check the various directories, remove old files, and download new files
-downloadProcess();
+  indexLog(version);
+
+  //check the various directories, remove old files, and download new files
+  downloadProcess();
+}
 
 function downloadProcess(){
   /*gets the file list from the remote server and
@@ -231,19 +228,6 @@ function removeFiles(anArray){
   if(downloadQueue.length==0 && anArray.length>0){
     playFile(dirList.list[0]);
   }
-}
-
-//this doesn't actually do anything atm
-function parseConfig(){
-  fs.read('/storage/sd/config.txt', function (err, file) {
-      //handling error
-      if (err) {
-          return console.log('Unable to read config file: ' + err);
-      } else {
-        //do something with the file
-        console.log(file);
-      }
-  });
 }
 
 function playFile(aFileName){

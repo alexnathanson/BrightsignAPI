@@ -9,6 +9,7 @@ syncs media content to server directory
 * deletes old files
 
 ## to do:
+* config file
 * control playback - check if it works with audio as well as video
 * toggle IP address display
 * parse config file so only the config file needs to be changed by the users
