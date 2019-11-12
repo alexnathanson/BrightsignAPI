@@ -219,6 +219,7 @@ sub main()
 
 	if config <> "" then
 		m.params = loadConfig(config)
+		print m.params
 	end if
 
 	' Configure networking if included in config
@@ -261,9 +262,12 @@ sub main()
 
 	'Setup Sync Manager if 
 
-    ao = CreateObject("roAudioOutput","hdmi")
+	' Configure audio
+	'ao = CreateObject("roAudioOutput",m.params[audio_output])
+	ao = CreateObject("roAudioOutput","hdmi")
     'ao.SetMute(True)
     ao.SetAudioDelay(150)
+    ao.SetVolume(m.params["volume"].toInt())    
 
 	if m.params["playback_mode"] <> "normal" then
 		configurePTP()

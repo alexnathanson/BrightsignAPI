@@ -33,11 +33,14 @@ ip_mode = hdcp
 # enable node (true or false)
 enable_node = true
 
-# enable content sync with server (doesn't do anything yet...)
-server_sync = true
-sync_server = 192.168.1.185
+# enable content sync with media server
+media_sync = true
+
+media_server = 192.168.1.185
 
 #display the player's IP address
 displayIP = true
 
-volume = 100
+audio_output = hdmi
+
+volume = 55

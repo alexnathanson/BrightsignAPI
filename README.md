@@ -10,6 +10,8 @@
 
 ### media controls and interactivity
 * UDP on port 13131
+	* playfile syntax: 'file [filename]'
+	* volume syntax: 'volume [integer in range 0-100]'
 * GPIO
 
 #### config file
@@ -23,18 +25,17 @@
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
 ## to do:
-* config file
-		* set and get
 * control playback
-		* check if it works with audio as well as video
+	* check if it works with audio as well as video
 * toggle IP address display
-		* via config file?
-* volume control
+	* via config file?
+* confirm audio port configuration
 * GPIO interactivity
 * html control interface
 	* playback and volume controls
 	* screen capture
 	* local file list
+* multiple zones
 * websockets interface to turn on debugging mode?
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
 * retrieving the remote server file list may need to be redesigned when the actual server is setup, depending on how its configured

@@ -34,7 +34,7 @@ let dirList;
 let writer,soFar,contentLength;
 
 function configured(){
-  remoteServerBase = 'http://'+configFile.configDict['sync_server'];
+  remoteServerBase = 'http://'+configFile.configDict['media_server'];
   //console.log(remoteServerBase);
   //get file list from remote server
 //arguments: base IP, directory structure, callback
@@ -232,4 +232,9 @@ function removeFiles(anArray){
 
 function playFile(aFileName){
   BS.dgramSend("file " + aFileName);
+}
+
+function setVolume(arg){
+  configFile.setValue('volume',arg);//update config file
+  BS.dgramSend("volume " + arg); //set live player
 }
