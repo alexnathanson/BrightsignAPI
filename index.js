@@ -6,7 +6,7 @@ let version = '0.0.1';
 'use strict';
 
 //turn on and off console logging
-let ilog = true;
+let ilog = false;
 
 let BS = new BS_API();
 BS.initialize();
@@ -34,12 +34,12 @@ let dirList;
 let writer,soFar,contentLength;
 
 function configured(){
-  remoteServerBase = configFile.configDict['sync_server'];
+  remoteServerBase = 'http://'+configFile.configDict['sync_server'];
   //console.log(remoteServerBase);
   //get file list from remote server
 //arguments: base IP, directory structure, callback
   dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,getLocalFiles);
-  dirList.log=true;
+  dirList.log=false;
 
   indexLog(version);
 

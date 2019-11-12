@@ -7,7 +7,7 @@ class HTMLDirectory{
 		this.directory = tempDirectory;
 		this.path = this.ip + this.directory;
 		this.list = [];
-		this.log = true;
+		this.log = false;
 		this.callback = tempCallback;
 	}
 

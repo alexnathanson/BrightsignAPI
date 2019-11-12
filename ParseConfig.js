@@ -5,6 +5,8 @@ class ParseConfig{
 		this.configFilePath = tempConfigFilePath;
 		this.configString = "";
 		this.configDict = {};
+		this.newLine = "";
+		this.persist = true; //save changes so they persist
 		//this.callback = tempCallback;
 	}
 
@@ -39,22 +41,20 @@ class ParseConfig{
 	}
 
 	getValue(aKey){
-	  let theValue = this.configDict[aKey];
-	  return theValue;
+	  return this.configDict[aKey];
 	}
 
 	//args: a key/value pair and a boolean. if boolean is true, it saves the changes so they persist
-	setValue(aKey, aValue,persist){
+	setValue(aKey, aValue){
 
-	  if(persist){
+	  if(this.persist){
 
-	  	let newLine = aKey + ' = ' + aValue;
+	  	this.newLine = aKey + ' = ' + aValue;
 
-		//nodeFS.readFile(someFile, 'utf8', function (err,data) {
+		this.configString = this.configString.replace(aKey+' = '+this.configDict[aKey], this.newLine);
 
-		this.configString = this.configString.replace(/aKey+' = '+this.configDict.aKey/g, newLine);
-
-		this.nodeFS.writeFile(this.configFilePath, this.configString, 'utf8', function (err) {
+		//the arrow function is necessary because the asynchronous writeFile method would change the scope without it
+		this.nodeFS.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
 		    if (err) return console.log(err);
 		     // success case, the file was saved
 	    	this.logConfig(this.configFilePath + ' saved!');
