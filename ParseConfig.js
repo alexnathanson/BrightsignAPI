@@ -30,6 +30,11 @@ class ParseConfig{
 
 	        	if(!aRow.includes('#')&&aRow!=""&&aRow!="\n"){
 	        		let rowArray = aRow.split(' = ');
+
+	        		//convert strings to booleans
+	        		if(rowArray[1] == 'true' || rowArray[1] == 'false' ){
+	        			rowArray[1]=(rowArray[1]=='true')
+	        		}
 	        		this.configDict[rowArray[0]]=rowArray[1];
 	        	}
 	        });

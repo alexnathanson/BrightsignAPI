@@ -9,12 +9,11 @@ let version = '0.0.1';
 let ilog = false;
 
 let BS = new BS_API();
-BS.initialize();
 
 let readyToDownload = false;
 let localDirectory = '/storage/sd/';
 
-let mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3'];
+let mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3','WAV'];
 
 //an array to hold remote files that need to be downloaded
 let downloadQueue = [];
@@ -34,6 +33,9 @@ let dirList;
 let writer,soFar,contentLength;
 
 function configured(){
+  //display IP
+  BS.initialize(configFile.configDict);
+
   remoteServerBase = 'http://'+configFile.configDict['media_server'];
   //console.log(remoteServerBase);
   //get file list from remote server
@@ -44,7 +46,9 @@ function configured(){
   indexLog(version);
 
   //check the various directories, remove old files, and download new files
-  downloadProcess();
+  if(configFile.configDict.media_sync){
+      downloadProcess();
+  }
 }
 
 function downloadProcess(){

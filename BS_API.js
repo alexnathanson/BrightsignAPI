@@ -37,6 +37,7 @@ class BS_API{
 		this.tickerY = 110;
 		this.tickerW = 600;
 		this.tickerH = 30;
+		this.displayIP = true;
 		this.ticker = new BSTicker(this.tickerX,this.tickerY, this.tickerW,this.tickerH);
 
   	/*******NODE JS Modules******************************************************/
@@ -51,8 +52,17 @@ class BS_API{
 		this.dgramMessage = 'abc';
 	}
 
-	initialize(){
+	initialize(configDictionary){
+		console.log('initializing BS API');
+		console.log(configDictionary);
+
+		this.displayIP = configDictionary.displayIP;
+		console.log(this.displayIP);
 		this.ticker.AddString(this.myIP);
+
+		if(!this.displayIP){
+			this.hideIP();
+		}
 
 		//this.asyncScreenShot();
 	}

@@ -106,7 +106,6 @@ end function
 
 function getVideoFile() as string
 	print "Checking for video file."
-	'changed from "/"
 	files = ListDir("/")
 	print files
 	vFile = ""
@@ -118,6 +117,30 @@ function getVideoFile() as string
 		end if
 	end for
 	return vFile			
+end function
+
+
+function getMediaFile() as string
+	print "Checking for meda files."
+	Dim mediaTypes[3]
+	mediaTypes = ["MPG","WMV","MOV","MP4","VOB","TS","MP3","WAV"]
+
+	files = ListDir("/")
+	print files
+	print mediaTypes
+	mFile = ""
+	for each file in files
+		if left(file, 1) <> "." then 
+			'type is a reserved word!
+			for each aType in mediaTypes
+				if ucase(right(file, 3)) = aType then
+					mFile = file
+					exit for
+				end if
+			end for
+		end if
+	end for
+	return mFile
 end function
 
 function runCommand(cmd as string)
@@ -253,7 +276,8 @@ sub main()
 
 	' Load a video file
 
-	m.videoFile = getVideoFile()
+	'm.videoFile = getVideoFile()
+	m.videoFile =  getMediaFile()
 	print m.videoFile; ""
 	
 	'm.video.PreloadFile(m.videoFile)
@@ -351,9 +375,12 @@ sub main()
                 tokens = r.Split(s)
                 setAudioVolume(tokens[1].toInt())
             'format for UDP "file [filename]"
-            ' maybe make seperate ones for video and add error handling'
             else if left(msg, 4) = "file" then
 	 			m.video.PlayFile(right(msg, len(msg)-5))
+	 			print right(msg, len(msg)-5)
+	 			' print
+	 		else if left(msg, 4) = "mask" then
+	 			'm.video.PlayFile(right(msg, len(msg)-5))
 	 			print right(msg, len(msg)-5)
 	 			' print
             end if

@@ -20,13 +20,15 @@
 ### diagnostic functions
 * displays IP address on screen
 * enables diagnostic console on port 3000 (chrome browsers only)
+	* some frequently used commands:
+		* restart = BS.reboot()
+		* volume = setVolume(an int from 0-100)
+		* play a file = playFile('the filename in quotes')
 
 ### Brightsign APIs as a class
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
 ## to do:
-* control playback
-	* check if it works with audio as well as video
 * toggle IP address display
 	* via config file?
 * confirm audio port configuration
