@@ -242,3 +242,7 @@ function setVolume(arg){
   configFile.setValue('volume',arg);//update config file
   BS.dgramSend("volume " + arg); //set live player
 }
+
+function maskIt(aBool){
+  BS.dgramSend("mask " + aBool);
+}

@@ -45,4 +45,4 @@ audio_output = hdmi
 
 volume = 55
 
-diagnostic_group = 1
+mask = true

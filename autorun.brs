@@ -102,24 +102,6 @@ function configurePTP()
 	end if
 end function
 
-' Find a video to play.  This will the first video file found on the card
-
-function getVideoFile() as string
-	print "Checking for video file."
-	files = ListDir("/")
-	print files
-	vFile = ""
-	for each file in files
-		if left(file, 1) <> "." then 
-			if ucase(right(file, 3)) = "MPG" or ucase(right(file, 3)) = "WMV" or ucase(right(file, 3)) = "MOV" or ucase(right(file, 3)) = "MP4" or ucase(right(file, 3)) = "VOB" or ucase(right(file, 2)) = "TS" or ucase(right(file, 3)) = "MP3" then
-				vFile = file
-			end if
-		end if
-	end for
-	return vFile			
-end function
-
-
 function getMediaFile() as string
 	print "Checking for meda files."
 	Dim mediaTypes[3]
@@ -276,10 +258,20 @@ sub main()
 
 	' Load a video file
 
-	'm.videoFile = getVideoFile()
 	m.videoFile =  getMediaFile()
 	print m.videoFile; ""
 	
+	' create and hide the mask
+	' wait for UDP message to show mask
+	if m.params["mask"] = "true" then
+		'r = CreateObject("roRectangle",0,0,1920,1080)
+		m.mask=createobject("roImagePlayer")
+		'm.mask.SetRectangle(r)
+		'make this autodetect file name at a later date
+		m.mask.DisplayFile("mask.png")
+		m.mask.Hide()
+	end if
+
 	'm.video.PreloadFile(m.videoFile)
 
 	m.master = false
@@ -380,9 +372,12 @@ sub main()
 	 			print right(msg, len(msg)-5)
 	 			' print
 	 		else if left(msg, 4) = "mask" then
-	 			'm.video.PlayFile(right(msg, len(msg)-5))
-	 			print right(msg, len(msg)-5)
-	 			' print
+	 			if right(msg, len(msg)-5) = "true" then
+	 				m.mask.Show()
+	 			else if right(msg, len(msg)-5) = "false" then
+	 				m.mask.Hide()
+	 			end if
+	 			print msg
             end if
 		end if 
 	end if

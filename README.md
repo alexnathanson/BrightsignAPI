@@ -24,20 +24,24 @@
 		* restart = BS.reboot()
 		* volume = setVolume(an int from 0-100)
 		* play a file = playFile('the filename in quotes')
+		* turn the mask zone on/off = maskIt(boolean)
 
 ### Brightsign APIs as a class
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
+### multiple zones
+* multiple zones can be enable, but automating specific behaviours will need to be determined once the robot interaction is determined.
+* presently the additional zone is an image, but it could easily be changed to a video
+
 ## to do:
-* toggle IP address display
-	* via config file?
 * confirm audio port configuration
 * GPIO interactivity
 * html control interface
 	* playback and volume controls
 	* screen capture
 	* local file list
-* multiple zones
-* websockets interface to turn on debugging mode?
+* better control of diagnostic modes
+	* websockets interface to turn on debugging mode?
+	* toggle IP address display without prior IP addresss knowledge...
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
 * retrieving the remote server file list may need to be redesigned when the actual server is setup, depending on how its configured
