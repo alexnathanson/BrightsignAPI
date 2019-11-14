@@ -13,13 +13,16 @@
 	* playfile syntax: 'file [filename]'
 	* volume syntax: 'volume [integer in range 0-100]'
 * GPIO
+* HTML Control interface on port 8000
+* Additional commands can be sent via the Chome diagnostic console.
+	* see below
 
 #### config file
 * can set and get data from config file to ensure persistance
 
 ### diagnostic functions
 * displays IP address on screen
-* enables diagnostic console on port 3000 (chrome browsers only)
+* enables diagnostic console on port 3000 (Chrome browsers only)
 	* some frequently used commands:
 		* restart = BS.reboot()
 		* volume = setVolume(an int from 0-100)
@@ -30,7 +33,7 @@
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
 ### multiple zones
-* multiple zones can be enable, but automating specific behaviours will need to be determined once the robot interaction is determined.
+* multiple zones can be enable via the config file, but automating specific behaviours will need to be determined once the robot interaction is determined.
 * presently the additional zone is an image, but it could easily be changed to a video
 
 ## to do:
