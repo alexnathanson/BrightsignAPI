@@ -29,8 +29,8 @@ class BS_API{
 
 		//https://docs.brightsign.biz/display/DOC/BSControlPort#BSControlPort-Examples
 		//using the equivalent GPIO object in brightscript can cause unpredictable GPIO behaviour
-		this.gpio = new BSControlPort("BrightSign");
-		this.gpioEventCallbacks = [];
+		//Expander-0-GPIO is for use with the USB to GPIO expander
+		this.gpio = new BSControlPort("Expander-0-GPIO");
 
 		//https://docs.brightsign.biz/display/DOC/BSTicker
 		this.tickerX = 10;
@@ -64,6 +64,7 @@ class BS_API{
 			this.hideIP();
 		}
 
+		//this.setGPIOEventCallbacks();
 		//this.asyncScreenShot();
 	}
 
@@ -84,8 +85,25 @@ class BS_API{
 		this.gpio.GetPinValue(pin)
 	}
 
-	setGPIOEventCallbacks(){
+	GPIOEvents(callback){
+		console.log("Setting GPIO Events.")
 
+		this.gpio.oncontroldown = (e)=>{
+			console.log(e);
+			console.log('oncontroldown ' + e.code);
+
+			callback();
+		}
+
+		/*this.gpio.oncontrolup = (e)=>{
+			console.log(e);
+            console.log('oncontrolup ' + e.code);
+        }*/
+
+        /*this.gpio.oncontrolevent = function(e){
+        	console.log(e);
+            console.log('oncontrolevent ' + e.code);
+        }*/
 	}
 
 	asyncScreenShot(){

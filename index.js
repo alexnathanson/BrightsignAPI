@@ -29,12 +29,14 @@ let remoteServerBase;
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 let dirList;
 
+let currentFile = "";
 //the variables are used in the download process
 let writer,soFar,contentLength;
 
 function configured(){
   //display IP
   BS.initialize(configFile.configDict);
+  BS.GPIOEvents(randomMedia);
 
   remoteServerBase = 'http://'+configFile.configDict['media_server'];
   //console.log(remoteServerBase);
@@ -235,7 +237,20 @@ function removeFiles(anArray){
 }
 
 function playFile(aFileName){
+  currentFile = aFileName;
   BS.dgramSend("file " + aFileName);
+}
+
+function randomMedia(){
+  let newFile = true;
+  while (newFile){
+    let randMed = Math.floor((Math.random() * dirList.list.length));
+    console.log(randMed);
+    if(currentFile != dirList.list[randMed]){
+      playFile(dirList.list[randMed]);
+      newFile = false;
+    }
+  }
 }
 
 function setVolume(arg){
@@ -246,3 +261,18 @@ function setVolume(arg){
 function maskIt(aBool){
   BS.dgramSend("mask " + aBool);
 }
+/*
+BS.gpio.oncontroldown = function(e){
+      console.log(e);
+      console.log('### oncontroldown ' + e.code);
+    }
+
+BS.gpio.oncontrolup = function(e){
+      console.log(e);
+            console.log('### oncontroldown ' + e.code);
+        }
+
+BS.gpio.oncontrolup = function(e){
+          console.log(e);
+            console.log('### oncontroldown ' + e.code);
+        }*/

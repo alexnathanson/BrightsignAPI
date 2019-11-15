@@ -13,6 +13,7 @@
 	* playfile syntax: 'file [filename]'
 	* volume syntax: 'volume [integer in range 0-100]'
 * GPIO
+	* Default is set to GPIO 0 which will play a random file
 * HTML Control interface on port 8000
 * Additional commands can be sent via the Chome diagnostic console.
 	* see below
@@ -38,7 +39,6 @@
 
 ## to do:
 * confirm audio port configuration
-* GPIO interactivity
 * html control interface
 	* playback and volume controls
 	* screen capture
