@@ -30,7 +30,7 @@ class BS_API{
 		//https://docs.brightsign.biz/display/DOC/BSControlPort#BSControlPort-Examples
 		//using the equivalent GPIO object in brightscript can cause unpredictable GPIO behaviour
 		//Expander-0-GPIO is for use with the USB to GPIO expander
-		this.gpio = new BSControlPort("Expander-0-GPIO");
+		this.gpio;
 
 		//https://docs.brightsign.biz/display/DOC/BSTicker
 		this.tickerX = 10;
@@ -62,6 +62,10 @@ class BS_API{
 
 		if(!this.displayIP){
 			this.hideIP();
+		}
+
+		if(configDictionary.gpio){
+			this.gpio = new BSControlPort("Expander-0-GPIO");
 		}
 
 		//this.setGPIOEventCallbacks();

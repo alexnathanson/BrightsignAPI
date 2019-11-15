@@ -36,7 +36,9 @@ let writer,soFar,contentLength;
 function configured(){
   //display IP
   BS.initialize(configFile.configDict);
-  BS.GPIOEvents(randomMedia);
+  if(configFile.configDict.gpio){
+    BS.GPIOEvents(randomMedia);
+  }
 
   remoteServerBase = 'http://'+configFile.configDict['media_server'];
   //console.log(remoteServerBase);
@@ -261,18 +263,3 @@ function setVolume(arg){
 function maskIt(aBool){
   BS.dgramSend("mask " + aBool);
 }
-/*
-BS.gpio.oncontroldown = function(e){
-      console.log(e);
-      console.log('### oncontroldown ' + e.code);
-    }
-
-BS.gpio.oncontrolup = function(e){
-      console.log(e);
-            console.log('### oncontroldown ' + e.code);
-        }
-
-BS.gpio.oncontrolup = function(e){
-          console.log(e);
-            console.log('### oncontroldown ' + e.code);
-        }*/

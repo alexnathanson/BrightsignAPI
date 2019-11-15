@@ -204,7 +204,7 @@ function setVideoDelay(d as Integer)
 end function
 
 function setAudioVolume(a as Integer)
-    ao = CreateObject("roAudioOutput", "hdmi")
+    ao = CreateObject("roAudioOutput", m.params["audio_output"])
     ao.SetVolume(a)
 end function
 
@@ -279,8 +279,10 @@ sub main()
 	'Setup Sync Manager if 
 
 	' Configure audio
-	'ao = CreateObject("roAudioOutput",m.params[audio_output])
-	ao = CreateObject("roAudioOutput","hdmi")
+	print m.params["audio_output"]
+	ao = CreateObject("roAudioOutput",m.params["audio_output"])
+	'ao = CreateObject("roAudioOutput","hdmi")
+	'ao = CreateObject("roAudioOutput","usb")
     'ao.SetMute(True)
     ao.SetAudioDelay(150)
     ao.SetVolume(m.params["volume"].toInt())    

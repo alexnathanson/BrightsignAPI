@@ -41,12 +41,12 @@ media_server = 172.16.1.17
 #display the player's IP address
 displayIP = true
 
+#options: hdmi, usb
 audio_output = hdmi
 
 volume = 55
 
 mask = true
 
-#specify which gpio pin will be used as a button
-gpio = true
-button = 0
+#enable gpio buttons
+gpio = false
