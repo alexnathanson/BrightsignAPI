@@ -29,6 +29,7 @@
 		* volume = setVolume(an int from 0-100)
 		* play a file = playFile('the filename in quotes')
 		* turn the mask zone on/off = maskIt(boolean)
+* html control interface on port 8000
 
 ### Brightsign APIs as a class
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax

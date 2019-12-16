@@ -3,13 +3,13 @@
 let http = require('http');
 
 // Configure our HTTP server to respond with Hello World to all requests.
-var server = http.createServer(function (request, response) {
-  var device_info = new BSDeviceInfo();
+let server = http.createServer(function (request, response) {
+  let device_info = new BSDeviceInfo();
   response.writeHead(200, {"Content-Type": "text/html"});
-  response.end(serverResponse);
-  var ip = request.connection.remoteAddress;
+  response.end("Device Information:\n" + device_info.model + "\n" + device_info.bootVersion + "\n");
+  let ip = request.connection.remoteAddress;
   //document.getElementById("Ip").innerHTML+="Server responded to: "+ ip + "<br>";
-  //console.log("Server responded to request from " + ip);
+  console.log("Server responded to request from " + ip);
 });
 
 // Listen on port 8000, IP defaults to 127.0.0.1
@@ -27,14 +27,15 @@ for (var k in interfaces) {
         }
     }
 }
-var message = "Server running at: " + addresses[0] + ":8000<br>";
-//document.getElementById("Ip").innerHTML+= message;
+
+let message = "Server running at: " + addresses[0] + ":8000<br>";
 
 // Print message on console
 console.log(message);
 console.log(BS);
 
-let serverResponse = "\"Device Information:\n\" + device_info.model + \"\n\" + device_info.bootVersion + \"\n\"+\"<br><button type=\"button\" onclick=\"passThrough(0,setVolume)">Mute</button>";       
+//let serverResponse = "\"Device Information:\n\" + device_info.model + \"\n\" + device_info.bootVersion + \"\n\"+\"<br><button type=\"button\" onclick=\"passThrough(0,setVolume)">Mute</button>";       
+let  serverResponse = "Server running at: " + addresses[0] + ":8000<br>";
 
 function passThrough(args, aCallback){
   aCallback(args);
