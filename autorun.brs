@@ -206,6 +206,8 @@ end function
 function setAudioVolume(a as Integer)
     ao = CreateObject("roAudioOutput", m.params["audio_output"])
     ao.SetVolume(a)
+    m.video.SetVolume(a)
+
 end function
 
 sub main()
@@ -285,7 +287,11 @@ sub main()
 	'ao = CreateObject("roAudioOutput","usb")
     'ao.SetMute(True)
     ao.SetAudioDelay(150)
-    ao.SetVolume(m.params["volume"].toInt())    
+    ao.SetVolume(m.params["volume"].toInt())
+
+    'set video player audio output
+    m.video.SetVolume(m.params["volume"].toInt())
+    
 
 	if m.params["playback_mode"] <> "normal" then
 		configurePTP()

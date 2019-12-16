@@ -38,7 +38,6 @@
 * presently the additional zone is an image, but it could easily be changed to a video
 
 ## to do:
-* confirm audio port configuration
 * html control interface
 	* playback and volume controls
 	* screen capture
