@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title></title>
+    <!--<style> body {padding: 0; margin: 0;} </style>-->
+    
+  </head>
+  <body>
+    <h1>Brightsign Controll Interface</h1>
+    <p>
+       <img src="/images/screen.jpg" alt="screenshot">
+    </p>
+    <p>
+      <button type="button">Update Screen Shot</button> 
+      <button type="button">Play file</button> 
+      volume
+      <button type="button">Display IP</button> 
+      <button type="button" onclide="confirmReboot">Restart</button> 
+    </p>
+    <p>
+      command input
+    </p>
+<script>
+  function confirmReboot() {
+    let c = confirm("confirm reboot:");
+    if (c==true){
+      console.log("rebooting!");
+    }
+  }
+</script>
+  </body>
+</html>

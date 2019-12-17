@@ -18,8 +18,9 @@ class BS_API{
 		//https://docs.brightsign.biz/display/DOC/screenshot
 		this.ScreenshotClass = require("@brightsign/screenshot");
 		this.screenshot = new this.ScreenshotClass();
-		//this.screenshotParams = {"fileName":"SD:/screenshots/screenshot.jpg","quality":75};
-
+		this.screenshotParams = {"fileName":"SD:/controlInterface/images/screen.jpg",
+								"quality":75}; 
+ 
 	/*******BS-JS OBJECTS*************************************************
 		BS-JS Objects are supposedly being replaced with the BS-JS API,
 		but are still being offerred for backwards compatibility purposes*/
@@ -69,7 +70,8 @@ class BS_API{
 		}
 
 		//this.setGPIOEventCallbacks();
-		//this.asyncScreenShot();
+		this.asyncScreenShot();
+
 	}
 
 	reboot(){
@@ -111,8 +113,8 @@ class BS_API{
 	}
 
 	asyncScreenShot(){
-		//this.screenshot.takeAsyncScreenshot(screenshotParams);
-		setInterval(this.screenshot.takeAsyncScreenshot(screenshotParams), 10000);
+		this.screenshot.asyncCapture(this.screenshotParams);
+		//setInterval(this.screenshot.takeAsyncScreenshot(screenshotParams), 10000);
 	}
 
 	dgramSend(aMessage){
