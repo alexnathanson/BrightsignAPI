@@ -17,7 +17,8 @@
 * HTML Control interface on port 8000
 	* must add full node_modules directory to SD card
 		* run 'npm install' on your computer and drag the node_modules directory to the SD card
-		* could be rewritten with webpack in the future 
+		* could be rewritten with webpack in the future
+	* uses websockets on port 8081 
 * Additional commands can be sent via the Chome diagnostic console.
 	* see below
 
