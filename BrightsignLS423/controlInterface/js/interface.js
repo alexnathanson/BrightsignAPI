@@ -18,18 +18,15 @@ function newSocks(){
 	socket.send('a');        // send a byte to get new data
 }*/
 
-let PORT = 8081;
+let PORT = 8000;
 let HOST = window.location.hostname;
-/*
-$(document).ready(function(){
-  var user,pass;
-  $("#submit").click(function(){
-    user=$("#user").val();
-    pass=$("#password").val();
-    $.post("http://localhost:3000/login",{user: user,password: pass}, function(data){
+
+/*$(document).ready(function(){
+  $("#ip").click(function(){
+    $.post("http://"+HOST+":"+PORT+"/command",{comm: aMess}, function(data){
       if(data==='done')
         {
-          alert("login success");
+          alert("success");
         }
     });
   });
@@ -58,10 +55,10 @@ function sendMess(aMess){
   //socket.send(aMess);
   console.log(aMess);
 
-  /*$.post("http://"+HOST+":"+PORT+"/command",{comm: aMess}, function(data){
-  if(data==='done')
-    {
-      console.log("success");
-    }
-  });*/
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://"+HOST+":"+PORT+"/command", true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({
+      "comm": aMess
+  }));
 }
