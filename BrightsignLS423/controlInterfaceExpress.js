@@ -3,6 +3,8 @@ let express    =    require('express');
 let app        =    express();
 let bodyParser     =         require("body-parser");
 
+let ipBool = false;
+
 app.use(express.static('/storage/sd/controlInterface'));
 
 //make way for some custom css, js and images
@@ -35,6 +37,11 @@ function recMessage(message){
   } else if (message == "screen"){
     BS.asyncScreenShot();
   } else if (message == "ip"){
-    BS.hideIP();
+    if(ipBool == false){
+      BS.hideIP();
+    } else if (ipBool == true){
+      BS.showIP();
+    }
+    ipBool = !ipBool;
   }
 }
