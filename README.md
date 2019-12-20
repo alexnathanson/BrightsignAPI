@@ -42,6 +42,9 @@
 * multiple zones can be enable via the config file, but automating specific behaviours will need to be determined once the robot interaction is determined.
 * presently the additional zone is an image, but it could easily be changed to a video
 
+## server configuration
+* must enable directory browsing
+
 ## to do:
 * html control interface
 	* playback and volume controls

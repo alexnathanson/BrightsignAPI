@@ -1,16 +1,18 @@
-let WebSocketServer = require('ws').Server;
+//let WebSocketServer = require('ws').Server;
 //let WebSocketServer = require('websocket').server;
 //let http = require('http');
 
 let express    =    require('express');
 let app        =    express();
+let bodyParser     =         require("body-parser");
 
-app.use(express.static('/storage/sd/controlInterface'));
+/*app.use(express.static('/storage/sd/controlInterface'));
 
 //make way for some custom css, js and images
 app.use('/css', express.static(__dirname + '/controlInterface/css'));
 app.use('/js', express.static(__dirname + '/controlInterface/js'));
 app.use('/images', express.static(__dirname + '/controlInterface/images'));
+*/
 
 /*app.get('/',function(req,res){
     res.send(controlInterface/index.html);
@@ -18,6 +20,18 @@ app.use('/images', express.static(__dirname + '/controlInterface/images'));
 
 let server     =    app.listen(8000,function(){
     console.log("We have started our server on port 8000");
+});
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get('/',function(req,res){
+  res.sendfile("/controlInterface/index.html");
+});
+app.post('/command',function(req,res){
+  console.log(req);
+  res.end("yes");
 });
 
 /************web sockets stuff********************************/
@@ -61,7 +75,8 @@ wsServer.on('connect', function(request) {
     });
 });
 */
-
+/******more WS stuff****************/
+/*
 let SERVER_PORT = 8081;               // port number for the webSocket server
 let wss = new WebSocketServer({port: SERVER_PORT}); // the webSocket server
 let connections = new Array;          // list of connections to the server
@@ -85,7 +100,7 @@ function handleConnection(client) {
     let position = connections.indexOf(client); // get the client's position in the array
     connections.splice(position, 1); // and delete it from the array
   });
-}
+}*/
 
 function recMessage(message){
   console.log("received message!");

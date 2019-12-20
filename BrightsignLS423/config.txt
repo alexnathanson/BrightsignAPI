@@ -36,7 +36,7 @@ enable_node = true
 # enable content sync with media server
 media_sync = true
 
-media_server = 10.71.3.128
+media_server = 172.16.0.4
 
 #display the player's IP address
 displayIP = true
