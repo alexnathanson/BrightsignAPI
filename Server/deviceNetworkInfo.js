@@ -1,6 +1,8 @@
 //this node server is used to collect IP addresses from active brightsigns on the network
 'use strict';
 
+//WILL THIS WORK WITH MULTIPLE CONNECTIONS?
+
 const fs = require('fs');
 let express    =    require('express');
 let app        =    express();
@@ -13,10 +15,11 @@ let server     =    app.listen(postPort,function(){
 
 let fileName = 'deviceNetworkInfo.json';
 let netInfo;
+
 fs.readFile(fileName, (err, data) => {
     if (err) throw err;
     netInfo = JSON.parse(data);
-    console.log(netInfo[0]);
+    //console.log(netInfo[0]);
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,16 +39,20 @@ app.post('/',function(req,res){
 
 
 function findReplace(data){
+  let exists = false;
+
   for(let n=0; n<netInfo.length; n++){
     if(Object.keys(netInfo[n])[0] == Object.keys(data)[0]){
       console.log("found existing entry");
       netInfo[n]=data;
+      exists = true;
       break;
-    } else {
-      //make new entry
-      console.log("new entry");
-      netInfo.push(data);
     }
+  }
+  if (!exists) {
+    //make new entry
+    console.log("new entry");
+    netInfo.push(data);
   }
   console.log(netInfo);
 
