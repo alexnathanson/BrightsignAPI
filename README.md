@@ -49,10 +49,19 @@
 * update the config file as necessary
 * drag all of contents of the BrightsignLS423 directory to the SD card
 
-### server 
+### media server 
+There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for trouble shooting purposes.
+
+Distribution
+* currently intended for a generic IIS setup
 * must enable directory browsing
-* place media files on server directory named "media" within a directory with the name of the device ID/ serial number
+* place media files on server directory named "media" within a directory with the name of the device ID
 	* root/[deviceID]/media
+
+IP Collector
+* a Node JS app
+* set it up to start on boot
+* must adjust file paths on final version
 
 ## possible future additions
 * html control interface

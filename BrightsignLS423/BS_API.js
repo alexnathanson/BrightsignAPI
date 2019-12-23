@@ -45,6 +45,7 @@ class BS_API{
   		this.os = require( 'os' );
 		this.networkInterfaces = this.os.networkInterfaces( );
   		this.myIP= this.networkInterfaces.eth0[0]['address'];
+  		this.myMAC = this.networkInterfaces.eth0[0]['mac'];
 
   		//https://nodejs.org/api/dgram.html
 		this.dgram = require('dgram');

@@ -40,6 +40,9 @@ media_sync = true
 #media_server = 172.16.0.4
 media_server = 192.168.1.185
 
+#port for posting IP address to media_server
+ipPostPort = 8081
+
 #display the player's IP address
 displayIP = true
 

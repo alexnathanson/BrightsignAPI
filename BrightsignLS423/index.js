@@ -40,6 +40,9 @@ function configured(){
     BS.GPIOEvents(randomMedia);
   }
 
+  //post ip
+  postIt();
+
   remoteServerBase = 'http://'+configFile.configDict['media_server'];
   //console.log(remoteServerBase);
   //get file list from remote server
