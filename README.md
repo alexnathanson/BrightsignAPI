@@ -51,8 +51,8 @@
 
 ### server 
 * must enable directory browsing
-* place media files on server directory named "media" within a directory with the device ID
-** root/[deviceID]/media
+* place media files on server directory named "media" within a directory with the name of the device ID/ serial number
+	* root/[deviceID]/media
 
 ## possible future additions
 * html control interface
