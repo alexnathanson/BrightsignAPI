@@ -15,11 +15,11 @@
 * GPIO
 	* Default is set to GPIO 0 which will play a random file
 * HTML Control interface on port 8000
-	* must add full node_modules directory to SD card
+	* must add full node_modules directory + a few other modules to SD card
 		* run 'npm install' on your computer and drag the node_modules directory to the SD card
 		* could be rewritten with webpack in the future
-	* uses websockets on port 8081 
-* Additional commands can be sent via the Chome diagnostic console.
+	* uses PUT method 
+* Additional commands can be sent via the Chrome diagnostic console.
 	* see below
 
 #### config file
