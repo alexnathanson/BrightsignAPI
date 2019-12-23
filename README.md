@@ -45,13 +45,9 @@
 ## server configuration
 * must enable directory browsing
 
-## to do:
+## possible future additions
 * html control interface
-	* playback and volume controls
-	* screen capture
-	* local file list
-* better control of diagnostic modes
-	* websockets interface to turn on debugging mode?
-	* toggle IP address display without prior IP addresss knowledge...
+	* playback controls
+	* display local file list
+* generate list of all IPs on server
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
-* retrieving the remote server file list may need to be redesigned when the actual server is setup, depending on how its configured

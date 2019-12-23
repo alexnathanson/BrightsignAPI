@@ -5,6 +5,8 @@ let bodyParser     =         require("body-parser");
 
 let ipBool = false;
 
+let v = {volume: getValue('volume')};
+
 app.use(express.static('/storage/sd/controlInterface'));
 
 //make way for some custom css, js and images
@@ -19,18 +21,25 @@ let server     =    app.listen(8000,function(){
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/*app.get('/',function(req,res){
-  res.sendfile("/storage/sd/controlInterface/index.html");
-});*/
+app.get('/volume',function(req,res){
+
+  v = {volume: getValue('volume')};
+  res.send(v);
+});
 
 app.post('/command',function(req,res){
-  recMessage(req.body.comm);
+  console.log(req.body);
 
+  if(Object.keys(req.body)[0] == "volume"){
+    setVolume(req.body.volume);
+  } else if (Object.keys(req.body)[0] == "comm"){
+    recCommand(req.body.comm);
+  }
   res.end("yes");
 });
 
-function recMessage(message){
-  console.log("received message!");
+function recCommand(message){
+  console.log("received command!");
 
   if (message == "reboot"){
     BS.reboot();

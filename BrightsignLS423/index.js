@@ -260,6 +260,10 @@ function setVolume(arg){
   BS.dgramSend("volume " + arg); //set live player
 }
 
+function getValue(aKey){
+  return configFile.getValue(aKey);
+}
+
 function maskIt(aBool){
   BS.dgramSend("mask " + aBool);
 }

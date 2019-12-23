@@ -4,24 +4,26 @@
     <meta charset="utf-8">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>BS Control</title>
-    <!--<style> body {padding: 0; margin: 0;} </style>-->
+    <link rel="stylesheet" type="text/css" href="/css/interface.css"> 
     <script src="/js/interface.js"></script>
     
   </head>
   <body>
     <h1>Brightsign Controll Interface</h1>
     <p>
-       <img src="/images/screen.jpg" alt="screenshot">
+       <img id="screen" src="/images/screen.jpg" alt="screenshot">
     </p>
     <p>
       <button type="button" onclick="newScreen()">Update Screen Shot</button> 
       <!--<button type="button">Play file</button> -->
-      volume
       <button type="button" onclick="displayIP()">Display IP</button> 
       <button type="button" onclick="confirmReboot()">Restart</button> 
     </p>
     <p>
-      command input
+      <div id="volStuff">
+        <div id="volVal">Volume:</div>
+        <input type="range" min="1" max="100" value="50" class="slider" id="volume">
+      </div>
     </p>
   </body>
 </html>
