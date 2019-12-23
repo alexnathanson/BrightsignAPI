@@ -22,7 +22,7 @@
 * Additional commands can be sent via the Chrome diagnostic console.
 	* see below
 
-#### config file
+### config file
 * can set and get data from config file to ensure persistance
 
 ### diagnostic functions
@@ -42,8 +42,17 @@
 * multiple zones can be enable via the config file, but automating specific behaviours will need to be determined once the robot interaction is determined.
 * presently the additional zone is an image, but it could easily be changed to a video
 
-## server configuration
+## instructions
+
+### brightsign
+* update the firmware on the BS
+* update the config file as necessary
+* drag all of contents of the BrightsignLS423 directory to the SD card
+
+### server 
 * must enable directory browsing
+* place media files on server directory named "media" within a directory with the device ID
+** root/[deviceID]/media
 
 ## possible future additions
 * html control interface
