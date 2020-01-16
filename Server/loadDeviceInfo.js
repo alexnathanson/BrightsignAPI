@@ -6,21 +6,30 @@ request.open('GET', requestURL);
 request.responseType = 'json';
 request.send();
 
+let devData;
 request.onload = function() {
-  const devData = request.response;
+  devData = request.response;
   populateHeader(devData);
-  showData(devData);
+  //showData(devData);
 }
 
 
 function populateHeader(jsonObj) {
-  const myH1 = document.createElement('h1');
-  myH1.textContent = jsonObj['squadName'];
-  header.appendChild(myH1);
+	console.log(jsonObj);
+
+//loop through data for each device
+	for (let j =0;j<jsonObj.length;j++){
+		let myH1 = document.createElement('h3');
+		myH1.textContent = Object.keys(jsonObj[j])[0];
+
+
+		header.appendChild(myH1);
+	}
+  
 
   const myPara = document.createElement('p');
   myPara.textContent = 'Hometown: ' + jsonObj['homeTown'] + ' // Formed: ' + jsonObj['formed'];
-  header.appendChild(myPara);
+  header.appendChild(myPara);*/
 }
 
 
