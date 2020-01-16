@@ -9,7 +9,7 @@ request.send();
 let devData;
 request.onload = function() {
   devData = request.response;
-  populateHeader(devData);
+  showData(devData);
   //showData(devData);
 }
 
@@ -24,8 +24,17 @@ function showData(jsonObj) {
 		let myH1 = document.createElement('h3');
 		myH1.textContent = Object.keys(jsonObj[j])[0];
 
-
 		devList.appendChild(myH1);
+
+		let myL = document.createElement('ul');
+
+		let devKeys = Object.keys(jsonObj[j][Object.keys(devData[j])])
+
+		for (let o = 0; o < devKeys.length;o++){
+			let myLi = document.createElement('li');
+			myLi.textContent = jsonObj[j][Object.keys(devData[j])][devKeys[o]]
+			myL.appendChild(myLi);
+		}
 	}
   /*
 
