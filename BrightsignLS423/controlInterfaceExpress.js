@@ -35,7 +35,7 @@ app.post('/command',function(req,res){
   } else if (Object.keys(req.body)[0] == "comm"){
     recCommand(req.body.comm);
   }
-  res.end("yes");
+  //res.end("yes");
 });
 
 function recCommand(message){

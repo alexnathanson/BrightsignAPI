@@ -1,4 +1,7 @@
 //this node server is used to collect IP addresses from active brightsigns on the network
+
+//currently will not autorun
+
 'use strict';
 
 //WILL THIS WORK WITH MULTIPLE CONNECTIONS?

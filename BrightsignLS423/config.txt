@@ -6,8 +6,8 @@
 # Set this to change the player’s output mode
 # Default is 1920x1080x50p
 
-#video_output_mode = 1920x1080x60p
-video_output_mode = 640x480x60p
+video_output_mode = 1920x1080x60p
+#video_output_mode = 640x480x60p
 
 # playback_mode 
 # set to normal, master or slave
@@ -37,8 +37,7 @@ enable_node = true
 # enable content sync with media server
 media_sync = true
 
-#media_server = 172.16.0.4
-media_server = 192.168.1.185
+media_server = 172.16.0.4
 
 #port for posting IP address to media_server
 ipPostPort = 8081
