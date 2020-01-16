@@ -71,3 +71,4 @@ IP Collector
 	* display local file list
 * generate list of all IPs on server
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
+* format file names with pertinant info and parse it to update config file and bay info

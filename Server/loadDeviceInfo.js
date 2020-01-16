@@ -33,11 +33,30 @@ function showData(jsonObj) {
 		for (let o = 0; o < devKeys.length;o++){
 			let myLi = document.createElement('li');
 
-			//convert Unix time to human readable time
 			if(devKeys[o]=='time'){
+				//convert Unix time to human readable time
 				myLi.textContent = devKeys[o] + ": " + Unix_timestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
-			} else {
-				myLi.textContent = devKeys[o] + ": " + jsonObj[j][Object.keys(devData[j])][devKeys[o]]
+			} else if (devKeys[o]=='ip'){
+				//make it a hyperlink
+			} else
+				myLi.textContent = devKeys[o] + ": ";
+
+				let myA = document.createElement("a");
+
+				let myLink = document.createTextNode(jsonObj[j][Object.keys(devData[j])][devKeys[o]]); 
+                  
+                // Append the text node to anchor element. 
+                myA.appendChild(myLink);  
+                  
+                // Set the title. 
+                myA.title = jsonObj[j][Object.keys(devData[j])][devKeys[o]];  
+                  
+                // Set the href property. 
+                myA.href = "https://" + jsonObj[j][Object.keys(devData[j])][devKeys[o]];  
+                  
+                // Append the anchor element to the body. 
+                dmyLi.appendChild(myA);  
+
 			}
 			myL.appendChild(myLi);
 		}
@@ -91,7 +110,6 @@ function Unix_timestamp(t){
  return convdataTime;
  
 }
-	}
 /*
 function showData(jsonObj) {
   const heroes = jsonObj['members'];
