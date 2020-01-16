@@ -6,6 +6,7 @@ let bodyParser     =         require("body-parser");
 let ipBool = false;
 
 let v = {volume: getValue('volume')};
+let f = {file: getValue('volume')};
 
 app.use(express.static('/storage/sd/controlInterface'));
 
@@ -25,6 +26,12 @@ app.get('/volume',function(req,res){
 
   v = {volume: getValue('volume')};
   res.send(v);
+});
+
+app.get('/file',function(req,res){
+
+  f = {file: dirList.list[0]};
+  res.send(f);
 });
 
 app.post('/command',function(req,res){

@@ -22,7 +22,7 @@ function showData(jsonObj) {
 //loop through data for each device
 	for (let j =0;j<jsonObj.length;j++){
 		let myH1 = document.createElement('h3');
-		myH1.textContent = Object.keys(jsonObj[j])[0];
+		myH1.textContent = "Bay TBD " +Object.keys(jsonObj[j])[0];
 
 		devList.appendChild(myH1);
 

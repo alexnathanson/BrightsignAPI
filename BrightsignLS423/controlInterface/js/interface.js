@@ -10,6 +10,9 @@ window.onload = function(){
   //retrieve stored volume value
   sendGet("volume");
   
+  //retrieve file name
+  sendGet("file");
+  
   // Update the volume when the slider is released
   vol.onmouseup = function() {
     //console.log(this.value);
