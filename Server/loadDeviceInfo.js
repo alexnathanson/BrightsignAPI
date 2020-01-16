@@ -14,8 +14,10 @@ request.onload = function() {
 }
 
 
-function populateHeader(jsonObj) {
+function showData(jsonObj) {
 	console.log(jsonObj);
+
+	let devList =  document.getElementById("bsList");
 
 //loop through data for each device
 	for (let j =0;j<jsonObj.length;j++){
@@ -23,16 +25,16 @@ function populateHeader(jsonObj) {
 		myH1.textContent = Object.keys(jsonObj[j])[0];
 
 
-		header.appendChild(myH1);
+		devList.appendChild(myH1);
 	}
-  
+  /*
 
   const myPara = document.createElement('p');
   myPara.textContent = 'Hometown: ' + jsonObj['homeTown'] + ' // Formed: ' + jsonObj['formed'];
   header.appendChild(myPara);*/
 }
 
-
+/*
 function showData(jsonObj) {
   const heroes = jsonObj['members'];
       
@@ -64,4 +66,4 @@ function showData(jsonObj) {
 
     section.appendChild(myArticle);
   }
-}
+}*/
