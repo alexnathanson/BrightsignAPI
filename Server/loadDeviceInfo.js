@@ -51,7 +51,7 @@ function showData(jsonObj) {
                 myA.title = jsonObj[j][Object.keys(devData[j])][devKeys[o]];  
                   
                 // Set the href property. 
-                myA.href = "https://" + jsonObj[j][Object.keys(devData[j])][devKeys[o]] + ":8000";  
+                myA.href = "http://" + jsonObj[j][Object.keys(devData[j])][devKeys[o]] + ":8000";  
                   
                 // Append the anchor element to the body. 
                 myLi.appendChild(myA);  
