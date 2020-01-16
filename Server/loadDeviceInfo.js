@@ -38,7 +38,6 @@ function showData(jsonObj) {
 				myLi.textContent = devKeys[o] + ": " + Unix_timestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
 			} else if (devKeys[o]=='ip'){
 				//make it a hyperlink
-			} else
 				myLi.textContent = devKeys[o] + ": ";
 
 				let myA = document.createElement("a");
@@ -55,8 +54,10 @@ function showData(jsonObj) {
                 myA.href = "https://" + jsonObj[j][Object.keys(devData[j])][devKeys[o]];  
                   
                 // Append the anchor element to the body. 
-                dmyLi.appendChild(myA);  
+                myLi.appendChild(myA);  
 
+			} else {
+				myLi.textContent = devKeys[o] + ": " + jsonObj[j][Object.keys(devData[j])][devKeys[o]];
 			}
 			myL.appendChild(myLi);
 		}
