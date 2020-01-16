@@ -51,7 +51,9 @@
 
 ### media server 
 There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for trouble shooting purposes.
-
+<p>
+The server must have a static IP, which must be listed in the BS config file.
+</p>
 Distribution
 * currently intended for a generic IIS setup
 * must enable directory browsing
