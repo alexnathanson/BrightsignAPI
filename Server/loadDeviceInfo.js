@@ -32,9 +32,17 @@ function showData(jsonObj) {
 
 		for (let o = 0; o < devKeys.length;o++){
 			let myLi = document.createElement('li');
-			myLi.textContent = jsonObj[j][Object.keys(devData[j])][devKeys[o]]
+
+			//convert Unix time to human readable time
+			if(devKeys[o]=='time'){
+				myLi.textContent = devKeys[o] + " " + Unix_timestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
+			} else {
+				myLi.textContent = devKeys[o] + " " + jsonObj[j][Object.keys(devData[j])][devKeys[o]]
+			}
 			myL.appendChild(myLi);
 		}
+
+		devList.appendChild(myL);
 	}
   /*
 
@@ -43,6 +51,13 @@ function showData(jsonObj) {
   header.appendChild(myPara);*/
 }
 
+function Unix_timestamp(t){
+	var dt = new Date(t*1000);
+	var hr = dt.getHours();
+	var m = "0" + dt.getMinutes();
+	var s = "0" + dt.getSeconds();
+	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);  
+	}
 /*
 function showData(jsonObj) {
   const heroes = jsonObj['members'];
