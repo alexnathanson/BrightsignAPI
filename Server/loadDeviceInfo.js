@@ -35,9 +35,9 @@ function showData(jsonObj) {
 
 			//convert Unix time to human readable time
 			if(devKeys[o]=='time'){
-				myLi.textContent = devKeys[o] + " " + Unix_timestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
+				myLi.textContent = devKeys[o] + ": " + Unix_timestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
 			} else {
-				myLi.textContent = devKeys[o] + " " + jsonObj[j][Object.keys(devData[j])][devKeys[o]]
+				myLi.textContent = devKeys[o] + ": " + jsonObj[j][Object.keys(devData[j])][devKeys[o]]
 			}
 			myL.appendChild(myLi);
 		}
@@ -52,11 +52,45 @@ function showData(jsonObj) {
 }
 
 function Unix_timestamp(t){
-	var dt = new Date(t*1000);
+	/*var dt = new Date(t*1000);
 	var hr = dt.getHours();
 	var m = "0" + dt.getMinutes();
 	var s = "0" + dt.getSeconds();
-	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);  
+	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);  */
+
+ // Unixtimestamp
+ var unixtimestamp = t;
+
+ // Months array
+ var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+ // Convert timestamp to milliseconds
+ var date = new Date(unixtimestamp*1000);
+
+ // Year
+ var year = date.getFullYear();
+
+ // Month
+ var month = months_arr[date.getMonth()];
+
+ // Day
+ var day = date.getDate();
+
+ // Hours
+ var hours = date.getHours();
+
+ // Minutes
+ var minutes = "0" + date.getMinutes();
+
+ // Seconds
+ var seconds = "0" + date.getSeconds();
+
+ // Display date time in MM-dd-yyyy h:m:s format
+ var convdataTime = month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+ 
+ return convdataTime;
+ 
+}
 	}
 /*
 function showData(jsonObj) {
