@@ -6,13 +6,14 @@ let vol, volVal;
 window.onload = function(){
   vol = document.getElementById("volume");
   volVal = document.getElementById("volVal");
+  fileN = document.getElementById("fileName");
 
   //retrieve stored volume value
   sendGet("volume");
   
   //retrieve file name
   sendGet("file");
-  
+
   // Update the volume when the slider is released
   vol.onmouseup = function() {
     //console.log(this.value);
@@ -28,6 +29,10 @@ window.onload = function(){
 function updateVolumeGUI(vVal){
   vol.value = parseInt(vVal); // Get the volume slider value
   volVal.innerHTML = "Volume: " + vVal;
+}
+
+function updateFileName(fName){
+  fName.innerHTML = "File: " + fName;
 }
 
 /****BUTTONS**********/
@@ -76,6 +81,8 @@ function sendGet(endPoint){
 
       if(Object.keys(resObj)[0]=="volume"){
         updateVolumeGUI(resObj.volume);
+      } else if (Object.keys(resObj)[0]=="file"){
+        updateFileName(resObj.file);
       }
     }
   }
