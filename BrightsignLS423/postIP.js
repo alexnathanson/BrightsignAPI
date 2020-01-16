@@ -22,7 +22,7 @@ function postIt(){
 //package the device info into a JSON
 function createObj(){
   	devInfo[devID] = {};
-    devInfo[devID].file = dirList.list[0];//added 1/16
+    //devInfo[devID].file = dirList.list[0];//added 1/16
   	devInfo[devID].mac = devMAC;
   	devInfo[devID].ip = devIP;
   	devInfo[devID].time = Date.now();
