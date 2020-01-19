@@ -103,4 +103,4 @@ IP Collector
 * split up functionality so it is easier to manage and reuse in the future
 	* create seperate functionality for HTML interface, server syncing, IP collector
 	* condense Node module stuff
-* IP collector should be connected to server syncing functionality
+* IP collector should be connected to logging server requests from the BS devices or through automated via websockets
