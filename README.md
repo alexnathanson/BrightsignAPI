@@ -1,7 +1,7 @@
-# brightscriptNodeServer
+# A more functional Brightsign API
 
 ## overview
-This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor! This was designed for the LS423 model, but should be widely applicable to the most recent generation of Brightsign devices.
+This repository combines existing Brightsign APIs and functions to create a more functional and practical very that is much more flexible and easier to implement. This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor! This was designed for the LS423 model, but should be widely applicable to the most recent generation of Brightsign devices.
 
 ## Syncing media content to server directory
 * continuously checks server directory for changes
