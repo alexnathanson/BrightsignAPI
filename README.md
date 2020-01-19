@@ -1,14 +1,21 @@
 # A more functional Brightsign API
 
 ## overview
-This repository combines existing Brightsign APIs and functions to create a more functional and practical very that is much more flexible and easier to implement. This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor! This was designed for the LS423 model, but should be widely applicable to the most recent generation of Brightsign devices.
+<p>This repository combines existing Brightsign APIs and functions to create a more functional and practical very that is much more flexible and easier to implement. This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor! This was designed for the LS423 model, but should be widely applicable to the most recent generation of Brightsign devices.</p>
 
-## Syncing media content to server directory
-* continuously checks server directory for changes
-  * server directory is /[deviceID]/media
-  * [deviceID] is automatically detected and does not need to be changed by the user
-* downloads new files
-* deletes old files
+<p>There are three main components to this system.
+	* The Combined Brightsign APIs, which provides the functionality.
+	* The server syncing, which is optional
+	* The HTML web interface and API end points for broader network interactions.
+</p>
+
+## Brightsign APIs as a class - BS_API.js
+* the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
+
+### config file
+* can set and get data from config file to ensure persistance
+
+### the autorun.brs file
 
 ### media controls and interactivity
 * UDP on port 13131
@@ -24,10 +31,8 @@ This repository combines existing Brightsign APIs and functions to create a more
 * Additional commands can be sent via the Chrome diagnostic console.
 	* see below
 
-### config file
-* can set and get data from config file to ensure persistance
 
-## Trouble shooting and diagnostic functions
+### Trouble shooting and diagnostic functions
 * displays IP address on screen
 * enables diagnostic console on port 3000 (Chrome browsers only)
 This allows you to manually work with the BS_API class directly if accessible end points haven't been established.
@@ -36,10 +41,6 @@ This allows you to manually work with the BS_API class directly if accessible en
 		* volume = setVolume(an int from 0-100)
 		* play a file = playFile('the filename in quotes')
 		* turn the mask zone on/off = maskIt(boolean)
-* html control interface on port 8000
-
-## Brightsign APIs as a class - BS_API.js
-* the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
 ### GPIO
 * set gpio = true in the config file
@@ -48,7 +49,16 @@ This allows you to manually work with the BS_API class directly if accessible en
 * multiple zones for masking can be enable via the config file
 * presently the layered zone is a PNG image, but it could easily be changed to a video
 
+## Syncing media content to server directory
+* continuously checks server directory for changes
+  * server directory is /[deviceID]/media
+  * [deviceID] is automatically detected and does not need to be changed by the user
+* downloads new files
+* deletes old files
+
 ## HTML Control Interface
+html control interface on port 8000
+
 <p>
 The control interface uses a Node Express server (controlInterfaceExpress.js) to serve the files in the controlInterface directory
 </p>
