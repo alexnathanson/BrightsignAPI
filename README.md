@@ -1,7 +1,7 @@
 # brightscriptNodeServer
 
 ## overview
-This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor!
+This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor! This was designed for the LS423 model, but should be widely applicable to the most recent generation of Brightsign devices.
 
 ## Syncing media content to server directory
 * continuously checks server directory for changes
@@ -49,6 +49,7 @@ This allows you to manually work with the BS_API class directly if accessible en
 The control interface uses a Node Express server (controlInterfaceExpress.js) to server the files in the controlInterface directory.
 
 ## instructions
+Make sure the firmware is up to date.
 
 ### brightsign
 * update the firmware on the BS
