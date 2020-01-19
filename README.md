@@ -16,6 +16,8 @@
 * can set and get data from config file to ensure persistance
 
 ### the autorun.brs file
+* roDatagram (UDP) on port 13131 enables the API via Node dgram module to communicate with the hardware.
+* Other devices can also communicate on this port if needed.
 
 ### media controls and interactivity
 * UDP on port 13131
@@ -63,7 +65,7 @@ html control interface on port 8000
 The control interface uses a Node Express server (controlInterfaceExpress.js) to serve the files in the controlInterface directory
 </p>
 <p>
-The Express server can also be the basic for more complex API functionality.
+The Express server can also be the basis for more complex API functionality.
 </p>
 
 ## Installation Instructions
