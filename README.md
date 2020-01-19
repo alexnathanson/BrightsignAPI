@@ -38,23 +38,31 @@ This allows you to manually work with the BS_API class directly if accessible en
 		* turn the mask zone on/off = maskIt(boolean)
 * html control interface on port 8000
 
-## Brightsign APIs as a class
+## Brightsign APIs as a class - BS_API.js
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
+### GPIO
+* set gpio = true in the config file
+
 ### multiple zones
-* multiple zones can be enable via the config file, but automating specific behaviours will need to be determined once the robot interaction is determined.
-* presently the additional zone is an image, but it could easily be changed to a video
+* multiple zones for masking can be enable via the config file
+* presently the layered zone is a PNG image, but it could easily be changed to a video
 
 ## HTML Control Interface
-The control interface uses a Node Express server (controlInterfaceExpress.js) to server the files in the controlInterface directory.
+<p>
+The control interface uses a Node Express server (controlInterfaceExpress.js) to serve the files in the controlInterface directory
+</p>
+<p>
+The Express server can also be the basic for more complex API functionality.
+</p>
 
-## instructions
-Make sure the firmware is up to date.
+## Installation Instructions
 
 ### brightsign
 * update the firmware on the BS
 * update the config file as necessary
 * drag all of contents of the BrightsignLS423 directory to the SD card
+* if you are not syncing files via the media server, put your media files onto the SD manually.
 
 ### media server 
 There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for trouble shooting purposes.
@@ -62,7 +70,7 @@ There are 2 main functions of the media server machine 1) distribute media conte
 The server must have a static IP, which must be listed in the BS config file.
 </p>
 Distribution
-* currently intended for a generic IIS setup
+* This has been tested with a generic Windows IIS setup
 * must enable directory browsing
 * place media files on server directory named "media" within a directory with the name of the device ID
 	* root/[deviceID]/media
@@ -82,3 +90,4 @@ IP Collector
 * split up functionality so it is easier to manage and reuse in the future
 	* create seperate functionality for HTML interface, server syncing, IP collector
 	* condense Node module stuff
+* IP collector should be connected to server syncing functionality

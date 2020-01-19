@@ -22,7 +22,6 @@ playback_mode = normal
 # must be set for master and slave modes
 
 ip_mode = hdcp
-
 #ip = 172.16.1.21
 
 # Netmask, may be needed for syncing
