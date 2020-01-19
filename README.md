@@ -1,7 +1,9 @@
 # brightscriptNodeServer
 
 ## overview
-### syncs media content to server directory
+This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor!
+
+## Syncing media content to server directory
 * continuously checks server directory for changes
   * server directory is /[deviceID]/media
   * [deviceID] is automatically detected and does not need to be changed by the user
@@ -25,9 +27,10 @@
 ### config file
 * can set and get data from config file to ensure persistance
 
-### diagnostic functions
+## Trouble shooting and diagnostic functions
 * displays IP address on screen
 * enables diagnostic console on port 3000 (Chrome browsers only)
+This allows you to manually work with the BS_API class directly if accessible end points haven't been established.
 	* some frequently used commands:
 		* restart = BS.reboot()
 		* volume = setVolume(an int from 0-100)
@@ -35,12 +38,15 @@
 		* turn the mask zone on/off = maskIt(boolean)
 * html control interface on port 8000
 
-### Brightsign APIs as a class
+## Brightsign APIs as a class
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
 ### multiple zones
 * multiple zones can be enable via the config file, but automating specific behaviours will need to be determined once the robot interaction is determined.
 * presently the additional zone is an image, but it could easily be changed to a video
+
+## HTML Control Interface
+The control interface uses a Node Express server (controlInterfaceExpress.js) to server the files in the controlInterface directory.
 
 ## instructions
 
@@ -72,3 +78,6 @@ IP Collector
 * generate list of all IPs on server
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
 * format file names with pertinant info and parse it to update config file and bay info
+* split up functionality so it is easier to manage and reuse in the future
+	* create seperate functionality for HTML interface, server syncing, IP collector
+	* condense Node module stuff
