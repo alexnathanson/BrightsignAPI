@@ -3,11 +3,11 @@
 ## overview
 <p>This repository combines existing Brightsign APIs and functions to create a more functional and practical system that is more flexible and easier to implement. This provides a wide range of functionality for syncing content remotely, interacting with the brightsign, and trouble shooting, all without using BrightAuthor, because BrightAuthor is annoying and inflexible! This was designed for the LS423 model, but should be widely applicable to the most recent generation of Brightsign devices.</p>
 
-<p>There are three main components to this system.
-	* The Combined Brightsign APIs, which provides the functionality.
-	* The server syncing, which is optional
-	* The HTML web interface and API end points for broader network interactions.
-</p>
+There are three main components to this system.
+
+* The Combined Brightsign APIs, which provides the functionality.
+* The server syncing, which is optional
+* The HTML web interface and API end points for broader network interactions.
 
 ## Brightsign APIs as a class - BS_API.js
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
@@ -81,6 +81,7 @@ There are 2 main functions of the media server machine 1) distribute media conte
 <p>
 The server must have a static IP, which must be listed in the BS config file.
 </p>
+
 Distribution
 * This has been tested with a generic Windows IIS setup
 * must enable directory browsing
