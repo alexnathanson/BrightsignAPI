@@ -37,7 +37,7 @@ There are three main components to this system.
 
 
 ### Trouble shooting and diagnostic functions
-* displays IP address on screen
+* displays IP address on screen by default
 * enables diagnostic console on port 3000 (Chrome browsers only)
 	* This allows you to manually work with the BS_API class directly if accessible end points haven't been established.
 	* some frequently used commands:
@@ -106,3 +106,4 @@ IP Collector
 	* create seperate functionality for HTML interface, server syncing, IP collector
 	* condense Node module stuff
 * IP collector should be connected to logging server requests from the BS devices or through automated via websockets
+* set automated timer for IP address display so it turns off after a few minutes
