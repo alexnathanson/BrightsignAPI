@@ -25,7 +25,7 @@ There are three main components to this system.
 	* playfile syntax: 'file [filename]'
 	* volume syntax: 'volume [integer in range 0-100]'
 * GPIO
-	* Default is set to GPIO 0 which will play a random file
+	* Default is set to GPIO Button to pin 0, which will play a random file
 	* set gpio = true in the config file
 * HTML Control interface on port 8000
 	* must add full node_modules directory + a few other modules to SD card
