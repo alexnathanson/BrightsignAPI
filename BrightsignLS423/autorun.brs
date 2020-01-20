@@ -1,3 +1,5 @@
+' This autorun code is based on the work of Paul Paradiso.
+
 ' Load the configuration file
 ' Will set various parameters used in playback
 
