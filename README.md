@@ -45,6 +45,9 @@ There are three main components to this system.
 		* volume = setVolume(an int from 0-100)
 		* play a file = playFile('the filename in quotes')
 		* turn the mask zone on/off = maskIt(boolean)
+* ssh
+* telnet
+
 
 ### multiple zones
 * multiple zones for masking can be enable via the config file
