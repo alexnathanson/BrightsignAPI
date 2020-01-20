@@ -18,7 +18,7 @@ There are three main components to this system.
 
 ### the autorun.brs file
 * roDatagram (UDP) on port 13131 enables the API via Node dgram module to communicate with the hardware.
-* Other devices can also communicate on this port if needed.
+* Other devices on the network can also communicate on this port if needed.
 
 ### media controls and interactivity
 * UDP on port 13131
@@ -26,6 +26,7 @@ There are three main components to this system.
 	* volume syntax: 'volume [integer in range 0-100]'
 * GPIO
 	* Default is set to GPIO 0 which will play a random file
+	* set gpio = true in the config file
 * HTML Control interface on port 8000
 	* must add full node_modules directory + a few other modules to SD card
 		* run 'npm install' on your computer and drag the node_modules directory to the SD card
@@ -38,15 +39,12 @@ There are three main components to this system.
 ### Trouble shooting and diagnostic functions
 * displays IP address on screen
 * enables diagnostic console on port 3000 (Chrome browsers only)
-This allows you to manually work with the BS_API class directly if accessible end points haven't been established.
+	* This allows you to manually work with the BS_API class directly if accessible end points haven't been established.
 	* some frequently used commands:
 		* restart = BS.reboot()
 		* volume = setVolume(an int from 0-100)
 		* play a file = playFile('the filename in quotes')
 		* turn the mask zone on/off = maskIt(boolean)
-
-### GPIO
-* set gpio = true in the config file
 
 ### multiple zones
 * multiple zones for masking can be enable via the config file
