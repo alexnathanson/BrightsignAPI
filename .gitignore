@@ -1,1 +1,4 @@
 *.sublime-workspace
+
+config.txt
+autorun.brs
