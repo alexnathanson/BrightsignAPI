@@ -40,8 +40,10 @@ function configureNetwork()
     end if
     dwsAA = CreateObject("roAssociativeArray")
     dwsAA["port"] = "80"
+    'password = "" turns off authentication
     'dwsAA["password"] = ""
-    dwsAA["open"] = "example"
+    ' this sets password if using authentication
+    dwsAA["open"] = "password"
     nc.SetupDWS(dwsAA)
     nc.Apply()
 end function
