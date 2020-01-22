@@ -32,7 +32,7 @@ function updateVolumeGUI(vVal){
 }
 
 function updateFileName(fName){
-  fName.innerHTML = "File: " + fName;
+  fileN.innerHTML = "File: " + fName;
 }
 
 /****BUTTONS**********/
@@ -45,10 +45,7 @@ function confirmReboot() {
 }
 
 function newScreen(){
-  sendPost("comm","screen");
-
-  //refresh the page with new image
-  location.reload();  
+  sendGet("screen");
 }
 
 function displayIP(){
@@ -82,8 +79,10 @@ function sendGet(endPoint){
       if(Object.keys(resObj)[0]=="volume"){
         updateVolumeGUI(resObj.volume);
       } else if (Object.keys(resObj)[0]=="file"){
-        updateFileName(resObj.file);
-      }
+        updateFileName(resObj.file[0]);
+      } else if (Object.keys(resObj)[0]=="screen"){
+        //refresh the page with new image
+        location.reload();        } 
     }
   }
 }

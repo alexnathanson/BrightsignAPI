@@ -27,7 +27,8 @@ configFile.loadConfig(configured);
 
 let remoteServerBase;
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
-let dirList;
+let dirList; //remote directory list
+let localFileList = [];
 
 let currentFile = "";
 //the variables are used in the download process
@@ -147,7 +148,8 @@ function getLocalFiles(){
         return indexLog('Unable to scan directory: ' + err);
     } else {
       //filter local files by data type before comparing directories
-      checkDirectory(filterMediaType(files));
+      localFileList = filterMediaType(files);
+      checkDirectory(localFileList);
     }
   });
 }

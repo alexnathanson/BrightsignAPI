@@ -6,8 +6,10 @@ let bodyParser     =         require("body-parser");
 let ipBool = false;
 
 let v = {volume: getValue('volume')};
-let f = {file: getValue('volume')};
+let f = {file: currentFile};
+let s = {screen: true};
 
+console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
 
 //make way for some custom css, js and images
@@ -30,8 +32,14 @@ app.get('/volume',function(req,res){
 
 app.get('/file',function(req,res){
 
-  f = {file: dirList.list[0]};
+  f['file'] = localFileList;
   res.send(f);
+});
+
+app.get('/screen',function(req,res){
+
+  BS.asyncScreenShot();
+  res.send(s);
 });
 
 app.post('/command',function(req,res){
@@ -50,9 +58,9 @@ function recCommand(message){
 
   if (message == "reboot"){
     BS.reboot();
-  } else if (message == "screen"){
+  } /*else if (message == "screen"){
     BS.asyncScreenShot();
-  } else if (message == "ip"){
+  }*/ else if (message == "ip"){
     if(ipBool == false){
       BS.hideIP();
     } else if (ipBool == true){
