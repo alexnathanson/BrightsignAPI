@@ -80,32 +80,31 @@ The Express server can also be the basis for more complex API functionality.
 * drag all of contents of the BrightsignLS423 directory to the SD card
 * if you are not syncing files via the media server, put your media files onto the SD manually.
 
-### media server 
+## Media Server 
 There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for trouble shooting purposes.
 <p>
 The server must have a static IP, which must be listed in the BS config file.
 </p>
 
-Distribution
+### Media Distribution
 * This has been tested with a generic Windows IIS setup
 * must enable directory browsing
 * place media files on server directory named "media" within a directory with the name of the device ID
 	* root/[deviceID]/media
 
-IP Collector
-* a Node JS app
-* set it up to start on boot
-* must adjust file paths on final version
+### IP Collector
+* The brightsign posts its mac address and ip address to the end point specified in postIP.js
+* You can setup the end points on the server however you see fit. This repository includes 2 examples you could implement.
+	* standalone Node JS app
+	* iisnode app
 
 ## possible future additions
 * html control interface
 	* playback controls
-	* display local file list
 * generate list of all IPs on server
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
-* format file names with pertinant info and parse it to update config file and bay info
 * split up functionality so it is easier to manage and reuse in the future
 	* create seperate functionality for HTML interface, server syncing, IP collector
 	* condense Node module stuff
-* IP collector should be connected to logging server requests from the BS devices or through automated via websockets
-* set automated timer for IP address display so it turns off after a few minutes
+* display IP toggle on/off should persist via config file
+* set automated timer for IP address display so it turns off after a few minutes (this isn't really necessary if using server to collect IPs)
