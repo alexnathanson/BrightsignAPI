@@ -48,19 +48,18 @@ There are three main components to this system.
 * ssh
 * telnet
 
-
 ### multiple zones
 * multiple zones for masking can be enable via the config file
 * presently the layered zone is a PNG image, but it could easily be changed to a video
 
-## Syncing media content to server directory
+### Syncing media content to server directory
 * continuously checks server directory for changes
   * server directory is /[deviceID]/media
   * [deviceID] is automatically detected and does not need to be changed by the user
 * downloads new files
 * deletes old files
 
-## HTML Control Interface
+### HTML Control Interface
 html control interface on port 8000
 
 <p>
@@ -70,7 +69,7 @@ The control interface uses a Node Express server (controlInterfaceExpress.js) to
 The Express server can also be the basis for more complex API functionality.
 </p>
 
-## Installation Instructions
+### Installation Instructions
 
 ### brightsign
 * update the firmware on the BS
@@ -81,7 +80,7 @@ The Express server can also be the basis for more complex API functionality.
 * if you are not syncing files via the media server, put your media files onto the SD manually.
 
 ## Media Server 
-There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for trouble shooting purposes.
+There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for API interaction and trouble shooting purposes.
 <p>
 The server must have a static IP, which must be listed in the BS config file.
 </p>
@@ -98,7 +97,7 @@ The server must have a static IP, which must be listed in the BS config file.
 	* standalone Node JS app
 	* iisnode app
 
-## possible future additions
+## Possible future additions
 * html control interface
 	* playback controls
 * generate list of all IPs on server
