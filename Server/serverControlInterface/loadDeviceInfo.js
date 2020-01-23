@@ -103,7 +103,7 @@ function checkFreshness(t){
   if(t !== undefined){
     if (t> currentTime - (minuteWindow * 60000)){
         isFresh = 0;
-    } else if (t> currentTime - ((minuteWindow*5) * 60000)){
+    } else if (t> currentTime - ((minuteWindow*10) * 60000)){
         isFresh = 1;
     }
   }
