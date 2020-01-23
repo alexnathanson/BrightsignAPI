@@ -49,9 +49,22 @@ app.post('/command',function(req,res){
     setVolume(req.body.volume);
   } else if (Object.keys(req.body)[0] == "comm"){
     recCommand(req.body.comm);
+  } else if (Object.keys(req.body)[0] == "playback"){
+    controlPlayback(req.body.playback);
   }
-  //res.end("yes");
 });
+
+function controlPlayback(action){
+
+  console.log(action);
+  if(action == "pause"){
+    BS.playback('pause');
+  } else if (action == "play"){
+    BS.playback('play');
+  }else if (action == "next"){
+    //recCommand(req.body.comm);
+  }
+}
 
 function recCommand(message){
   console.log("received command!");

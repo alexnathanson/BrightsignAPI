@@ -66,7 +66,7 @@ function downloadProcess(){
 
   //post ip
   postIt();
-  
+
   //check if its ready to download every 5 seconds
   let checkDownloadState = setInterval(function(){
       if(readyToDownload == true){
@@ -250,7 +250,7 @@ function playFile(aFileName){
   currentFile = aFileName;
   BS.dgramSend("file " + aFileName);
 }
-
+ 
 function randomMedia(){
   let newFile = true;
   while (newFile){

@@ -52,6 +52,10 @@ function displayIP(){
   sendPost("comm","ip");
 }
 
+function playback(arg){
+  sendPost("playback",arg);
+}
+
 //send the message
 function sendPost(aType, aMess){
   console.log(aType + " : " + aMess);

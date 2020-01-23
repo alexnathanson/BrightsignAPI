@@ -129,4 +129,29 @@ class BS_API{
 		//hides the ticker offscreen. not sure how to fully remove it
 		this.ticker.SetRectangle(-100,-100,1,1)
 	}
+
+	playback(arg){
+		if (arg == 'play'){
+			//restart at beginning
+			this.dgramSend("play");
+
+		} else if (arg == 'pause'){
+			//pause
+			this.dgramSend("pause");
+		} else if (arg == 'resume'){
+			//resume where it was paused
+			this.dgramSend("resume");
+		}
+	}
+
+	//this doesn't do anything yet
+	newFile(arg){
+		if(arg[0] == 'file'){
+			//play this file
+		} else if (arg[0] == 'next'){
+			//play next file in playlist
+		} else if (arg[0] == 'random'){
+			//play a random file
+		}
+	}
 }
