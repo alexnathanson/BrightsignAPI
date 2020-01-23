@@ -1,15 +1,23 @@
-//this node app is used to collect IP addresses from active brightsigns on the network
+//console logs available at localhost/node/deviceInfo/iisnode/
 
+let express = require('express');
 const fs = require('fs');
-let express    =    require('express');
-let app        =    express();
-let bodyParser     =         require("body-parser");
+let bodyParser = require("body-parser");
 
-let postPort = process.env.PORT;
+let app = express.createServer();
+//let app = express
+//app.createServer();
 
-let server     =    app.listen(postPort,function(){
-    console.log("We have started our server on port "+ postPort);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.post('/node/deviceInfo/checkin/ip',function(req,res){
+  console.log(req.body);
+  findReplace(req.body);
+  res.end("checked in at");
 });
+
+app.listen(process.env.PORT);
 
 let fileName = 'deviceNetworkInfo.json';
 let netInfo;
@@ -20,22 +28,7 @@ fs.readFile(fileName, (err, data) => {
     //console.log(netInfo[0]);
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-app.get('/',function(req,res){
-  console.log(req.body);
-
-});
-
-app.post('/',function(req,res){
-  console.log(req.body);
-
-  findReplace(req.body);
-  res.end("yes");
-});
-
-
+//check the existing file and up entry or add new entry
 function findReplace(data){
   let exists = false;
 
