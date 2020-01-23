@@ -64,6 +64,9 @@ function downloadProcess(){
   call the callback to compare it to the local files*/
   dirList.getDir();
 
+  //post ip
+  postIt();
+  
   //check if its ready to download every 5 seconds
   let checkDownloadState = setInterval(function(){
       if(readyToDownload == true){

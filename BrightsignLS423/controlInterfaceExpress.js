@@ -58,9 +58,7 @@ function recCommand(message){
 
   if (message == "reboot"){
     BS.reboot();
-  } /*else if (message == "screen"){
-    BS.asyncScreenShot();
-  }*/ else if (message == "ip"){
+  } else if (message == "ip"){
     if(ipBool == false){
       BS.hideIP();
     } else if (ipBool == true){

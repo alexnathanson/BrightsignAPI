@@ -38,6 +38,7 @@ function configureNetwork()
     else
         nc.SetDHCP()
     end if
+    'diagnostic web server
     dwsAA = CreateObject("roAssociativeArray")
     dwsAA["port"] = "80"
     'password = "" turns off authentication
