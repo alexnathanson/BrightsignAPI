@@ -11,6 +11,10 @@ let app = express.createServer();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+let fileName = 'deviceInfo.json';
+let netInfo;
+
 app.post('/node/deviceInfo/checkin/ip',function(req,res){
   console.log(req.body);
   findReplace(req.body);
@@ -19,8 +23,6 @@ app.post('/node/deviceInfo/checkin/ip',function(req,res){
 
 app.listen(process.env.PORT);
 
-let fileName = 'deviceNetworkInfo.json';
-let netInfo;
 
 fs.readFile(fileName, (err, data) => {
     if (err) throw err;

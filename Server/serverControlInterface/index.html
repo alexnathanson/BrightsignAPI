@@ -5,11 +5,18 @@
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Brightsign Server</title>
     <!--<style> body {padding: 0; margin: 0;} </style>-->
+    <link rel="stylesheet" href="controlInterface.css">
     <script src="loadDeviceInfo.js"></script>
   </head>
   <body>
     <h1>Brightsign Control Server</h1>
     <h2 >Networked Brightsigns:</h2>
+      <div id='key'>
+        Key:
+        <div class=green>checked in within the last 1 minute</div>
+        <div class=yellow>checked in within the last 5 minutes</div>
+        <div class=red>has not checked in today</div>
+      </div>
     <div id="bsList"></div>
      <!-- <ul id="deviceList">
       </ul>-->

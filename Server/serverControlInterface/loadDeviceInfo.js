@@ -1,12 +1,21 @@
-let requestURL = 'deviceNetworkInfo.json';
+let requestURL = window.location.href;
+console.log(requestURL);
+
+let jsonEndpoint = '/node/deviceInfo/deviceInfo.json';
 
 let request = new XMLHttpRequest();
 
-request.open('GET', requestURL);
+request.open('GET', requestURL + jsonEndpoint);
 request.responseType = 'json';
 request.send();
 
 let devData;
+
+let minuteWindow = 5;//threshhold for a time to be considered up to date
+let currentTime;
+
+let classNames = ['green','yellow','red'];
+
 request.onload = function() {
   devData = request.response;
   showData(devData);
@@ -17,12 +26,19 @@ request.onload = function() {
 function showData(jsonObj) {
 	console.log(jsonObj);
 
+  currentTime = Date.now();
+
 	let devList =  document.getElementById("bsList");
+
+//document.getElementById("usernameError").className = "color-red";
 
 //loop through data for each device
 	for (let j =0;j<jsonObj.length;j++){
 		let myH1 = document.createElement('h3');
-		myH1.textContent = "Bay TBD " +Object.keys(jsonObj[j])[0];
+
+    myH1.className = classNames[checkFreshness(jsonObj[j][Object.keys(devData[j])]['time'])];
+
+    myH1.textContent = parseFileName(jsonObj[j][Object.keys(devData[j])]['file']) + " " +Object.keys(jsonObj[j])[0];
 
 		devList.appendChild(myH1);
 
@@ -35,7 +51,7 @@ function showData(jsonObj) {
 
 			if(devKeys[o]=='time'){
 				//convert Unix time to human readable time
-				myLi.textContent = devKeys[o] + ": " + Unix_timestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
+				myLi.textContent = devKeys[o] + ": " + convertTimestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
 			} else if (devKeys[o]=='ip'){
 				//make it a hyperlink
 				myLi.textContent = devKeys[o] + ": ";
@@ -64,83 +80,52 @@ function showData(jsonObj) {
 
 		devList.appendChild(myL);
 	}
-  /*
-
-  const myPara = document.createElement('p');
-  myPara.textContent = 'Hometown: ' + jsonObj['homeTown'] + ' // Formed: ' + jsonObj['formed'];
-  header.appendChild(myPara);*/
+  
 }
 
-function Unix_timestamp(t){
-	/*var dt = new Date(t*1000);
-	var hr = dt.getHours();
-	var m = "0" + dt.getMinutes();
-	var s = "0" + dt.getSeconds();
-	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);  */
+function convertTimestamp(t){
+  //console.log(t);
+  let dateObj = new Date(t);
+  let dateStr = dateObj.toString();
 
- // Unixtimestamp
- var unixtimestamp = t;
-
- // Months array
- var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
- // Convert timestamp to milliseconds
- var date = new Date(unixtimestamp*1000);
-
- // Year
- var year = date.getFullYear();
-
- // Month
- var month = months_arr[date.getMonth()];
-
- // Day
- var day = date.getDate();
-
- // Hours
- var hours = date.getHours();
-
- // Minutes
- var minutes = "0" + date.getMinutes();
-
- // Seconds
- var seconds = "0" + date.getSeconds();
-
- // Display date time in MM-dd-yyyy h:m:s format
- var convdataTime = month+'-'+day+'-'+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
- 
- return convdataTime;
- 
+  return dateStr;
+	
 }
-/*
-function showData(jsonObj) {
-  const heroes = jsonObj['members'];
-      
-  for (let i = 0; i < heroes.length; i++) {
-    const myArticle = document.createElement('article');
-    const myH2 = document.createElement('h2');
-    const myPara1 = document.createElement('p');
-    const myPara2 = document.createElement('p');
-    const myPara3 = document.createElement('p');
-    const myList = document.createElement('ul');
 
-    myH2.textContent = heroes[i].name;
-    myPara1.textContent = 'Secret identity: ' + heroes[i].secretIdentity;
-    myPara2.textContent = 'Age: ' + heroes[i].age;
-    myPara3.textContent = 'Superpowers:';
-        
-    const superPowers = heroes[i].powers;
-    for (let j = 0; j < superPowers.length; j++) {
-      const listItem = document.createElement('li');
-      listItem.textContent = superPowers[j];
-      myList.appendChild(listItem);
+function checkFreshness(t){
+  //console.log(t);
+
+  let isFresh = 2;
+
+  currentTime = Date.now();
+  //console.log(currentTime);
+
+  if(t !== undefined){
+    if (t> currentTime - (minuteWindow * 60000)){
+        isFresh = 0;
+    } else if (t> currentTime - ((minuteWindow*5) * 60000)){
+        isFresh = 1;
     }
-
-    myArticle.appendChild(myH2);
-    myArticle.appendChild(myPara1);
-    myArticle.appendChild(myPara2);
-    myArticle.appendChild(myPara3);
-    myArticle.appendChild(myList);
-
-    section.appendChild(myArticle);
   }
-}*/
+  
+
+  return isFresh;
+}
+
+function parseFileName(aString){
+  let returnThis;
+
+  if (aString == undefined || aString === undefined){
+    returnThis = 'Bay unknown';
+  } else {
+    let parsedName = aString.split("_");
+
+    if(parsedName[0].toLowerCase().includes('bay')){
+      returnThis =  parsedName[0];
+    } else {
+      returnThis = 'Bay unknown';
+    }
+  }
+
+  return returnThis;
+}
