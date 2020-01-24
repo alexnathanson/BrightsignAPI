@@ -6,7 +6,8 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 class BS_API{
 	constructor(){
 		this.api = '0.0.1'; //version
-		this.configDict = {};
+		this.localDirectory = '/storage/sd/';
+		this.localFileList = [];
 
 	/*******BS-JS API******************************************************/
 
@@ -54,17 +55,27 @@ class BS_API{
 
 	/******Post Device Info******************/
 		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
-		this.postURL = 'node/deviceInfo/checkin/ip';//this should be simplified to be called from the config file directly
+		//this.postURL = 'node/deviceInfo/checkin/ip';//this should be simplified to be called from the config file directly
 		this.postTime = Date.now() - this.postInterval;
+
+	/*****Config File***********************/
+		this.logC = true;
+		this.nodeFS = require('fs');
+		this.configFileName = 'config.txt';
+		this.configFilePath = this.localDirectory + this.configFileName;
+		this.configString = "";
+		this.configDict = {};
+		this.newLine = "";
+		this.persist = true;
 	}
 
-	initialize(configDictionary){
+	initialize(callback){
 		console.log('initializing BS API');
-		console.log(configDictionary);
+		//this.loadConfig();//formerly had a call back to configured()
+		console.log(this.configDict);
 
-		this.displayIP = configDictionary.displayIP;
-		this.postURL = configDictionary.postURL;
-		console.log(this.postURL);
+		this.displayIP = this.configDict.displayIP;
+		//this.postURL = this.configDictionary.postURL;
 		
 		this.ticker.AddString(this.myIP);
 
@@ -72,12 +83,16 @@ class BS_API{
 			this.hideIP();
 		}
 
-		if(configDictionary.gpio){
+		if(this.configDict.gpio){
 			this.gpio = new BSControlPort("Expander-0-GPIO");
 		}
 
 		//this.setGPIOEventCallbacks();
 		this.asyncScreenShot();
+
+		this.postInfo();
+
+		callback();
 
 	}
 
@@ -159,6 +174,10 @@ class BS_API{
 		this.dgramSend("volume " + arg);
 	}
 
+	maskIt(aBool){
+		this.dgramSend("mask " + aBool);
+	}
+
 	/******Post Device Info to Remote Server******************/
 	postInfo(){
 		//posts the mac address, ip address, first file, and timestamp to the server
@@ -168,10 +187,10 @@ class BS_API{
 		    devInfo[this.deviceInfo.deviceUniqueId] = {};
 		    devInfo[this.deviceInfo.deviceUniqueId].mac = this.myMAC;
 		    devInfo[this.deviceInfo.deviceUniqueId].ip = this.myIP;
-		    devInfo[this.deviceInfo.deviceUniqueId].file = localFileList[0];
+		    devInfo[this.deviceInfo.deviceUniqueId].file = this.localFileList[0];
 		    devInfo[this.deviceInfo.deviceUniqueId].time = Date.now();
 
-		  	this.postHTTP(devInfo, this.postURL);
+		  	this.postHTTP(devInfo, this.configDict.postURL);
 		    this.postTime  = Date.now();
 		}
 	}
@@ -194,4 +213,75 @@ class BS_API{
 		}
 
 /*****************Control Interface Server***********************/
+
+
+/********** Config File*************************/
+	loadConfig(callback){//formerly had a callback
+		  this.logConfig('parsing: ' + this.configFilePath);
+		  this.nodeFS.readFile(this.configFilePath,'utf8', (err, file)=> {
+		  //handling error
+	      if (err) {
+	          return console.log('Unable to read config file: ' + err);
+	      } else {
+	        //do something with the file
+	        //this.logConfig(typeof file);
+	        this.configString = file;
+	        this.logConfig(this.configString);
+	        //split config file by line
+	        let configFileRows   = this.configString.split('\n');
+
+	    	//iterate through each line
+	        configFileRows.forEach((aRow)=>{
+	        	//if the row isn't commented out
+
+	        	if(!aRow.includes('#')&&aRow!=""&&aRow!="\n"){
+	        		let rowArray = aRow.split(' = ');
+
+	        		//convert strings to booleans
+	        		if(rowArray[1] == 'true' || rowArray[1] == 'false' ){
+	        			rowArray[1]=(rowArray[1]=='true')
+	        		}
+	        		this.configDict[rowArray[0]]=rowArray[1];
+	        	}
+	        });
+
+	        this.logConfig(this.configDict);
+
+	        //once config file is loaded initialize with the data
+	        this.initialize(callback);
+	      }
+	  });
+	}
+
+	//formerly getValue()
+	getConfigValue(aKey){
+	  return this.configDict[aKey];
+	}
+
+	//formerly setValue()
+	//args: a key/value pair and a boolean. if boolean is true, it saves the changes so they persist
+	setConfigValue(aKey, aValue){
+
+	  if(this.persist){
+
+	  	this.newLine = aKey + ' = ' + aValue;
+
+		this.configString = this.configString.replace(aKey+' = '+this.configDict[aKey], this.newLine);
+
+		//the arrow function is necessary because the asynchronous writeFile method would change the scope without it
+		this.nodeFS.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
+		    if (err) return console.log(err);
+		     // success case, the file was saved
+	    	this.logConfig(this.configFilePath + ' saved!');
+		 });
+ 		}
+
+ 		this.configDict[aKey]=aValue;
+	}
+
+	logConfig(toLog){
+		if(this.logC){
+			console.log(toLog);
+		}
+	}
 }

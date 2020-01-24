@@ -5,7 +5,7 @@ let bodyParser     =         require("body-parser");
 
 let ipBool = false;
 
-let v = {volume: getValue('volume')};
+let v = {volume: BS.getConfigValue('volume')};
 let f = {file: currentFile};
 let s = {screen: true};
 
@@ -26,13 +26,13 @@ app.use(bodyParser.json());
 
 app.get('/volume',function(req,res){
 
-  v = {volume: getValue('volume')};
+  v = {volume: BS.getConfigValue('volume')};
   res.send(v);
 });
 
 app.get('/file',function(req,res){
 
-  f['file'] = localFileList;
+  f['file'] = BS.localFileList;
   res.send(f);
 });
 
@@ -77,10 +77,10 @@ function recCommand(message){
   } else if (message == "ip"){
     if(ipBool == false){
       BS.hideIP();
-      configFile.setValue('displayIP','false');//update config file
+      BS.setConfigValue('displayIP','false');//update config file
     } else if (ipBool == true){
       BS.showIP();
-      configFile.setValue('displayIP','true');//update config file
+      BS.setConfigValue('displayIP','true');//update config file
     }
     ipBool = !ipBool;
   }

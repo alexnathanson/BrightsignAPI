@@ -11,7 +11,7 @@ let ilog = false;
 let BS = new BS_API();
 
 let readyToDownload = false;
-let localDirectory = '/storage/sd/';
+//let localDirectory = '/storage/sd/';
 
 let mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3','WAV'];
 
@@ -22,13 +22,13 @@ let downloadIndex = 0;
 // Uses node.js fs module to save files into sd card.
 let fs = require('fs');
 
-let configFile = new ParseConfig(localDirectory+'config.txt');
-configFile.loadConfig(configured);
+//this must be run first to initialize the API with the data from the config file
+BS.loadConfig(configured);
 
 let remoteServerBase;
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 let dirList; //remote directory list
-let localFileList = [];
+//let localFileList = [];
 
 let currentFile = "";
 //the variables are used in the download process
@@ -36,16 +36,12 @@ let writer,soFar,contentLength;
 
 function configured(){
   //display IP
-  BS.initialize(configFile.configDict);
-  if(configFile.configDict.gpio){
+
+  if(BS.configDict.gpio){
     BS.GPIOEvents(randomMedia);
   }
 
-  //post ip
-  //postIt();
-  BS.postInfo();
-
-  remoteServerBase = 'http://'+configFile.configDict['media_server'];
+  remoteServerBase = 'http://'+BS.configDict['media_server'];
   //console.log(remoteServerBase);
   //get file list from remote server
 //arguments: base IP, directory structure, callback
@@ -55,7 +51,7 @@ function configured(){
   indexLog(version);
 
   //check the various directories, remove old files, and download new files
-  if(configFile.configDict.media_sync){
+  if(BS.configDict.media_sync){
       downloadProcess();
   }
 }
@@ -94,7 +90,7 @@ function downloadIncrement(){
 
 function downloadFiles(name){
   
-  writer = fs.createWriteStream(localDirectory + name, {defaultEncoding:'binary'});
+  writer = fs.createWriteStream(BS.localDirectory + name, {defaultEncoding:'binary'});
 
   let VIDEO_URL = remoteServerBase + remoteServerDirectory + name;
   // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
@@ -147,14 +143,14 @@ function updateProgress() {
 }
 
 function getLocalFiles(){
-  fs.readdir(localDirectory, function (err, files) {
+  fs.readdir(BS.localDirectory, function (err, files) {
     //handling error
     if (err) {
         return indexLog('Unable to scan directory: ' + err);
     } else {
       //filter local files by data type before comparing directories
-      localFileList = filterMediaType(files);
-      checkDirectory(localFileList);
+      BS.localFileList = filterMediaType(files);
+      checkDirectory(BS.localFileList);
     }
   });
 }
@@ -232,7 +228,7 @@ function getDelList(localList,remoteList){
 function removeFiles(anArray){
   //synchronously delete old files
   for(let r = 0;r<anArray.length;r++){
-    let remPath = localDirectory + anArray[r];
+    let remPath = BS.localDirectory + anArray[r];
     fs.unlinkSync(remPath, (err) => {
       if (err) {
           console.log("failed to delete local file:"+err);
@@ -261,14 +257,10 @@ function randomMedia(){
 }
 
 function setVolume(arg){
-  configFile.setValue('volume',arg);//update config file
+  BS.setConfigValue('volume',arg);//update config file
   BS.setVolume(arg); //set live player
 }
-
+/*
 function getValue(aKey){
-  return configFile.getValue(aKey);
-}
-
-function maskIt(aBool){
-  BS.dgramSend("mask " + aBool);
-}
+  return BS.getConfigValue(aKey);
+}*/
