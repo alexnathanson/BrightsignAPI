@@ -32,7 +32,26 @@ function updateVolumeGUI(vVal){
 }
 
 function updateFileName(fName){
-  fileN.innerHTML = "File: " + fName;
+  fileN.innerHTML = "Files:";
+
+  let oL = document.createElement('ol');
+  //loop through all the files
+  for(let fn = 0; fn < fName.length;fn++){
+    let myLi = document.createElement('li');
+    let myA = document.createElement("a");
+    //myA.onclick = sendPost('file', fName[fn]);
+    let myLink = document.createTextNode(fName[fn]);               
+    // Append the text node to anchor element. 
+    myA.appendChild(myLink);     
+    // Set the title. 
+    myA.title = fName[fn];     
+    // Set the href property. 
+    myA.href = "javascript:sendPost('file','"+fName[fn]+"')";     
+    // Append the anchor element to the body. 
+    myLi.appendChild(myA);  
+    oL.appendChild(myLi);
+  }
+  fileN.appendChild(oL);
 }
 
 /****BUTTONS**********/
@@ -83,7 +102,7 @@ function sendGet(endPoint){
       if(Object.keys(resObj)[0]=="volume"){
         updateVolumeGUI(resObj.volume);
       } else if (Object.keys(resObj)[0]=="file"){
-        updateFileName(resObj.file[0]);
+        updateFileName(resObj.file);
       } else if (Object.keys(resObj)[0]=="screen"){
         //refresh the page with new image
         location.reload();        } 

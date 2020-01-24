@@ -51,6 +51,8 @@ app.post('/command',function(req,res){
     recCommand(req.body.comm);
   } else if (Object.keys(req.body)[0] == "playback"){
     controlPlayback(req.body.playback);
+  } else if (Object.keys(req.body)[0] == "file"){
+    BS.playFile(req.body.file);
   }
 });
 
@@ -61,8 +63,9 @@ function controlPlayback(action){
     BS.playback('pause');
   } else if (action == "play"){
     BS.playback('play');
-  }else if (action == "next"){
+  }else if (action == "resume"){
     //recCommand(req.body.comm);
+    BS.playback('resume');
   }
 }
 
@@ -74,8 +77,10 @@ function recCommand(message){
   } else if (message == "ip"){
     if(ipBool == false){
       BS.hideIP();
+      configFile.setValue('displayIP','false');//update config file
     } else if (ipBool == true){
       BS.showIP();
+      configFile.setValue('displayIP','true');//update config file
     }
     ipBool = !ipBool;
   }

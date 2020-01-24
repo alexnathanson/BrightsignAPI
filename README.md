@@ -98,12 +98,8 @@ The server must have a static IP, which must be listed in the BS config file.
 	* iisnode app
 
 ## Possible future additions
-* html control interface
-	* playback controls
-* generate list of all IPs on server
 * test on other BS hardware (its possible a restart function will need to be added after the node server is enable for the first time on a particular device)
 * split up functionality so it is easier to manage and reuse in the future
 	* create seperate functionality for HTML interface, server syncing, IP collector
 	* condense Node module stuff
 * display IP toggle on/off should persist via config file
-* set automated timer for IP address display so it turns off after a few minutes (this isn't really necessary if using server to collect IPs)

@@ -121,7 +121,7 @@ function pump(reader) {
       writer.end();
       
       //play a file
-      playFile(dirList.list[0]);
+      BS.playFile(dirList.list[0]);
 
       downloadIncrement();
       return;
@@ -242,13 +242,8 @@ function removeFiles(anArray){
   /*if there are no files to download and
   if files were deleted play the first file*/
   if(downloadQueue.length==0 && anArray.length>0){
-    playFile(dirList.list[0]);
+    BS.playFile(dirList.list[0]);
   }
-}
-
-function playFile(aFileName){
-  currentFile = aFileName;
-  BS.dgramSend("file " + aFileName);
 }
  
 function randomMedia(){
@@ -257,7 +252,7 @@ function randomMedia(){
     let randMed = Math.floor((Math.random() * dirList.list.length));
     console.log(randMed);
     if(currentFile != dirList.list[randMed]){
-      playFile(dirList.list[randMed]);
+      BS.playFile(dirList.list[randMed]);
       newFile = false;
     }
   }
@@ -265,7 +260,7 @@ function randomMedia(){
 
 function setVolume(arg){
   configFile.setValue('volume',arg);//update config file
-  BS.dgramSend("volume " + arg); //set live player
+  BS.setVolume(arg); //set live player
 }
 
 function getValue(aKey){

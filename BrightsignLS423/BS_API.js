@@ -59,7 +59,7 @@ class BS_API{
 		console.log(configDictionary);
 
 		this.displayIP = configDictionary.displayIP;
-		console.log(this.displayIP);
+		//console.log(this.displayIP);
 		this.ticker.AddString(this.myIP);
 
 		if(!this.displayIP){
@@ -144,14 +144,11 @@ class BS_API{
 		}
 	}
 
-	//this doesn't do anything yet
-	newFile(arg){
-		if(arg[0] == 'file'){
-			//play this file
-		} else if (arg[0] == 'next'){
-			//play next file in playlist
-		} else if (arg[0] == 'random'){
-			//play a random file
-		}
+	playFile(arg){
+		this.dgramSend("file " + arg);
+	}
+
+	setVolume(arg){
+		this.dgramSend("volume " + arg);
 	}
 }
