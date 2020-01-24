@@ -28,7 +28,6 @@ BS.loadConfig(configured);
 let remoteServerBase;
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 let dirList; //remote directory list
-//let localFileList = [];
 
 let currentFile = "";
 //the variables are used in the download process
@@ -61,8 +60,6 @@ function downloadProcess(){
   call the callback to compare it to the local files*/
   dirList.getDir();
 
-  //post ip
-  //postIt();
   BS.postInfo();
 
   //check if its ready to download every 5 seconds

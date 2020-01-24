@@ -52,8 +52,16 @@ app.post('/command',function(req,res){
   } else if (Object.keys(req.body)[0] == "playback"){
     controlPlayback(req.body.playback);
   } else if (Object.keys(req.body)[0] == "file"){
-    BS.playFile(req.body.file);
+    if(req.body.file != 'switch'){
+      BS.playFile(req.body.file);
+    } else if (req.body.file != 'switch'){
+      console.log("SWITCHED");
+      BS.playFile(BS.localFileList[1]);
+    }
   }
+
+  res.send('good talk');//added 1/24
+
 });
 
 function controlPlayback(action){
