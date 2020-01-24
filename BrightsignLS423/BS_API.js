@@ -1,7 +1,6 @@
 
 /*
-this class combines Brightsign JS API, Brightscript-JavaScript Objects,
-and Node JS modules to create a more complete functional API with consistant syntax.
+this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS modules, and additional custom code to create a more complete functional API with consistant syntax.
 */
 
 class BS_API{
@@ -19,7 +18,7 @@ class BS_API{
 		this.ScreenshotClass = require("@brightsign/screenshot");
 		this.screenshot = new this.ScreenshotClass();
 		this.screenshotParams = {"fileName":"SD:/controlInterface/images/screen.jpg",
-								"quality":75}; 
+								"quality":50}; 
  
 	/*******BS-JS OBJECTS*************************************************
 		BS-JS Objects are supposedly being replaced with the BS-JS API,
@@ -52,6 +51,11 @@ class BS_API{
 		this.socket = this.dgram.createSocket('udp4');
 		this.sendPort = 13131;
 		this.dgramMessage = 'abc';
+
+	/******Post Device Info******************/
+		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
+		this.postURL = 'node/deviceInfo/checkin/ip';//this should be simplified to be called from the config file directly
+		this.postTime = Date.now() - this.postInterval;
 	}
 
 	initialize(configDictionary){
@@ -59,7 +63,9 @@ class BS_API{
 		console.log(configDictionary);
 
 		this.displayIP = configDictionary.displayIP;
-		//console.log(this.displayIP);
+		this.postURL = configDictionary.postURL;
+		console.log(this.postURL);
+		
 		this.ticker.AddString(this.myIP);
 
 		if(!this.displayIP){
@@ -130,6 +136,7 @@ class BS_API{
 		this.ticker.SetRectangle(-100,-100,1,1)
 	}
 
+	/********* Playback and Media Controls ******************/
 	playback(arg){
 		if (arg == 'play'){
 			//restart at beginning
@@ -151,4 +158,40 @@ class BS_API{
 	setVolume(arg){
 		this.dgramSend("volume " + arg);
 	}
+
+	/******Post Device Info to Remote Server******************/
+	postInfo(){
+		//posts the mac address, ip address, first file, and timestamp to the server
+		if(this.postTime + this.postInterval < Date.now()){
+		    //package the device info into a JSON
+		    let devInfo = new Object();
+		    devInfo[this.deviceInfo.deviceUniqueId] = {};
+		    devInfo[this.deviceInfo.deviceUniqueId].mac = this.myMAC;
+		    devInfo[this.deviceInfo.deviceUniqueId].ip = this.myIP;
+		    devInfo[this.deviceInfo.deviceUniqueId].file = localFileList[0];
+		    devInfo[this.deviceInfo.deviceUniqueId].time = Date.now();
+
+		  	this.postHTTP(devInfo, this.postURL);
+		    this.postTime  = Date.now();
+		}
+	}
+
+	//post device info to server
+	postHTTP(postThis,postHere){
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", postHere, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.send(JSON.stringify(
+			postThis)
+		);
+
+		xhr.onreadystatechange = function (){
+		    if (this.readyState == 4 && this.status == 200){
+		      //callback(this.responseText);
+		      console.log(this.responseText)
+		    }
+		  };
+		}
+
+/*****************Control Interface Server***********************/
 }

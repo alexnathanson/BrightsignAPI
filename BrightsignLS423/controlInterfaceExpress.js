@@ -9,7 +9,7 @@ let v = {volume: getValue('volume')};
 let f = {file: currentFile};
 let s = {screen: true};
 
-console.log("current file: " + currentFile);
+//console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
 
 //make way for some custom css, js and images

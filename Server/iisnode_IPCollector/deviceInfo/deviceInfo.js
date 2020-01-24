@@ -18,7 +18,7 @@ let netInfo;
 app.post('/node/deviceInfo/checkin/ip',function(req,res){
   console.log(req.body);
   findReplace(req.body);
-  res.end("checked in at");
+  res.end("checked in");
 });
 
 app.listen(process.env.PORT);

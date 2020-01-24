@@ -42,7 +42,8 @@ function configured(){
   }
 
   //post ip
-  postIt();
+  //postIt();
+  BS.postInfo();
 
   remoteServerBase = 'http://'+configFile.configDict['media_server'];
   //console.log(remoteServerBase);
@@ -65,7 +66,8 @@ function downloadProcess(){
   dirList.getDir();
 
   //post ip
-  postIt();
+  //postIt();
+  BS.postInfo();
 
   //check if its ready to download every 5 seconds
   let checkDownloadState = setInterval(function(){
