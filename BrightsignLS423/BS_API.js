@@ -52,6 +52,7 @@ class BS_API{
 		this.socket = this.dgram.createSocket('udp4');
 		this.sendPort = 13131;
 		this.dgramMessage = 'abc';
+		this.receiver = this.dgram.createSocket('udp4');
 
 	/******Post Device Info******************/
 		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
@@ -86,6 +87,9 @@ class BS_API{
 		if(this.configDict.gpio){
 			this.gpio = new BSControlPort("Expander-0-GPIO");
 		}
+
+		//spin up UDP receiver port
+		this.dgramReceive();
 
 		//this.setGPIOEventCallbacks();
 		this.asyncScreenShot();
@@ -141,6 +145,29 @@ class BS_API{
 
 	dgramSend(aMessage){
 		this.socket.send(Buffer.from(aMessage), this.sendPort, 'localhost'); 
+	}
+
+	//for receiving event data back from the autorun script
+	dgramReceive(){
+		this.receiver.on('error', (err) => {
+		  console.log(`server error:\n${err.stack}`);
+		  this.receiver.close();
+		});
+
+		this.receiver.on('message', (msg, rinfo) => {
+		  console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+
+		  if(msg == 'media ended'){
+		  	
+		  }
+		});
+
+		this.receiver.on('listening', () => {
+		  const address = this.receiver.address();
+		  console.log(`server listening ${address.address}:${address.port}`);
+		});
+
+		this.receiver.bind(31313);
 	}
 
 	showIP(){

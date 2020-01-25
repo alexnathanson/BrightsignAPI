@@ -1,5 +1,3 @@
-' This autorun code is based on the work of Paul Paradiso.
-
 ' Load the configuration file
 ' Will set various parameters used in playback
 
@@ -15,11 +13,18 @@ function loadConfig(config as string) as object
 	return params
 end function
 
+' for sync system
 function sendMessage(msg as string)
 	for each receiver in m.slaves
 		m.UdpSender.SetDestination(receiver, 13131)
 		m.Udp.sender.send(msg)	
 	end for
+end function
+
+' general UDP sending to top Node API layer
+function sendUDP(msg as string)
+	m.udpSender.SetDestination("0.0.0.0", 31313)
+	m.udpSender.Send(msg)	
 end function
 
 ' If an ip address was specified in the config file
@@ -38,10 +43,9 @@ function configureNetwork()
     else
         nc.SetDHCP()
     end if
-    'diagnostic web server
     dwsAA = CreateObject("roAssociativeArray")
     dwsAA["port"] = "80"
-    'password = "" turns off authentication
+    ' password = "" turns off authentication
     'dwsAA["password"] = ""
     ' this sets password if using authentication
     dwsAA["open"] = "password"
@@ -59,7 +63,7 @@ function configureServers()
 	regSec = CreateObject("roRegistrySection", "networking")
 	regSec.write("ssh", "22")
 	regSec.write("http_server", "80")
-	regSec.write("http_auth", "examplePassword")
+	regSec.write("http_auth", "password")
 	regSec.write("telnet", "23")
 	reg.flush()	
 end function
@@ -260,7 +264,7 @@ sub main()
 	m.video.SetVideoDelay(150)
     m.video.SetPort(m.mPort)
 	m.udpReceiver = CreateObject("roDatagramReceiver", 13131)
-	'm.udpSender = CreateObject("roDatagramSender")
+	m.UdpSender = CreateObject("roDatagramSender")
 	m.udpReceiver.SetPort(m.mPort)
 
 	' Load a video file
@@ -338,6 +342,7 @@ sub main()
 
 	if Type(msg) = "roVideoEvent" then
 	 	if msg.GetInt() = 8 then
+	 		sendUDP("media ended")
 	 		if m.params["playback_mode"] = "normal" then
 	 			m.video.Seek(0)
 	 			m.video.Play()

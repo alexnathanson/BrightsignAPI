@@ -98,6 +98,8 @@ The server must have a static IP, which must be listed in the BS config file.
 	* iisnode app
 
 ## Possible future additions
-* display IP toggle on/off should persist via config file
 * condense controlInterface into BS API file
 * seperate out download functionality and combine into BS API file
+
+## Links
+* Brightsign documentation https://docs.brightsign.biz/display/DOC/BrightSign+Documentation
