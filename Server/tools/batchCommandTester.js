@@ -5,7 +5,7 @@ let targetDevices = ["172.16.1.83","172.16.1.73","172.16.1.87"];
 for (let e = 0;e<targetDevices.length;e++){
 
 	//sendPost('file','switch',targetDevices[e]);
-	sendPost('file','switch',targetDevices[e]);
+	sendPost('scene','2',targetDevices[e]);
 
 }
 

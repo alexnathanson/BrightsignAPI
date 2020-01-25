@@ -5,9 +5,7 @@ let jsonEndpoint = '/node/deviceInfo/deviceInfo.json';
 
 let request = new XMLHttpRequest();
 
-request.open('GET', requestURL + jsonEndpoint);
-request.responseType = 'json';
-request.send();
+let refreshRate = 1 * 60 * 1000;
 
 let devData;
 
@@ -16,12 +14,24 @@ let currentTime;
 
 let classNames = ['green','yellow','red'];
 
-request.onload = function() {
-  devData = request.response;
-  showData(devData);
-  //showData(devData);
-}
+refreshData();
 
+//check data every minute
+window.setInterval(refreshData, refreshRate);
+
+function refreshData(){
+  console.log('refreshed');
+
+  request.open('GET', requestURL + jsonEndpoint);
+  request.responseType = 'json';
+  request.send();
+
+  request.onload = function() {
+    devData = request.response;
+    showData(devData);
+    //showData(devData);
+  }
+}
 
 function showData(jsonObj) {
 	console.log(jsonObj);
