@@ -11,7 +11,7 @@ request.send();
 
 let devData;
 
-let minuteWindow = 5;//threshhold for a time to be considered up to date
+let minuteWindow = 2;//threshhold for a time to be considered up to date
 let currentTime;
 
 let classNames = ['green','yellow','red'];
@@ -103,7 +103,7 @@ function checkFreshness(t){
   if(t !== undefined){
     if (t> currentTime - (minuteWindow * 60000)){
         isFresh = 0;
-    } else if (t> currentTime - ((minuteWindow*10) * 60000)){
+    } else if (t> currentTime - ((minuteWindow*5) * 60000)){
         isFresh = 1;
     }
   }
