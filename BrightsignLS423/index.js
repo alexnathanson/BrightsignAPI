@@ -11,7 +11,6 @@ let ilog = false;
 let BS = new BS_API();
 
 let readyToDownload = false;
-//let localDirectory = '/storage/sd/';
 
 let mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3','WAV'];
 
@@ -37,9 +36,11 @@ let currentFile = "";
 let writer,soFar,contentLength;
 
 function configured(){
-  if(BS.localFileList.length != 0){
-      BS.playFile(BS.localFileList[0]);
-  }
+  
+  getLocalFiles(()=>{
+    console.log('playing file 1');
+    BS.playFile(BS.localFileList[0]);
+  })
 
   if(BS.configDict.gpio){
     BS.GPIOEvents(randomMedia);
@@ -144,7 +145,7 @@ function updateProgress() {
     indexLog(soFar + " bytes are downloaded " + downloadIndex +'/'+downloadQueue.length);
 }
 
-function getLocalFiles(){
+function getLocalFiles(callback){
   fs.readdir(BS.localDirectory, function (err, files) {
     //handling error
     if (err) {
@@ -152,7 +153,16 @@ function getLocalFiles(){
     } else {
       //filter local files by data type before comparing directories
       BS.localFileList = filterMediaType(files);
-      checkDirectory(BS.localFileList);
+
+//use this when turning this into more API-like thing
+      if(typeof callback === "function"){
+        callback()
+      } else {
+        //return BS.localFileList
+        checkDirectory(BS.localFileList);
+      }
+
+      //checkDirectory(BS.localFileList);
     }
   });
 }
