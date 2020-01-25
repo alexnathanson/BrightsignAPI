@@ -25,6 +25,9 @@ let fs = require('fs');
 //this must be run first to initialize the API with the data from the config file
 BS.loadConfig(configured);
 
+//spin up UDP receiver port for media end events
+BS.dgramReceive(mediaEnded);
+
 let remoteServerBase;
 let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 let dirList; //remote directory list
@@ -34,7 +37,9 @@ let currentFile = "";
 let writer,soFar,contentLength;
 
 function configured(){
-  //display IP
+  if(BS.localFileList.length != 0){
+      BS.playFile(BS.localFileList[0]);
+  }
 
   if(BS.configDict.gpio){
     BS.GPIOEvents(randomMedia);
@@ -257,7 +262,14 @@ function setVolume(arg){
   BS.setConfigValue('volume',arg);//update config file
   BS.setVolume(arg); //set live player
 }
-/*
-function getValue(aKey){
-  return BS.getConfigValue(aKey);
-}*/
+
+function sceneChange(sceneNum){
+  console.log('scene ' + sceneNum);
+  BS.playFile(BS.localFileList[1]);
+  BS.mediaEndFlag = true;
+}
+
+function mediaEnded(){
+  console.log('scene 1');
+  BS.playFile(BS.localFileList[0]);
+}
