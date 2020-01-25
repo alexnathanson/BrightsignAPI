@@ -1,18 +1,16 @@
 //check contents of the remote directory and compares it to local storage
 //deletes old files and downloads new files
 
-let version = '0.0.1';
+let version = '0.0.2';
 
 'use strict';
 
 //turn on and off console logging
-let ilog = false;
+let ilog = true;
 
 let BS = new BS_API();
 
 let readyToDownload = false;
-
-let mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3','WAV'];
 
 //an array to hold remote files that need to be downloaded
 let downloadQueue = [];
@@ -37,7 +35,7 @@ let writer,soFar,contentLength;
 
 function configured(){
   
-  getLocalFiles(()=>{
+  BS.getLocalFiles(()=>{
     console.log('playing file 1');
     BS.playFile(BS.localFileList[0]);
   })
@@ -50,7 +48,7 @@ function configured(){
   //console.log(remoteServerBase);
   //get file list from remote server
 //arguments: base IP, directory structure, callback
-  dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,getLocalFiles);
+  dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,()=>{BS.getLocalFiles(checkDirectory)});
   dirList.log=false;
 
   indexLog(version);
@@ -145,43 +143,6 @@ function updateProgress() {
     indexLog(soFar + " bytes are downloaded " + downloadIndex +'/'+downloadQueue.length);
 }
 
-function getLocalFiles(callback){
-  fs.readdir(BS.localDirectory, function (err, files) {
-    //handling error
-    if (err) {
-        return indexLog('Unable to scan directory: ' + err);
-    } else {
-      //filter local files by data type before comparing directories
-      BS.localFileList = filterMediaType(files);
-
-//use this when turning this into more API-like thing
-      if(typeof callback === "function"){
-        callback()
-      } else {
-        //return BS.localFileList
-        checkDirectory(BS.localFileList);
-      }
-
-      //checkDirectory(BS.localFileList);
-    }
-  });
-}
-
-function filterMediaType(anArray){
-  let mediaFiles = [];
-
-  anArray.forEach(function(file){
-    let uFile = file.toUpperCase();
-    mediaTypes.forEach(function(type){
-      if(uFile.includes(type)){
-        mediaFiles.push(file);
-      }
-    });
-  });
-
-  return mediaFiles;
-}
-
 function checkDirectory(files){
   indexLog('local files:');
   indexLog(files);
@@ -189,7 +150,7 @@ function checkDirectory(files){
     for(let f = 0;f<dirList.list.length;f++){
       //listing all files using forEach
       let dwnld = true;
-      files.forEach(function (file) {
+      files.forEach((file)=> {
         // Do whatever you want to do with the file
         if(dirList.list[f]==file){
           dwnld = false;

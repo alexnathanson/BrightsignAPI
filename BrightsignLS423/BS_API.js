@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.1'; //version
+		this.api = '0.0.2'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -55,6 +55,10 @@ class BS_API{
 		this.receiver = this.dgram.createSocket('udp4');
 		this.mediaEndFlag = false;
 
+		this.fs = require('fs');
+		this.mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3','WAV'];
+
+
 	/******Post Device Info******************/
 		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
 		//this.postURL = 'node/deviceInfo/checkin/ip';//this should be simplified to be called from the config file directly
@@ -62,7 +66,6 @@ class BS_API{
 
 	/*****Config File***********************/
 		this.logC = true;
-		this.nodeFS = require('fs');
 		this.configFileName = 'config.txt';
 		this.configFilePath = this.localDirectory + this.configFileName;
 		this.configString = "";
@@ -96,6 +99,43 @@ class BS_API{
 
 		callback();
 
+	}
+
+	getLocalFiles(callback){
+	  this.fs.readdir(this.localDirectory, (err, files)=> {
+	    //handling error
+	    if (err) {
+	        return indexLog('Unable to scan directory: ' + err);
+	    } else {
+	      //filter local files by data type before comparing directories
+	      this.localFileList = this.filterMediaType(files);
+
+	      if(typeof callback === "function"){
+	        callback(this.localFileList)
+	      } else {
+	        //return BS.localFileList
+	        //checkDirectory(this.localFileList);
+	        return this.localFileList;
+	      }
+
+	      //checkDirectory(BS.localFileList);
+	    }
+	  });
+	}
+
+	filterMediaType(anArray){
+	  let mediaFiles = [];
+
+	  anArray.forEach((file)=>{
+	    let uFile = file.toUpperCase();
+	    this.mediaTypes.forEach((type)=>{
+	      if(uFile.includes(type)){
+	        mediaFiles.push(file);
+	      }
+	    });
+	  });
+
+	  return mediaFiles;
 	}
 
 	reboot(){
@@ -244,7 +284,7 @@ class BS_API{
 /********** Config File*************************/
 	loadConfig(callback){//formerly had a callback
 		  this.logConfig('parsing: ' + this.configFilePath);
-		  this.nodeFS.readFile(this.configFilePath,'utf8', (err, file)=> {
+		  this.fs.readFile(this.configFilePath,'utf8', (err, file)=> {
 		  //handling error
 	      if (err) {
 	          return console.log('Unable to read config file: ' + err);
@@ -295,7 +335,7 @@ class BS_API{
 		this.configString = this.configString.replace(aKey+' = '+this.configDict[aKey], this.newLine);
 
 		//the arrow function is necessary because the asynchronous writeFile method would change the scope without it
-		this.nodeFS.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
+		this.fs.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
 		    if (err) return console.log(err);
 		     // success case, the file was saved
 	    	this.logConfig(this.configFilePath + ' saved!');
