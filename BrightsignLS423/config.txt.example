@@ -14,7 +14,7 @@ video_output_mode = 1920x1080x60p
 # Default is normal
 
 playback_mode = normal
-#master_ip = 192.168.1.81
+#master_ip = 172.16.1.81
 
 #sync_group = bsgroup
 
@@ -22,13 +22,14 @@ playback_mode = normal
 # must be set for master and slave modes
 
 ip_mode = hdcp
-#ip = 192.168.1.21
+
+#ip = [DEVICE IP]
 
 # Netmask, may be needed for syncing
 #netmask = 255.255.0.0
 
 # Gateway, may be needed for syncing
-#gateway = 192.168.1.1
+#gateway = 10.71.1.1
 
 # enable node (true or false)
 enable_node = true
@@ -36,10 +37,7 @@ enable_node = true
 # enable content sync with media server
 media_sync = true
 
-media_server = 192.168.0.4
-
-#port for posting IP address to media_server
-ipPostPort = 8081
+media_server = [SERVER IP]
 
 #display the player's IP address
 displayIP = true
@@ -53,3 +51,7 @@ mask = true
 
 #enable gpio buttons
 gpio = false
+
+#postIP to IP collector on media server
+postIP = true
+postURL = http://[SERVER IP]:80/node/deviceInfo/checkin/ip
