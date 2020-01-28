@@ -61,7 +61,6 @@ class BS_API{
 
 	/******Post Device Info******************/
 		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
-		//this.postURL = 'node/deviceInfo/checkin/ip';//this should be simplified to be called from the config file directly
 		this.postTimer;
 
 	/*****Config File***********************/
@@ -82,9 +81,9 @@ class BS_API{
 	    this.writer;
 	    this.soFar;
 	    this.contentLength;
-	   // this.fs = require('fs');
-	    this.ilog = true
+	    this.ilog = false;
 	    this.remList = [];
+	    this.getRemList;//function to retrieve remote media file list
 	}
 
 	initialize(callback){
@@ -194,7 +193,7 @@ class BS_API{
 		this.socket.send(Buffer.from(aMessage), this.sendPort, 'localhost'); 
 	}
 
-	//for receiving event data back from the autorun script
+/*************for receiving event data back from the autorun script**************/
 	dgramReceive(callback){
 		this.receiver.on('error', (err) => {
 		  console.log(`server error:\n${err.stack}`);
@@ -212,12 +211,13 @@ class BS_API{
 
 		this.receiver.on('listening', () => {
 		  const address = this.receiver.address();
-		  console.log(`server listening ${address.address}:${address.port}`);
+		  console.log(`UDP server listening on ${address.address}:${address.port}`);
 		});
 
 		this.receiver.bind(31313);
 	}
 
+/******* IP display *************************************/
 	showIP(){
 		this.ticker.SetRectangle(this.tickerX,this.tickerY, this.tickerW,this.tickerH)
 	}
@@ -226,7 +226,7 @@ class BS_API{
 		this.ticker.SetRectangle(-100,-100,1,1)
 	}
 
-	/********* Playback and Media Controls ******************/
+/********* Playback and Media Controls ******************/
 	playback(arg){
 		if (arg == 'play'){
 			//restart at beginning
@@ -253,7 +253,7 @@ class BS_API{
 		this.dgramSend("mask " + aBool);
 	}
 
-	/******Post Device Info to Remote Server******************/
+/******Post Device Info to Remote Server******************/
 	//post device info to server
 	postHTTP(postThis,postHere){
 		let xhr = new XMLHttpRequest();
@@ -374,9 +374,12 @@ class BS_API{
     let checkDownloadState = setInterval(()=>{
 
       //get remote directory
-        dirList.getDir((arg)=>{
+        //dirList.getDir((arg)=>{
+        this.getRemList((arg)=>{
+        	/*console.log("Remote File List:");
+        	console.log(arg);*/
 
-          this.checkDirectory(this.localFileList, arg);
+          	this.checkDirectory(this.localFileList, arg);
          
           });
 
@@ -526,7 +529,6 @@ class BS_API{
         } else {
             console.log('successfully deleted local file');                                
         }
-        console.log("removed it???");
       });
     }
 
@@ -542,3 +544,4 @@ class BS_API{
   }
 
 }
+

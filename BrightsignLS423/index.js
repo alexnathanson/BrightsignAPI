@@ -1,7 +1,3 @@
-//check contents of the remote directory and compares it to local storage
-//deletes old files and downloads new files
-
-let version = '0.0.3';
 
 'use strict';
 
@@ -9,12 +5,6 @@ let version = '0.0.3';
 let ilog = true;
 
 let BS = new BS_API();
-
-//let readyToDownload = false;
-//let DP = new MediaServer();
-
-// Uses node.js fs module to save files into sd card.
-//let fs = require('fs');
 
 //this must be run first to initialize the API with the data from the config file
 BS.loadConfig(configured);
@@ -38,9 +28,11 @@ function configured(){
   BS.remoteServerBase = 'http://'+BS.configDict['media_server'];
   
   dirList = new HTMLDirectory(BS.remoteServerBase,BS.remoteServerDirectory);
+  BS.getRemList = (arg)=>{dirList.getDir(arg)};
+
   dirList.log=false;
 
-  indexLog('Version: ' + version);    
+  indexLog('Version: ' + BS.api);    
   
   //get local media list
   BS.getLocalFiles((arg)=>{

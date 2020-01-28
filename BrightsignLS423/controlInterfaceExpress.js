@@ -12,13 +12,13 @@ let s = {screen: true};
 //console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
 
-//make way for some custom css, js and images
+//for serving the GUI web interface
 app.use('/css', express.static(__dirname + '/controlInterface/css'));
 app.use('/js', express.static(__dirname + '/controlInterface/js'));
 app.use('/images', express.static(__dirname + '/controlInterface/images'));
 
 let server     =    app.listen(8000,function(){
-    console.log("We have started our server on port 8000");
+    console.log("We have started our API interface on port 8000");
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,7 +57,7 @@ app.post('/command',function(req,res){
     sceneChange(req.body.file);
   }
 
-  res.send('good talk');
+  res.send();//removed response text
 
 });
 
