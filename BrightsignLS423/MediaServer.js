@@ -1,6 +1,8 @@
 
 class MediaServer{
   constructor(){
+    this.remoteServerBase = "";
+    this.remoteServerDirectory = "";
     this.downloadQueue = [];
     this.downloadIndex = 0;
     this.readyToDownload = false;
@@ -8,35 +10,43 @@ class MediaServer{
     this.soFar;
     this.contentLength;
     this.fs = require('fs');
-    this.ilog = true;
+    this.ilog = true
+    this.remList = [];
   }
 
   downloadProcess(){
-    /*gets the file list from the remote server and
-    call the callback to compare it to the local files*/
-    dirList.getDir();
+        /*gets the file list from the remote server and
+        call the callback to compare it to the local files*/
 
-    //BS.postInfo();
-
-    //check if its ready to download every 5 seconds
+    //check if its ready to download every 10 seconds
     let checkDownloadState = setInterval(()=>{
+
+      //get remote directory
+        dirList.getDir((arg)=>{
+
+          this.checkDirectory(BS.localFileList, arg);
+         
+          });
+
         if(this.readyToDownload == true){
           clearInterval(checkDownloadState);
 
           this.downloadIndex = 0;
-          downloadIncrement();
+          this.downloadIncrement();
         }
-    }, 5000);
+    }, 10000);
   }
 
 //increments through all the files that need to be downloaded
   downloadIncrement(){
     if(this.downloadIndex < this.downloadQueue.length){//was <= len +1
-          downloadFiles(this.downloadQueue[downloadIndex]);
+          this.downloadFiles(this.downloadQueue[this.downloadIndex]);
     } else {
       /*if all files have been downloaded restart the listener
       to detect remote updates*/
-      this.downloadProcess();
+      this.readyToDownload = false;
+      console.log("all downloads completed");
+      BS.getLocalFiles(this.downloadProcess());
     }
     this.downloadIndex++;
   }
@@ -45,7 +55,7 @@ class MediaServer{
     
     this.writer = this.fs.createWriteStream(BS.localDirectory + name, {defaultEncoding:'binary'});
 
-    let VIDEO_URL = remoteServerBase + remoteServerDirectory + name;
+    let VIDEO_URL = this.remoteServerBase + this.remoteServerDirectory + name;
     // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
     // arrive. XMLHttpRequest will cause device to run out of memory when used with
     // large video files.
@@ -54,27 +64,29 @@ class MediaServer{
       this.contentLength = res.headers.get('Content-Length');
       // Content length might not be known, that is normal.
       if (this.contentLength)
-        indexLog("Content length is " + this.contentLength);
+        this.downloadLog("Content length is " + this.contentLength);
       else
-        indexLog("Content length is not known");
+        this.downloadLog("Content length is not known");
 
-      return pump(res.body.getReader());
+      return this.pump(res.body.getReader());
     })
     .catch((e)=>{
-      indexLog(e);
+      this.downloadLog(e);
     });
   }
 
   pump(reader) {
     return reader.read().then((result)=>{
       if (result.done) {
-        indexLog("All done! " + this.soFar + "bytes total");
+        this.downloadLog("File Downloaded! " + this.soFar + " bytes total");
         this.writer.end();
         
         //play a file
-        BS.playFile(dirList.list[0]);
+        BS.playFile(this.remList[0]);
 
-        downloadIncrement();
+        //BS.getLocalFiles();
+
+        this.downloadIncrement();
         return;
       }
 
@@ -83,48 +95,50 @@ class MediaServer{
 
       this.soFar += chunk.byteLength;
       // Console log takes long time, comment this out to download in full speed.
-      updateProgress();
-      return pump(reader);
+      this.updateProgress();
+      return this.pump(reader);
     });
   }
 
   updateProgress() {
     if (this.contentLength)
-      indexLog((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
+      this.downloadLog((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
     else
-      indexLog(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+      this.downloadLog(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
   }
 
-  checkDirectory(files){
-    indexLog('local files:');
-    indexLog(files);
+    //compares remote directory to local directory to create the download queue
+  checkDirectory(files, remFiles){
+    this.remList  = remFiles ;
+    this.downloadLog('Local Files:');
+    this.downloadLog(files);
     this.downloadQueue = [];
-      for(let f = 0;f<dirList.list.length;f++){
+      for(let f = 0;f<this.remList.length;f++){
         //listing all files using forEach
         let dwnld = true;
         files.forEach((file)=> {
           // Do whatever you want to do with the file
-          if(dirList.list[f]==file){
+          if(this.remList[f]==file){
             dwnld = false;
-            //indexLog(file);
+            //downloadLog(file);
           }
         });
 
         if(dwnld == true){
           //add the file to the download queue
-          this.downloadQueue.push(dirList.list[f]);
+          this.downloadQueue.push(this.remList[f]);
         }
       }
-      this.indexLog("Download Queue:");
-      this.indexLog(this.downloadQueue);
+      this.downloadLog("Download Queue:");
+      this.downloadLog(this.downloadQueue);
       
       //remove the old files from the local device
-      this.removeFiles(getDelList(files,dirList.list));
+      this.removeFiles(this.getDelList(files,this.remList));
 
       this.readyToDownload = true;
   }
 
-  indexLog(arg){
+  downloadLog(arg){
       if(this.ilog == true){
         console.log(arg);
       }
@@ -144,8 +158,8 @@ class MediaServer{
       }
     });
 
-    indexLog("Remove Queue:");
-    indexLog(delIt);
+    this.downloadLog("Remove Queue:");
+    this.downloadLog(delIt);
     
     return delIt;
   }
@@ -160,12 +174,18 @@ class MediaServer{
         } else {
             console.log('successfully deleted local file');                                
         }
+        console.log("removed it???");
       });
     }
+
     /*if there are no files to download and
     if files were deleted play the first file*/
     if(this.downloadQueue.length==0 && anArray.length>0){
-      BS.playFile(dirList.list[0]);
+      BS.playFile(this.remList[0]);
+
+      //update local file list
+      BS.getLocalFiles();
+
     }
   }
 }

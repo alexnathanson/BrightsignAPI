@@ -10,11 +10,8 @@ let ilog = true;
 
 let BS = new BS_API();
 
-let readyToDownload = false;
-
-//an array to hold remote files that need to be downloaded
-let downloadQueue = [];
-let downloadIndex = 0;
+//let readyToDownload = false;
+let DP = new MediaServer();
 
 // Uses node.js fs module to save files into sd card.
 let fs = require('fs');
@@ -25,198 +22,43 @@ BS.loadConfig(configured);
 //spin up UDP receiver port for media end events
 BS.dgramReceive(mediaEnded);
 
-let remoteServerBase;
-let remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
+DP.remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
+
 let dirList; //remote directory list
 
 let currentFile = "";
-//the variables are used in the download process
-let writer,soFar,contentLength;
 
+//once config file has been ingested...
 function configured(){
   
-  BS.getLocalFiles(()=>{
-    console.log('playing file 1');
-    BS.playFile(BS.localFileList[0]);
-  })
-
   if(BS.configDict.gpio){
     BS.GPIOEvents(randomMedia);
   }
 
-  remoteServerBase = 'http://'+BS.configDict['media_server'];
-  //console.log(remoteServerBase);
-  //get file list from remote server
-//arguments: base IP, directory structure, callback
-  dirList = new HTMLDirectory(remoteServerBase,remoteServerDirectory,()=>{BS.getLocalFiles(checkDirectory)});
+  DP.remoteServerBase = 'http://'+BS.configDict['media_server'];
+  
+  dirList = new HTMLDirectory(DP.remoteServerBase,DP.remoteServerDirectory);
   dirList.log=false;
 
-  indexLog(version);
-
-  //check the various directories, remove old files, and download new files
-  if(BS.configDict.media_sync){
-      downloadProcess();
-  }
-}
-
-function downloadProcess(){
-  /*gets the file list from the remote server and
-  call the callback to compare it to the local files*/
-  dirList.getDir();
-
-  BS.postInfo();
-
-  //check if its ready to download every 5 seconds
-  let checkDownloadState = setInterval(function(){
-      if(readyToDownload == true){
-        clearInterval(checkDownloadState);
-
-        downloadIndex = 0;
-        downloadIncrement();
-      }
-  }, 5000);
-}
-
-//increments through all the files that need to be downloaded
-function downloadIncrement(){
-  if(downloadIndex < downloadQueue.length){//was <= len +1
-        downloadFiles(downloadQueue[downloadIndex]);
-  } else {
-    /*if all files have been downloaded restart the listener
-    to detect remote updates*/
-    downloadProcess();
-  }
-  downloadIndex++;
-}
-
-function downloadFiles(name){
+  indexLog('Version: ' + version);    
   
-  writer = fs.createWriteStream(BS.localDirectory + name, {defaultEncoding:'binary'});
+  //get local media list
+  BS.getLocalFiles((arg)=>{
+        console.log(arg);
 
-  let VIDEO_URL = remoteServerBase + remoteServerDirectory + name;
-  // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
-  // arrive. XMLHttpRequest will cause device to run out of memory when used with
-  // large video files.
-  fetch(VIDEO_URL).then(function (res) {
-    soFar = 0;
-    contentLength = res.headers.get('Content-Length');
-    // Content length might not be known, that is normal.
-    if (contentLength)
-      indexLog("Content length is " + contentLength);
-    else
-      indexLog("Content length is not known");
-
-    return pump(res.body.getReader());
-  })
-  .catch(function (e) {
-    indexLog(e);
-  });
-}
-
-function pump(reader) {
-  return reader.read().then(function (result) {
-    if (result.done) {
-      indexLog("All done! " + soFar + "bytes total");
-      writer.end();
-      
-      //play a file
-      BS.playFile(dirList.list[0]);
-
-      downloadIncrement();
-      return;
-    }
-
-    const chunk = result.value; // --> This is the chunked data
-    writer.write(new Buffer(chunk));
-
-    soFar += chunk.byteLength;
-    // Console log takes long time, comment this out to download in full speed.
-    updateProgress();
-    return pump(reader);
-  });
-}
-
-function updateProgress() {
-  if (contentLength)
-    indexLog((soFar/contentLength*100).toFixed(2) + "% is downloaded" + downloadIndex +'/'+downloadQueue.length);
-  else
-    indexLog(soFar + " bytes are downloaded " + downloadIndex +'/'+downloadQueue.length);
-}
-
-function checkDirectory(files){
-  indexLog('local files:');
-  indexLog(files);
-  downloadQueue = [];
-    for(let f = 0;f<dirList.list.length;f++){
-      //listing all files using forEach
-      let dwnld = true;
-      files.forEach((file)=> {
-        // Do whatever you want to do with the file
-        if(dirList.list[f]==file){
-          dwnld = false;
-          //indexLog(file);
+    //if there are local files, play the first file
+        if(BS.localFileList.length  > 0){
+          console.log('playing file 1');
+          BS.playFile(BS.localFileList[0]);
         }
-      });
 
-      if(dwnld == true){
-        //add the file to the download queue
-        downloadQueue.push(dirList.list[f]);
-      }
-    }
-    indexLog("Download Queue:");
-    indexLog(downloadQueue);
-    
-    //remove the old files from the local device
-    removeFiles(getDelList(files,dirList.list));
-
-    readyToDownload = true;
+        if(BS.configDict.media_sync){
+        //check if the download flag has been raised every 5 seconds
+            DP.downloadProcess();
+        } 
+  })
 }
 
-function indexLog(arg){
-    if(ilog == true){
-      console.log(arg);
-    }
-  }
-
-function getDelList(localList,remoteList){
-  let delIt = [];
-  localList.forEach(function (oldFile) {
-    let keepIt = false;
-    remoteList.forEach(function(newFile){
-      if (oldFile==newFile){
-        keepIt = true;
-      }
-    });
-    if(keepIt==false){
-      delIt.push(oldFile);
-    }
-  });
-
-  indexLog("Remove Queue:");
-  indexLog(delIt);
-  
-  return delIt;
-}
-
-function removeFiles(anArray){
-  //synchronously delete old files
-  for(let r = 0;r<anArray.length;r++){
-    let remPath = BS.localDirectory + anArray[r];
-    fs.unlinkSync(remPath, (err) => {
-      if (err) {
-          console.log("failed to delete local file:"+err);
-      } else {
-          console.log('successfully deleted local file');                                
-      }
-    });
-  }
-  /*if there are no files to download and
-  if files were deleted play the first file*/
-  if(downloadQueue.length==0 && anArray.length>0){
-    BS.playFile(dirList.list[0]);
-  }
-}
- 
 function randomMedia(){
   let newFile = true;
   while (newFile){
@@ -244,3 +86,9 @@ function mediaEnded(){
   console.log('scene 1');
   BS.playFile(BS.localFileList[0]);
 }
+
+function indexLog(arg){
+    if(ilog == true){
+      console.log(arg);
+    }
+  }

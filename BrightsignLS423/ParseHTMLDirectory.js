@@ -2,29 +2,30 @@
 // XMLHttpRequest reference https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/getResponseHeader
 
 class HTMLDirectory{
-	constructor(tempIP,tempDirectory,tempCallback){
+	constructor(tempIP,tempDirectory){
 		this.ip = tempIP;
 		this.directory = tempDirectory;
 		this.path = this.ip + this.directory;
 		this.list = [];
 		this.log = false;
-		this.callback = tempCallback;
+		this.callback;
 	}
 
-	getDir(){
-	  let client = new XMLHttpRequest();
-	  client.responseType = 'text';
-	  client.open("GET", this.path, true);
+	getDir(callback){
+		//this.callback = callback;
+		let client = new XMLHttpRequest();
+		client.responseType = 'text';
+		client.open("GET", this.path, true);
 
-	  client.send();
+		client.send();
 
-	  //the arrow functions maintains the scope
-	  client.onreadystatechange =()=>{
-	  	if(client.readyState === 4 && client.status === 200) {
+		//the arrow functions maintains the scope
+		client.onreadystatechange =()=>{
+			if(client.readyState === 4 && client.status === 200) {
 		    this.logToConsole(client);
-		    this.parseList(client.responseText,this.callback);
+		    this.parseList(client.responseText,callback);
 		  }
-	  };
+		};
 	}
 	parseList(arg, callback){
 		this.list = [];
@@ -43,8 +44,8 @@ class HTMLDirectory{
 		}
 		this.logToConsole(this.list);
 		//callback(this.callback);
-			
-		callback();
+		
+		callback(this.list);
 	}
 
 	addSpace(aString){

@@ -62,7 +62,7 @@ class BS_API{
 	/******Post Device Info******************/
 		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
 		//this.postURL = 'node/deviceInfo/checkin/ip';//this should be simplified to be called from the config file directly
-		this.postTime = Date.now() - this.postInterval;
+		this.postTimer;
 
 	/*****Config File***********************/
 		this.logC = true;
@@ -95,7 +95,9 @@ class BS_API{
 		//this.setGPIOEventCallbacks();
 		this.asyncScreenShot();
 
-		this.postInfo();
+		if(this.configDict.postIP){
+			this.postInfo();
+		}
 
 		callback();
 
@@ -110,15 +112,9 @@ class BS_API{
 	      //filter local files by data type before comparing directories
 	      this.localFileList = this.filterMediaType(files);
 
-	      if(typeof callback === "function"){
-	        callback(this.localFileList)
-	      } else {
-	        //return BS.localFileList
-	        //checkDirectory(this.localFileList);
-	        return this.localFileList;
-	      }
-
-	      //checkDirectory(BS.localFileList);
+			if(typeof callback	== 'function'){
+	      		callback(this.localFileList);
+	      	}
 	    }
 	  });
 	}
@@ -245,22 +241,6 @@ class BS_API{
 	}
 
 	/******Post Device Info to Remote Server******************/
-	postInfo(){
-		//posts the mac address, ip address, first file, and timestamp to the server
-		if(this.postTime + this.postInterval < Date.now()){
-		    //package the device info into a JSON
-		    let devInfo = new Object();
-		    devInfo[this.deviceInfo.deviceUniqueId] = {};
-		    devInfo[this.deviceInfo.deviceUniqueId].mac = this.myMAC;
-		    devInfo[this.deviceInfo.deviceUniqueId].ip = this.myIP;
-		    devInfo[this.deviceInfo.deviceUniqueId].file = this.localFileList[0];
-		    devInfo[this.deviceInfo.deviceUniqueId].time = Date.now();
-
-		  	this.postHTTP(devInfo, this.configDict.postURL);
-		    this.postTime  = Date.now();
-		}
-	}
-
 	//post device info to server
 	postHTTP(postThis,postHere){
 		let xhr = new XMLHttpRequest();
@@ -277,6 +257,26 @@ class BS_API{
 		    }
 		  };
 		}
+
+	postInfo(){
+
+		//check if its ready to download every 5 seconds
+    	this.postTimer = setInterval(()=>{
+		    let devInfo = new Object();
+		    devInfo[this.deviceInfo.deviceUniqueId] = {};
+		    devInfo[this.deviceInfo.deviceUniqueId].mac = this.myMAC;
+		    devInfo[this.deviceInfo.deviceUniqueId].ip = this.myIP;
+		    devInfo[this.deviceInfo.deviceUniqueId].file = this.localFileList[0];
+		    devInfo[this.deviceInfo.deviceUniqueId].time = Date.now();
+
+		  	this.postHTTP(devInfo, this.configDict.postURL);
+
+		}, this.postInterval);
+	}
+
+	stopPost(){
+		clearInterval(this.postTimer);
+	}
 
 /*****************Control Interface Server***********************/
 
