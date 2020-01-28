@@ -1,7 +1,7 @@
 //check contents of the remote directory and compares it to local storage
 //deletes old files and downloads new files
 
-let version = '0.0.2';
+let version = '0.0.3';
 
 'use strict';
 
@@ -11,10 +11,10 @@ let ilog = true;
 let BS = new BS_API();
 
 //let readyToDownload = false;
-let DP = new MediaServer();
+//let DP = new MediaServer();
 
 // Uses node.js fs module to save files into sd card.
-let fs = require('fs');
+//let fs = require('fs');
 
 //this must be run first to initialize the API with the data from the config file
 BS.loadConfig(configured);
@@ -22,7 +22,7 @@ BS.loadConfig(configured);
 //spin up UDP receiver port for media end events
 BS.dgramReceive(mediaEnded);
 
-DP.remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
+BS.remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 
 let dirList; //remote directory list
 
@@ -35,9 +35,9 @@ function configured(){
     BS.GPIOEvents(randomMedia);
   }
 
-  DP.remoteServerBase = 'http://'+BS.configDict['media_server'];
+  BS.remoteServerBase = 'http://'+BS.configDict['media_server'];
   
-  dirList = new HTMLDirectory(DP.remoteServerBase,DP.remoteServerDirectory);
+  dirList = new HTMLDirectory(BS.remoteServerBase,BS.remoteServerDirectory);
   dirList.log=false;
 
   indexLog('Version: ' + version);    
@@ -54,7 +54,7 @@ function configured(){
 
         if(BS.configDict.media_sync){
         //check if the download flag has been raised every 5 seconds
-            DP.downloadProcess();
+            BS.downloadProcess();
         } 
   })
 }
