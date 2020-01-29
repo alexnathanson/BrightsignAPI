@@ -1,18 +1,21 @@
 let PORT = 8000;
 let HOST = window.location.hostname;
 
-let vol, volVal;
+let vol, volVal, title;
 
 window.onload = function(){
   vol = document.getElementById("volume");
   volVal = document.getElementById("volVal");
   fileN = document.getElementById("fileName");
+  title = document.getElementById("title");
 
   //retrieve stored volume value
   sendGet("volume");
   
   //retrieve file name
   sendGet("file");
+
+  sendGet('id');
 
   // Update the volume when the slider is released
   vol.onmouseup = function() {
@@ -52,6 +55,10 @@ function updateFileName(fName){
     oL.appendChild(myLi);
   }
   fileN.appendChild(oL);
+}
+
+function updateTitle(t){
+    title.innerHTML = (title.innerHTML + " " + t);
 }
 
 /****BUTTONS**********/
@@ -105,7 +112,10 @@ function sendGet(endPoint){
         updateFileName(resObj.file);
       } else if (Object.keys(resObj)[0]=="screen"){
         //refresh the page with new image
-        location.reload();        } 
+        location.reload();
+      } else if (Object.keys(resObj)[0]=="id"){
+        updateTitle(resObj.id);
+      } 
     }
   }
 }

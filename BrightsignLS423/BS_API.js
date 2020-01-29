@@ -407,7 +407,7 @@ class BS_API{
       /*if all files have been downloaded restart the listener
       to detect remote updates*/
       this.readyToDownload = false;
-      console.log("All downloads completed");
+      this.downloadLog("All downloads completed");
       this.getLocalFiles(this.downloadProcess());
     }
     this.downloadIndex++;

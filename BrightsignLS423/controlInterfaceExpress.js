@@ -8,6 +8,7 @@ let ipBool = false;
 let v = {volume: BS.getConfigValue('volume')};
 let f = {file: currentFile};
 let s = {screen: true};
+let i = {id: BS.deviceInfo.deviceUniqueId};
 
 //console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
@@ -40,6 +41,10 @@ app.get('/screen',function(req,res){
 
   BS.asyncScreenShot();
   res.send(s);
+});
+
+app.get('/id', function (req, res){
+  res.send(i);
 });
 
 app.post('/command',function(req,res){
