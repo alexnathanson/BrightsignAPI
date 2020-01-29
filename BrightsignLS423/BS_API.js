@@ -73,6 +73,7 @@ class BS_API{
 		this.persist = true;
 
 	/******Server Syncing*************/
+		//removed 1/27
 		this.remoteServerBase = "";
 	    this.remoteServerDirectory = "";
 	    this.downloadQueue = [];
@@ -94,6 +95,10 @@ class BS_API{
 		this.displayIP = this.configDict.displayIP;
 		//this.postURL = this.configDictionary.postURL;
 		
+		//added 1/28
+		this.remoteServerBase = 'http://'+this.configDict['media_server'];
+		this.remoteServerDirectory = '/' + this.deviceInfo.deviceUniqueId + '/media/';
+
 		this.ticker.AddString(this.myIP);
 
 		if(!this.displayIP){
@@ -111,7 +116,9 @@ class BS_API{
 			this.postInfo();
 		}
 
-		callback();
+		//added 1/27
+		this.getLocalFiles(callback);
+		//callback();
 
 	}
 

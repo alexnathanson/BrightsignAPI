@@ -6,13 +6,14 @@ let ilog = true;
 
 let BS = new BS_API();
 
-//this must be run first to initialize the API with the data from the config file
+//run first to initialize and configure the API
 BS.loadConfig(configured);
 
 //spin up UDP receiver port for media end events
 BS.dgramReceive(mediaEnded);
 
-BS.remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
+//removed 1/27
+//BS.remoteServerDirectory = '/' + BS.deviceInfo.deviceUniqueId + '/media/';
 
 let dirList; //remote directory list
 
@@ -25,7 +26,8 @@ function configured(){
     BS.GPIOEvents(randomMedia);
   }
 
-  BS.remoteServerBase = 'http://'+BS.configDict['media_server'];
+  //removed 1/27
+  //BS.remoteServerBase = 'http://'+BS.configDict['media_server'];
   
   dirList = new HTMLDirectory(BS.remoteServerBase,BS.remoteServerDirectory);
   BS.getRemList = (arg)=>{dirList.getDir(arg)};
@@ -35,8 +37,8 @@ function configured(){
   indexLog('Version: ' + BS.api);    
   
   //get local media list
-  BS.getLocalFiles((arg)=>{
-        console.log(arg);
+  /*BS.getLocalFiles((arg)=>{
+        console.log(arg);*/
 
     //if there are local files, play the first file
         if(BS.localFileList.length  > 0){
@@ -45,10 +47,10 @@ function configured(){
         }
 
         if(BS.configDict.media_sync){
-        //check if the download flag has been raised every 5 seconds
+        //check if the download flag has been raised every 10 seconds
             BS.downloadProcess();
         } 
-  })
+ /* })*/
 }
 
 function randomMedia(){
