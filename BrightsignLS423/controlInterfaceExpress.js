@@ -60,6 +60,8 @@ app.post('/command',function(req,res){
     BS.playFile(req.body.file);
   } else if (Object.keys(req.body)[0] == "scene"){
     sceneChange(req.body.file);
+  } else if (Object.keys(req.body)[0] == "global"){
+    globalCommand(req.body.global);
   }
 
   res.send();//removed response text
@@ -93,5 +95,19 @@ function recCommand(message){
       BS.setConfigValue('displayIP','true');//update config file
     }
     ipBool = !ipBool;
+  }
+}
+
+//end point for commands sent to all connected devices
+//global commands like IP do not get saved to config file
+function globalCommand(message){
+  if(message == 'ip'){
+    BS.showIP();
+    console.log('show IP');
+    let gIP = setInterval(()=>{
+      clearInterval(gIP);
+      BS.hideIP();
+      console.log('clear IP');
+    },30000);
   }
 }

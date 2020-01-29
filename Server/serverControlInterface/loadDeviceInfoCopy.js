@@ -42,10 +42,7 @@ function showData(jsonObj) {
 
 	let devList =  document.getElementById("bsList");
 
-  // As long as <ul> has a child node, remove it
-  while (devList.hasChildNodes()) {  
-    devList.removeChild(devList.firstChild);
-  } 
+//document.getElementById("usernameError").className = "color-red";
 
 //loop through data for each device
 	for (let j =0;j<jsonObj.length;j++){
@@ -68,8 +65,6 @@ function showData(jsonObj) {
 				//convert Unix time to human readable time
 				myLi.textContent = devKeys[o] + ": " + convertTimestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
 			} else if (devKeys[o]=='ip'){
-        //add the ip to the list while we're at it
-        ipList(jsonObj[j][Object.keys(devData[j])][devKeys[o]]);
 				//make it a hyperlink
 				myLi.textContent = devKeys[o] + ": ";
 
@@ -146,7 +141,6 @@ function parseFileName(aString){
 
   return returnThis;
 }
-
 
 /****** For Sending Batch Commands************************/
 

@@ -6,7 +6,7 @@
 
 There are three main components to this system.
 
-* The Combined Brightsign APIs, which provides the functionality.
+* The various Brightsign APIs in combination with Node JS, which provides the functionality.
 * The server syncing, which is optional
 * The HTML web interface and API end points for broader network interactions.
 
@@ -34,7 +34,6 @@ There are three main components to this system.
 	* uses PUT method 
 * Additional commands can be sent via the Chrome diagnostic console.
 	* see below
-
 
 ### Trouble shooting and diagnostic functions
 * displays IP address on screen by default
