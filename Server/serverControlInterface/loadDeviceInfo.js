@@ -171,7 +171,7 @@ function sendPost(aType, aMess, aHost){
   console.log(aType + " : " + aMess);
 
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://172.16.0.4:80/global", true);
+  xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/global", true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     [aType] : aMess})
