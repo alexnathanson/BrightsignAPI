@@ -21,6 +21,13 @@ app.post('/node/deviceInfo/checkin/ip',function(req,res){
   res.end("checked in");
 });
 
+//added 1/29
+app.post('/node/deviceInfo/checkin/global',function(req,res){
+  //console.log(req.body);
+  sendPost('global','ip',req.body.global);
+  res.end("global command sent");
+});
+
 app.listen(process.env.PORT);
 
 
@@ -54,4 +61,42 @@ function findReplace(data){
       if (err) throw err;
       console.log('Data written to file');
   });
+}
+
+/* added 1/29 */
+const http = require('http')
+
+//send the message
+function sendPost(aType, aMess, anIp){
+
+  let data = JSON.stringify({
+    [aType]: aMess
+  })
+
+  let options = {
+    hostname: anIp,
+    port: 8000,
+    path: '/command',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': data.length
+    }
+  }
+
+  const req = http.request(options, res => {
+    console.log(`statusCode: ${res.statusCode}`)
+
+    res.on('data', d => {
+      process.stdout.write(d)
+    })
+  })
+
+  req.on('error', error => {
+    console.error(error)
+  })
+
+  req.write(data)
+  req.end()
+
 }

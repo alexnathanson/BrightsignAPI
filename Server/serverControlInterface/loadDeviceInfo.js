@@ -162,6 +162,7 @@ function batchCommand(callback){
 
 //show IPs on all connected screens for 30 seconds
 function ipFreely(aHost){
+  console.log('ip freely');
   sendPost("global","ip", aHost);
 }
 
@@ -170,7 +171,7 @@ function sendPost(aType, aMess, aHost){
   console.log(aType + " : " + aMess);
 
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://"+aHost+":"+"8000/command", true);
+  xhr.open("POST", "http://172.16.0.4:80/global", true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     [aType] : aMess})
