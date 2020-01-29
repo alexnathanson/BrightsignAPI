@@ -40,7 +40,10 @@ function showData(jsonObj) {
 
 	let devList =  document.getElementById("bsList");
 
-//document.getElementById("usernameError").className = "color-red";
+  // As long as <ul> has a child node, remove it
+  while (devList.hasChildNodes()) {  
+    devList.removeChild(devList.firstChild);
+  } 
 
 //loop through data for each device
 	for (let j =0;j<jsonObj.length;j++){
