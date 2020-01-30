@@ -48,7 +48,7 @@ function configureNetwork()
     ' password = "" turns off authentication
     'dwsAA["password"] = ""
     ' this sets password if using authentication
-    dwsAA["open"] = "password"
+    dwsAA["open"] = m.params["password"]
     nc.SetupDWS(dwsAA)
     nc.Apply()
 end function
@@ -63,7 +63,7 @@ function configureServers()
 	regSec = CreateObject("roRegistrySection", "networking")
 	regSec.write("ssh", "22")
 	regSec.write("http_server", "80")
-	regSec.write("http_auth", "password")
+	regSec.write("http_auth", m.params["password"])
 	regSec.write("telnet", "23")
 	reg.flush()	
 end function

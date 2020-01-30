@@ -97,8 +97,7 @@ The server must have a static IP, which must be listed in the BS config file.
 	* iisnode app
 
 ## Possible future additions
-* condense controlInterface into BS API file
-* seperate out download functionality and combine into BS API file
+* redesign all the ends points not that the system is technically working
 
 ## Links
 * Brightsign documentation https://docs.brightsign.biz/display/DOC/BrightSign+Documentation

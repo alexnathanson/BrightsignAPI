@@ -23,13 +23,13 @@ playback_mode = normal
 
 ip_mode = hdcp
 
-#ip = [DEVICE IP]
+#ip = 172.16.1.21
 
 # Netmask, may be needed for syncing
 #netmask = 255.255.0.0
 
 # Gateway, may be needed for syncing
-#gateway = 10.71.1.1
+#gateway = 172.16.1.1
 
 # enable node (true or false)
 enable_node = true
@@ -37,7 +37,7 @@ enable_node = true
 # enable content sync with media server
 media_sync = true
 
-media_server = [SERVER IP]
+media_server = 172.16.0.4
 
 #display the player's IP address
 displayIP = true
@@ -50,8 +50,10 @@ volume = 55
 mask = true
 
 #enable gpio buttons
-gpio = false
+gpio = true
 
 #postIP to IP collector on media server
 postIP = true
-postURL = http://[SERVER IP]:80/node/deviceInfo/checkin/ip
+postURL = http://172.16.0.4:80/node/deviceInfo/checkin/ip
+
+password = password
