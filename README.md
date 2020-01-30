@@ -10,6 +10,10 @@ There are three main components to this system.
 * The server syncing, which is optional
 * The HTML web interface and API end points for broader network interactions.
 
+<p>
+	Presently, this system works with video files ("MPG","WMV","MOV","MP4","VOB","TS") and MP3 files only. Not WAV files. In the future this functionality could be added via a roAudioPlayer and some logic to seperate out content types.
+</p>
+
 ## Brightsign APIs as a class - BS_API.js
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
@@ -27,6 +31,7 @@ There are three main components to this system.
 * GPIO
 	* Default is set to GPIO Button to pin 0, which will play a random file
 	* set gpio = true in the config file
+	* GPIO pin out diagrams from https://brightsign.zendesk.com/hc/en-us/articles/218065937-GPIO-Which-pins-correspond-to-which-buttons- located in resources folder.
 * HTML Control interface on port 8000
 	* must add full node_modules directory + a few other modules to SD card
 		* run 'npm install' on your computer and drag the node_modules directory to the SD card
@@ -97,6 +102,7 @@ The server must have a static IP, which must be listed in the BS config file.
 
 ## Possible future additions
 * redesign all the ends points not that the system is technically working
+* test the global commands function
 
 ## Links
 * Brightsign documentation https://docs.brightsign.biz/display/DOC/BrightSign+Documentation

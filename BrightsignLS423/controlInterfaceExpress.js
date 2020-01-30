@@ -6,7 +6,7 @@ let bodyParser     =         require("body-parser");
 let ipBool = false;
 
 let v = {volume: BS.getConfigValue('volume')};
-let f = {file: currentFile};
+let f = {file: BS.currentFile};
 let s = {screen: true};
 let i = {id: BS.deviceInfo.deviceUniqueId};
 

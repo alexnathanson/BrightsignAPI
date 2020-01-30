@@ -114,7 +114,8 @@ end function
 function getMediaFile() as string
 	print "Checking for meda files."
 	Dim mediaTypes[3]
-	mediaTypes = ["MPG","WMV","MOV","MP4","VOB","TS","MP3","WAV"]
+	mediaTypes = ["MPG","WMV","MOV","MP4","VOB","TS","MP3"]
+	'audioTypes = ["MP3","WAV"]
 
 	files = ListDir("/")
 	print files
@@ -257,9 +258,11 @@ sub main()
 		enableNode()
 	end if
 
-	' Create video, message port and UDP ports for communication
+	' Create video, audio, message port and UDP ports for communication
 
 	m.mPort = CreateObject("roMessagePort")
+	'm.audio = CreateObject("roAudioPlayer")
+	'm.audio.SetPort(m.mPort)
 	m.video = CreateObject("roVideoPlayer")
 	m.video.SetVideoDelay(150)
     m.video.SetPort(m.mPort)
@@ -268,7 +271,6 @@ sub main()
 	m.udpReceiver.SetPort(m.mPort)
 
 	' Load a video file
-
 	m.videoFile =  getMediaFile()
 	print m.videoFile; ""
 	

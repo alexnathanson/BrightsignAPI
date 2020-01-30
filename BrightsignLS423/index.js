@@ -14,7 +14,7 @@ BS.dgramReceive(mediaEnded);
 
 let dirList; //remote directory list
 
-let currentFile = "";
+//let currentFile = "";
 
 //once config file has been ingested...
 function configured(){
@@ -29,7 +29,6 @@ function configured(){
   dirList.log=false;
 
   indexLog('Version: ' + BS.api);    
-  
 
   if(BS.localFileList.length  > 0){
     console.log('playing file 1');
@@ -45,10 +44,10 @@ function configured(){
 function randomMedia(){
   let newFile = true;
   while (newFile){
-    let randMed = Math.floor((Math.random() * dirList.list.length));
+    let randMed = Math.floor((Math.random() * BS.localFileList.length));
     console.log(randMed);
-    if(currentFile != dirList.list[randMed]){
-      BS.playFile(dirList.list[randMed]);
+    if(BS.currentFile != BS.localFileList[randMed]){
+      BS.playFile(BS.localFileList[randMed]);
       newFile = false;
     }
   }
@@ -71,7 +70,7 @@ function mediaEnded(){
 }
 
 function indexLog(arg){
-    if(ilog == true){
-      console.log(arg);
-    }
+  if(ilog == true){
+    console.log(arg);
   }
+}

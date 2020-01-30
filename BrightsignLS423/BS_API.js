@@ -54,7 +54,7 @@ class BS_API{
 		this.dgramMessage = 'abc';
 		this.receiver = this.dgram.createSocket('udp4');
 		this.mediaEndFlag = false;
-
+		this.currentFile = "";
 		this.fs = require('fs');
 		this.mediaTypes = ['MPG','WMV','MOV','MP4','VOB','TS','MP3','WAV'];
 
@@ -250,6 +250,7 @@ class BS_API{
 
 	playFile(arg){
 		this.dgramSend("file " + arg);
+		this.currentFile = arg;
 	}
 
 	setVolume(arg){
