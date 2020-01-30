@@ -73,8 +73,7 @@ The Express server can also be the basis for more complex API functionality.
 ### brightsign
 * update the firmware on the BS
 * remove the .example suffixes from the the autorun and config files
-* update network info in config.txt (lines 17, 25, 28, 31, 39) and passwords in autorun.brs (lines 46, 61)
-* update additional params in the config file as necessary
+* update network info, password, and additional params as necessary in config.txt
 * drag all of contents of the BrightsignLS423 directory to the SD card
 * if you are not syncing files via the media server, put your media files onto the SD manually.
 
