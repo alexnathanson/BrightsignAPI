@@ -162,13 +162,13 @@ function batchCommand(callback){
 
 //show IPs on all connected screens for 30 seconds
 function ipFreely(aHost){
-  console.log('ip freely');
+  //console.log('ip freely');
   sendPost("global","ip", aHost);
 }
 
 //send the message
 function sendPost(aType, aMess, aHost){
-  console.log(aType + " : " + aMess);
+  console.log(aType + " : " + aMess, aHost);
 
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/global", true);
