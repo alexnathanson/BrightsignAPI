@@ -4,6 +4,8 @@ let express = require('express');
 const fs = require('fs');
 let bodyParser = require("body-parser");
 
+const http = require('http')
+
 let app = express.createServer();
 //let app = express
 //app.createServer();
@@ -30,15 +32,28 @@ app.post('/node/deviceInfo/checkin/global',function(req,res){
 
 app.listen(process.env.PORT);
 
+readFile();
 
-fs.readFile(fileName, (err, data) => {
-    if (err) throw err;
-    netInfo = JSON.parse(data);
-    //console.log(netInfo[0]);
-});
+function readFile(){
+  fs.readFile(fileName, (err, data) => {
+      if (err) throw err;
+      netInfo = JSON.parse(data);
+      //console.log(netInfo[0]);
+  });
+}
+
+function writeFile(newStuff){
+  fs.writeFile(fileName, newStuff, (err) => {
+        if (err) throw err;
+        console.log('Data written to file');
+    });
+}
 
 //check the existing file and up entry or add new entry
 function findReplace(data){
+
+  readFile();
+
   let exists = false;
 
   for(let n=0; n<netInfo.length; n++){
@@ -57,14 +72,15 @@ function findReplace(data){
   //console.log(netInfo);
 
   let newData = JSON.stringify(netInfo, null, 2);
-  fs.writeFile(fileName, newData, (err) => {
+  /*fs.writeFile(fileName, newData, (err) => {
       if (err) throw err;
       console.log('Data written to file');
-  });
+  });*/
+
+  writeFile(newData);
 }
 
 /* added 1/29 */
-const http = require('http')
 
 //send the message
 function sendPost(aType, aMess, anIp){

@@ -42,19 +42,19 @@ There are three main components to this system.
 
 ### Trouble shooting and diagnostic functions
 * displays IP address on screen by default
-* enables diagnostic console on port 3000 (Chrome browsers only)
-	* This allows you to manually work with the BS_API class directly if accessible end points haven't been established.
+* Chrome diagnostic console on port 3000 (Chrome browsers only)
+	* This allows you to see error messages printed to the console and manually work with the BS_API class directly if accessible end points haven't been established.
 	* some frequently used commands:
 		* restart = BS.reboot()
 		* volume = setVolume(an int from 0-100)
 		* play a file = playFile('the filename in quotes')
 		* turn the mask zone on/off = maskIt(boolean)
-* ssh
-* telnet
+* ssh (this must be enable via the config file if needed)
+* telnet (this must be enable via the config file if needed)
 
 ### multiple zones
-* multiple zones for masking can be enable via the config file
-* presently the layered zone is a PNG image, but it could easily be changed to a video
+* multiple zones for masking/ overlays can be enable via the config file and triggered via the "mask true" UDP message or the maskIt(true) function in the API
+* presently the layered zone is a PNG image, but it could easily be changed to a video or other content
 
 ### Syncing media content to server directory
 * continuously checks server directory for changes
@@ -67,38 +67,44 @@ There are three main components to this system.
 html control interface on port 8000
 
 <p>
-The control interface uses a Node Express server (controlInterfaceExpress.js) to serve the files in the controlInterface directory
-</p>
-<p>
-The Express server can also be the basis for more complex API functionality.
+The control interface uses a Node Express server (controlInterfaceExpress.js) to serve the files in the controlInterface directory. This script also create the HTTP end points for the api and can be accessed by other devices on the network. Future work should be done to redesign and reorganize these end points.
 </p>
 
-### Installation Instructions
+### Brightsign Installation Instructions
 
-### brightsign
 * update the firmware on the BS
-* remove the .example suffixes from the the autorun and config files
+* remove the .example suffix from the config file
 * update network info, password, and additional params as necessary in config.txt
 * drag all of contents of the BrightsignLS423 directory to the SD card
 * if you are not syncing files via the media server, put your media files onto the SD manually.
 
 ## Media Server 
-There are 2 main functions of the media server machine 1) distribute media content to the media players and 2) collect IPs from the media players for API interaction and trouble shooting purposes.
+The media server is not necessary for the API to run, but adds usefule additional functionality. The code included in the server directory will require adapting to your specific server configuration. There are 2 main functions of the media server machine:
+* 1) Distribute media content to the media players
+* 2) Collect IPs from the media players for API interaction and trouble shooting purposes.
+* 3) Interface displaying networked devices with links to API interface for that particular device.
 <p>
 The server must have a static IP, which must be listed in the BS config file.
 </p>
 
-### Media Distribution
+### 1) Media Distribution
+The download system on the Brightsign parse the directory on the server via a GET request. No additional code is needed on the server side for the distribution to work.
 * This has been tested with a generic Windows IIS setup
-* must enable directory browsing
-* place media files on server directory named "media" within a directory with the name of the device ID
+* Must enable directory browsing.
+* Place media files on server directory named "media" within a directory with the name of the device ID at the root server level.
 	* root/[deviceID]/media
 
-### IP Collector
+### 2) IP Collector
 * The brightsign posts its mac address and ip address to the end point specified in postIP.js
 * You can setup the end points on the server however you see fit. This repository includes 2 examples you could implement.
 	* standalone Node JS app
 	* iisnode app
+* Presently global commands sent from the server interface are routed through this script to avoid CORS errors.
+
+### 3) Server Interface
+* Displays all the networked devices.
+* If the IP collector hasn't be established, you would need to enter the device info manually.
+* Presently global commands, like show IPs, are routed through the IP collector script to avoid CORS errors.
 
 ## Possible future additions
 * redesign all the ends points not that the system is technically working
