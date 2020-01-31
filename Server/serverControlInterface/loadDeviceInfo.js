@@ -163,15 +163,15 @@ function batchCommand(callback){
 //show IPs on all connected screens for 30 seconds
 function ipFreely(aHost){
   //console.log('ip freely');
-  sendPost("global","ip", aHost);
+  sendPost("ip", aHost, 'global');
 }
 
 //send the message
-function sendPost(aType, aMess, aHost){
+function sendPost(aType, aMess, endPoint){
   console.log(aType + " : " + aMess, aHost);
 
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/global", true);
+  xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/" + endPoint, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     [aType] : aMess})

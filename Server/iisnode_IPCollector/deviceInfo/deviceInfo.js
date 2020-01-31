@@ -27,7 +27,7 @@ app.post('/node/deviceInfo/checkin/ip',function(req,res){
 app.post('/node/deviceInfo/checkin/global',function(req,res){
   console.log('global!');
   console.log(req.body);
-  sendPost('global','ip',req.body.global);
+  sendPost('global','ip',req.body.ip);
   res.end("global command sent");
 });
 
