@@ -168,7 +168,7 @@ function ipFreely(aHost){
 
 //send the message
 function sendPost(aType, aMess, endPoint){
-  console.log(aType + " : " + aMess, aHost);
+  console.log(aType + " : " + aMess, endPoint);
 
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/" + endPoint, true);

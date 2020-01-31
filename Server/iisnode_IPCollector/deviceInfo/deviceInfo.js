@@ -105,7 +105,8 @@ function sendPost(aType, aMess, anIp){
     console.log(`statusCode: ${res.statusCode}`)
 
     res.on('data', d => {
-      process.stdout.write(d)
+      //process.stdout.write(d)
+      process.env.PORT
     })
   })
 
