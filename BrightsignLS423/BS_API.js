@@ -41,9 +41,15 @@ class BS_API{
 		this.displayIP = true;
 		this.ticker = new BSTicker(this.tickerX,this.tickerY, this.tickerW,this.tickerH);
 
+		this.VideoOutputClass = require("@brightsign/videooutput");
+		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
+
+		this.VideoModeConfigurationClass = require("@brightsign/videomodeconfiguration");
+		this.videoConfig = new this.VideoModeConfigurationClass();
+
   	/*******NODE JS Modules******************************************************/
   		this.os = require( 'os' );
-		this.networkInterfaces = this.os.networkInterfaces( );
+		this.networkInterfaces = this.os.networkInterfaces();
   		this.myIP= this.networkInterfaces.eth0[0]['address'];
   		this.myMAC = this.networkInterfaces.eth0[0]['mac'];
 
@@ -85,6 +91,19 @@ class BS_API{
 	    this.ilog = false;
 	    this.remList = [];
 	    this.getRemList;//function to retrieve remote media file list
+	/*****media details***************/
+		/*this.ls423Resolutions = ["640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i","720x576x50p",
+								"640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i", "720x576x50p","800x600x60p",
+								"800x600x75p","800x1280x60p","848x480x60p","960x960x60p","1024x768x60p","1024x768x75p","1200x1920x60p",
+								"1280x720x23.976p","1280x720x24p","1280x720x25p","1280x720x50p","1280x720x59.94p","1280x720x60p","1280x768x60p",
+								"1280x800x60p","1280x800x75p","1280x960x60p","1280x1024x60p","1280x1024x75p","1360x768x60p","1366x768x60p",
+								"1400x1050x60p","1400x1050x75p","1440x900x60p","1440x900x75p","1440x1080x60p","1440x1088x57p","1600x900x60p",
+								"1600x1200x60p","1680x1050x60p","1728x1296x60p","1920x540x60p","1920x1080x50i","1920x1080x59.94i","1920x1080x60i",
+								"920x1080x23.976p","1920x1080x24p","1920x1080x25p","1920x1080x29.97p","1920x1080x30p","1920x1080x50p",
+								"1920x1080x59.94p","1920x1080x60p","1920x1200x50p","1920x1200x60p"];*/
+		this.resolutions = "";
+		this.fileResolution = "";
+		this.location = "";
 	}
 
 	initialize(callback){
@@ -366,6 +385,61 @@ class BS_API{
  		this.configDict[aKey]=aValue;
 	}
 
+	commentOutConfigValue(aKey){
+		let configFileRows   = this.configString.split('\n');
+	    let commentString;
+      	//iterate through each line
+        configFileRows.forEach((aRow)=>{
+
+        	//get the key and remove the spaces
+        	if(aRow.split(' = ')[0].replace(/\s/g, '') == aKey){
+        		commentString = aRow;
+        		//break;
+        	}
+        });
+		this.configString = this.configString.replace(commentString, '#'+commentString);
+
+		//the arrow function is necessary because the asynchronous writeFile method would change the scope without it
+		this.fs.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
+		    if (err) return console.log(err);
+		     // success case, the file was saved
+	    	this.logConfig(this.configFilePath + ' commented out!');
+		 });
+	}
+
+	commentInConfigValue(aKey){
+
+	     let configFileRows   = this.configString.split('\n');
+	     let uncommentString;
+      	//iterate through each line
+        configFileRows.forEach((aRow)=>{
+
+        	//get the key and remove the spaces
+        	if(aRow.split(' = ')[0].replace(/\s/g, '') == "#"+aKey){
+        		uncommentString = aRow;
+        		//break;
+        	}
+        });
+
+      	this.configString = this.configString.replace(uncommentString, uncommentString.slice(1));
+
+      	this.fs.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
+		    if (err) return console.log(err);
+		     // success case, the file was saved
+	    	this.logConfig(this.configFilePath + ' commented in!');
+		 });
+    }
+
+    newConfigLine(aLine){
+    	this.configString = this.configString + "\n"+aLine;
+
+    	this.fs.writeFile(this.configFilePath, this.configString, 'utf8', (err)=> {
+		    if (err) return console.log(err);
+		     // success case, the file was saved
+	    	this.logConfig(this.configFilePath + ' commented in!');
+		 });
+    }
+
 	logConfig(toLog){
 		if(this.logC){
 			console.log(toLog);
@@ -550,6 +624,47 @@ class BS_API{
 
     }
   }
+
+
+/* enables parsing the file name if structured like: LOCATION_FILENAME_RESOLUTION.formatsuffix
+ for example room34_MyCoolVideo_1920x1080x60p.mov*/
+	parseFileName(aString){
+
+	  if (aString == undefined || aString === undefined){
+	    this.location = 'unknown';
+	  } else {
+	    let parsedName = aString.split("_");
+	    //console.log(parsedName);
+	    //location
+	    if(parsedName[0].toLowerCase().includes('bay')){
+	      this.location =  parsedName[0];
+	    } else {
+	      this.location = 'Bay unknown';
+	    }
+
+	    //remove suffix
+	    for (let mT = 0;mT<this.mediaTypes.length;mT++){
+	      if(parsedName[parsedName.length-1].includes(this.mediaTypes[mT].toLowerCase())){
+	        parsedName[parsedName.length-1] = parsedName[parsedName.length-1].slice(0,(-1*this.mediaTypes[mT].length)-1);
+	        //console.log(parsedName);
+	        break;
+	      }
+	    }
+	    //resolution
+	    for(let r = 0; r < this.ls423Resolutions.length;r++){
+	      if(parsedName[parsedName.length-1] == this.ls423Resolutions[r]){
+	        this.fileResolution = parsedName[parsedName.length-1];
+	        console.log(this.fileResolution);
+	        //check if it should update based on filename
+	        if(this.configDict.parseFileName == true && this.fileResolution != GETRESOLUTION){
+	        	this.configDict.video_output_mode = this.fileResolution;
+	        	this.reboot();
+	        }
+	        break;
+	      }
+	    }
+	  }
+	}
 
 }
 

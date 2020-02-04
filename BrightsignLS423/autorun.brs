@@ -33,13 +33,15 @@ end function
 function configureNetwork()
 	nc = CreateObject("roNetworkConfiguration", 0)
 	if m.params["ip_mode"] = "static" then
-        nc.SetIP4Address(m.params["ip"])
-        if Type(m.params["netmask"]) <> "Invalid" then
-		    nc.SetIP4Netmask(m.params["netmask"])
-	    end if
-	    if Type(m.params["gateway"]) <> "Invalid" then
-		    nc.SetIP4Gateway(m.params["gateway"])
-	    end if    
+		if Type(m.params["ip"]) <> "Invalid" then
+	        nc.SetIP4Address(m.params["ip"])
+	        if Type(m.params["netmask"]) <> "Invalid" then
+			    nc.SetIP4Netmask(m.params["netmask"])
+		    end if
+		    if Type(m.params["gateway"]) <> "Invalid" then
+			    nc.SetIP4Gateway(m.params["gateway"])
+		    end if  
+		end if  
     else
         nc.SetDHCP()
     end if
@@ -242,7 +244,7 @@ sub main()
 	' Configure networking if included in config
 
 	'if Type(m.params["ip"]) <> "Invalid" then
-	configureNetwork()
+		configureNetwork()
 	'end if
 
 	' Turn on servers
