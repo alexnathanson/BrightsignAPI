@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.3'; //version
+		this.api = '0.0.4'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
