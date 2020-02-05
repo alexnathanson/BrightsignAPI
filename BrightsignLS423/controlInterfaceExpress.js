@@ -114,5 +114,9 @@ function globalCommand(message){
       BS.hideIP();
       console.log('clear IP');
     },30000);
+  } else if (message == 'reboot'){
+    BS.reboot();
+  } else if (message == 'scene'){
+    
   }
 }

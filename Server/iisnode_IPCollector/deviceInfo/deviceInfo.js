@@ -27,8 +27,26 @@ app.post('/node/deviceInfo/checkin/ip',function(req,res){
 app.post('/node/deviceInfo/checkin/global',function(req,res){
   console.log('global!');
   console.log(req.body);
-  sendPost('global','ip',req.body.ip);
-  res.end("global command sent");
+
+  if(Object.keys(req.body)[0] == "ip"){
+    sendPost('global','ip',req.body.ip);
+  } else if (Object.keys(req.body)[0] == "reboot"){
+    sendPost('comm','reboot',req.body.reboot);
+  } else if (Object.keys(req.body)[0] == "mute"){
+
+  } else if (Object.keys(req.body)[0] == "unmute"){
+
+  } else if (Object.keys(req.body)[0] == "hide"){
+
+  } else if (Object.keys(req.body)[0] == "show"){
+
+  } else if (Object.keys(req.body)[0] == "ipToggle"){
+    sendPost('comm','ip',req.body[0]);
+  } else if (Object.keys(req.body)[0] == "scene"){
+
+  }
+  
+  res.end("global command " + Object.keys(req.body)[0] +" sent");
 });
 
 app.listen(process.env.PORT);
@@ -81,7 +99,6 @@ function findReplace(data){
   writeFile(newData);
 }
 
-/* added 1/29 */
 
 //send the message
 function sendPost(aType, aMess, anIp){

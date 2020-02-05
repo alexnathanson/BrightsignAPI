@@ -6,6 +6,7 @@
     <title>Brightsign Server</title>
     <!--<style> body {padding: 0; margin: 0;} </style>-->
     <link rel="stylesheet" href="controlInterface.css">
+    <script src="GlobalCommands.js"></script>
     <script src="loadDeviceInfo.js"></script>
   </head>
   <body>
@@ -18,16 +19,17 @@
         <div class=red>has not checked in within the last 10 minutes</div>
       </div>
 
-      <button type="button" onclick="batchCommand(ipFreely)">Display All IP</button> 
-      <!-- <button type="button" onclick="batchCommand(mute)">Mute/ Unmute All</button> 
-      <button type="button" onclick="batchCommand(blackout)">Blackout All</button>  
-      <button type="button" onclick="batchCommand(reboot)">Reboot All</button>-->
+<!--       <button type="button" onclick="batchCommand(ipFreely)">Display All IP</button> -->      
    <div class="dropdown">
     <button onclick="dropdown()" class="dropbtn">Global Functions</button>
     <div id="dropdownList" class="dropdown-content">
-      <a href="javascript:batchCommand(ipFreely)">Display All IP</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
+      <a href="javascript:Global.batchCommand(ip)">Flash IP for 30 seconds</a>
+     <!--  <a href="javascript:Global.batchCommand(Global.ipToggle)">show IP</a>
+      <a href="javascript:Global.batchCommand(Global.ipFreely)">hide IP</a> -->
+    <!--   <a href="javascript:Global.batchCommand(mute)">Mute/ Unmute</a>
+      <a href="javascript:Global.batchCommand(hide)">Hide/ Show</a> -->
+      <a href="javascript:Global.batchCommand(reboot)">Reboot</a>
+      <a href="javascript:Global.batchCommand(scene)">Scene 2</a>
     </div>
   </div>
     <div id="bsList"></div>

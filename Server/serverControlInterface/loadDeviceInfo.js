@@ -9,6 +9,8 @@ let refreshRate = 1 * 60 * 1000;
 
 let devData;
 
+let Global = new GlobalCommands();
+
 let minuteWindow = 2;//threshhold for a time to be considered up to date
 let currentTime;
 
@@ -69,7 +71,7 @@ function showData(jsonObj) {
 				myLi.textContent = devKeys[o] + ": " + convertTimestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
 			} else if (devKeys[o]=='ip'){
         //add the ip to the list while we're at it
-        ipList(jsonObj[j][Object.keys(devData[j])][devKeys[o]]);
+        Global.ipList(jsonObj[j][Object.keys(devData[j])][devKeys[o]]);
 				//make it a hyperlink
 				myLi.textContent = devKeys[o] + ": ";
 
@@ -150,7 +152,7 @@ function parseFileName(aString){
 
 /****** For Sending Batch Commands************************/
 
-function ipList(addr){
+/*function ipList(addr){
   allIP.push(addr);
 }
 //send commands to all connected devices
@@ -158,25 +160,51 @@ function batchCommand(callback){
   for (let g = 0; g < allIP.length; g++){
     callback(allIP[g]);
   }
-}
+}*/
 
-//show IPs on all connected screens for 30 seconds
+/*//show IPs on all connected screens for 30 seconds
 function ipFreely(aHost){
   //console.log('ip freely');
-  sendPost("ip", aHost, 'global');
+  sendGlobalPost("ip", aHost);
+}
+
+function reboot(aHost){
+  sendGlobalPost("reboot",aHost);
+}
+
+function mute(aHost){
+
+}
+
+function hide(aHost){
+  sendGlobalPost("hide", aHost);
+}
+
+function hide(aHost){
+  sendGlobalPost("hide", aHost);
+}
+
+
+
+function ipToggle(aHost){
+  sendPost("comm",aHost,"ip");
+}
+
+function scene(aHost){
+  sendPost("comm",aHost, "");
 }
 
 //send the message
-function sendPost(aType, aMess, endPoint){
+function sendGlobalPost(aType, aMess, endPoint){
   console.log(aType + " : " + aMess, endPoint);
 
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/" + endPoint, true);
+  xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/global", true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     [aType] : aMess})
   );
-}
+}*/
 
 /*****drop down menu stuff ****/
 function dropdown() {
