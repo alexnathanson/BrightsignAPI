@@ -9,6 +9,7 @@ let v = {volume: BS.getConfigValue('volume')};
 let f = {file: BS.currentFile};
 let s = {screen: true};
 let i = {id: BS.deviceInfo.deviceUniqueId};
+let aV = {api: BS.api};
 
 //console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
@@ -45,6 +46,10 @@ app.get('/screen',function(req,res){
 
 app.get('/id', function (req, res){
   res.send(i);
+});
+
+app.get('/api', function (req, res){
+  res.send(aV);
 });
 
 app.post('/command',function(req,res){

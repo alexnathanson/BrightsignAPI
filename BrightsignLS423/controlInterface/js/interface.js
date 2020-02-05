@@ -8,7 +8,7 @@ window.onload = function(){
   volVal = document.getElementById("volVal");
   fileN = document.getElementById("fileName");
   title = document.getElementById("title");
-
+  api = document.getElementById("apiVersion");
   //retrieve stored volume value
   sendGet("volume");
   
@@ -16,6 +16,8 @@ window.onload = function(){
   sendGet("file");
 
   sendGet('id');
+
+  sendGet('api');
 
   // Update the volume when the slider is released
   vol.onmouseup = function() {
@@ -60,6 +62,11 @@ function updateFileName(fName){
 function updateTitle(t){
     title.innerHTML = (title.innerHTML + " " + t);
 }
+
+function updateAPI(v){
+    api.innerHTML = (api.innerHTML + " " + v);
+}
+
 
 /****BUTTONS**********/
 function confirmReboot() {
@@ -115,6 +122,8 @@ function sendGet(endPoint){
         location.reload();
       } else if (Object.keys(resObj)[0]=="id"){
         updateTitle(resObj.id);
+      } else if (Object.keys(resObj)[0]=="api"){
+        updateAPI(resObj.api);
       } 
     }
   }
