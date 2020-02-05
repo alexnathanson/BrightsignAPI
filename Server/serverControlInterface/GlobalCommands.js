@@ -56,7 +56,7 @@ class GlobalCommands{
 	  console.log(aType + " : " + aMess);
 
 	  let xhr = new XMLHttpRequest();
-	  xhr.open("POST", "http://" + serverIP +":80" + this.globalEndpoint, true);
+	  xhr.open("POST", "http://" + this.serverIP +":80" + this.globalEndpoint, true);
 	  xhr.setRequestHeader('Content-Type', 'application/json');
 	  xhr.send(JSON.stringify({
 	    [aType] : aMess})
