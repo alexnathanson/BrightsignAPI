@@ -13,7 +13,7 @@ class GlobalCommands{
 	batchCommand(dst){
 	  for (let g = 0; g < this.allIP.length; g++){
 	    //callback(this.allIP[g]);
-	    this.sendGlobalPost(dst, aHost);
+	    this.sendGlobalPost(dst, this.allIP[g]);
 	  }
 	}
 		//show IPs on all connected screens for 30 seconds
