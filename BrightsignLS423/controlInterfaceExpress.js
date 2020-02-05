@@ -67,6 +67,8 @@ app.post('/command',function(req,res){
     sceneChange(req.body.file);
   } else if (Object.keys(req.body)[0] == "global"){
     globalCommand(req.body.global);
+  } else if (Object.keys(req.body)[0] == "mute"){
+    globalCommand(req.body.mute);
   }
 
   res.send();//removed response text
@@ -111,12 +113,14 @@ function globalCommand(message){
     console.log('show IP');
     let gIP = setInterval(()=>{
       clearInterval(gIP);
-      BS.hideIP();
+      if(ipBool == false){
+        BS.hideIP();
+      }
       console.log('clear IP');
     },30000);
-  } else if (message == 'reboot'){
-    BS.reboot();
-  } else if (message == 'scene'){
-    
+  } else if (message == 'mute'){
+
+  } else if (message == 'unmute'){
+
   }
 }
