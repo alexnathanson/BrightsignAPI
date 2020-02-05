@@ -25,7 +25,7 @@ app.post('/node/deviceInfo/checkin/ip',function(req,res){
 
 //added 1/29
 app.post('/node/deviceInfo/checkin/global',function(req,res){
-  console.log('global!');
+  console.log('global!!!');
   console.log(req.body);
 
   if(Object.keys(req.body)[0] == "ip"){
