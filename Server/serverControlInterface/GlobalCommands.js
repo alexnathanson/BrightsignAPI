@@ -16,40 +16,6 @@ class GlobalCommands{
 	    this.sendGlobalPost(dst, this.allIP[g]);
 	  }
 	}
-		//show IPs on all connected screens for 30 seconds
-	/*ipFreely(aHost){
-	  //console.log('ip freely');
-	  this.sendGlobalPost("ip", aHost);
-	}
-
-	reboot(aHost){
-	  this.sendGlobalPost("reboot",aHost);
-	}
-
-	mute(aHost){
-		this.sendGlobalPost("mute",aHost);
-	}
-
-	unmute(aHost){
-		this.sendGlobalPost("unmute", aHost);
-	}
-
-	hide(aHost){
-	  this.sendGlobalPost("hide", aHost);
-	}
-
-	show(aHost){
-	  this.sendGlobalPost("show", aHost);
-	}
-
-
-	ipToggle(aHost){
-	  this.sendPost("comm",aHost,"ip");
-	}
-
-	scene(aHost){
-	  this.sendPost("comm",aHost, "");
-	}*/
 
 	//send the message
 	sendGlobalPost(aType, aMess){

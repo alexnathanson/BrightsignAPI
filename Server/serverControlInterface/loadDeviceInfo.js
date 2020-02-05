@@ -99,7 +99,6 @@ function showData(jsonObj) {
 
 		devList.appendChild(myL);
 	}
-  
 }
 
 function convertTimestamp(t){
@@ -108,7 +107,6 @@ function convertTimestamp(t){
   let dateStr = dateObj.toString();
 
   return dateStr;
-	
 }
 
 function checkFreshness(t){
@@ -126,7 +124,6 @@ function checkFreshness(t){
         isFresh = 1;
     }
   }
-  
 
   return isFresh;
 }
@@ -148,63 +145,6 @@ function parseFileName(aString){
 
   return returnThis;
 }
-
-
-/****** For Sending Batch Commands************************/
-
-/*function ipList(addr){
-  allIP.push(addr);
-}
-//send commands to all connected devices
-function batchCommand(callback){
-  for (let g = 0; g < allIP.length; g++){
-    callback(allIP[g]);
-  }
-}*/
-
-/*//show IPs on all connected screens for 30 seconds
-function ipFreely(aHost){
-  //console.log('ip freely');
-  sendGlobalPost("ip", aHost);
-}
-
-function reboot(aHost){
-  sendGlobalPost("reboot",aHost);
-}
-
-function mute(aHost){
-
-}
-
-function hide(aHost){
-  sendGlobalPost("hide", aHost);
-}
-
-function hide(aHost){
-  sendGlobalPost("hide", aHost);
-}
-
-
-
-function ipToggle(aHost){
-  sendPost("comm",aHost,"ip");
-}
-
-function scene(aHost){
-  sendPost("comm",aHost, "");
-}
-
-//send the message
-function sendGlobalPost(aType, aMess, endPoint){
-  console.log(aType + " : " + aMess, endPoint);
-
-  let xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://172.16.0.4:80/node/deviceInfo/checkin/global", true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify({
-    [aType] : aMess})
-  );
-}*/
 
 /*****drop down menu stuff ****/
 function dropdown() {
