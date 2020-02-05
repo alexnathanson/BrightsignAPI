@@ -41,7 +41,7 @@ app.post('/node/deviceInfo/checkin/global',function(req,res){
   } else if (Object.keys(req.body)[0] == "show"){
 
   } else if (Object.keys(req.body)[0] == "ipToggle"){
-    sendPost('comm','ip',req.body[0]);
+    sendPost('comm','ip',req.body.ipToggle);
   } else if (Object.keys(req.body)[0] == "scene"){
 
   }
