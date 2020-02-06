@@ -9,7 +9,7 @@ class BS_API{
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
-	/*******BS-JS API******************************************************/
+	/*******JS API******************************************************/
 
 		//https://docs.brightsign.biz/display/DOC/system
 		this.SystemClass = require("@brightsign/system");
@@ -20,6 +20,10 @@ class BS_API{
 		this.screenshot = new this.ScreenshotClass();
 		this.screenshotParams = {"fileName":"SD:/controlInterface/images/screen.jpg",
 								"quality":50}; 
+
+
+		this.SystemTimeClass = require("@brightsign/systemtime");
+		this.systemTime = new this.SystemTimeClass();
  
 	/*******BS-JS OBJECTS*************************************************
 		BS-JS Objects are supposedly being replaced with the BS-JS API,
@@ -44,8 +48,13 @@ class BS_API{
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
 
-		this.VideoModeConfigurationClass = require("@brightsign/videomodeconfiguration");
-		this.videoConfig = new this.VideoModeConfigurationClass();
+		/*this.VideoModeConfigurationClass = require("@brightsign/videomodeconfiguration");
+		this.videoConfig = new this.VideoModeConfigurationClass();*/
+
+		//this.videoMode = CreateObject("roVideoMode")
+
+		//this.sync = new BSSyncManager("domain1", "172.16.1.22", 1539);
+		//this.syncBoss = false;
 
   	/*******NODE JS Modules******************************************************/
   		this.os = require( 'os' );
@@ -664,6 +673,10 @@ class BS_API{
 	      }
 	    }
 	  }
+	}
+
+	scheduler(aTime){
+
 	}
 
 }

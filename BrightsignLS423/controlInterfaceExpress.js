@@ -64,11 +64,13 @@ app.post('/command',function(req,res){
   } else if (Object.keys(req.body)[0] == "file"){
     BS.playFile(req.body.file);
   } else if (Object.keys(req.body)[0] == "scene"){
-    sceneChange(req.body.file);
+    sceneChange(req.body.scene);
   } else if (Object.keys(req.body)[0] == "global"){
     globalCommand(req.body.global);
   } else if (Object.keys(req.body)[0] == "mute"){
     globalCommand(req.body.mute);
+  } else if (Object.keys(req.body)[0] == "schedule"){
+    scheduler(req.body.schedule);
   }
 
   res.send();//removed response text
