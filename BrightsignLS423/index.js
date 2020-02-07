@@ -6,6 +6,7 @@ let ilog = true;
 
 let BS = new BS_API();
 
+
 //run first to initialize and configure the API
 BS.loadConfig(configured);
 
@@ -14,7 +15,10 @@ BS.dgramReceive(mediaEnded);
 
 let dirList; //remote directory list
 
-//let currentFile = "";
+
+BS.eventEmitter.on('queue',()=>{
+      scene2();
+});
 
 //once config file has been ingested...
 function configured(){
@@ -58,19 +62,27 @@ function setVolume(arg){
   BS.setVolume(arg); //set live player
 }
 
-function sceneChange(sceneNum){
-  console.log('scene ' + sceneNum);
+function scene2(){
   BS.playFile(BS.localFileList[1]);
   BS.mediaEndFlag = true;
+  
+  console.log('scene 2');
 }
 
 function mediaEnded(){
-  console.log('scene 1');
   BS.playFile(BS.localFileList[0]);
+  console.log('scene 1');
 }
 
 function indexLog(arg){
   if(ilog == true){
     console.log(arg);
   }
+}
+
+function cronIt(){
+  BS.cron.schedule('*/5 * * * *', () => {
+    console.log('running a task every 5 minutes');
+    scene2();
+  });
 }

@@ -379,6 +379,8 @@ sub main()
 			else if msg = "play" then
 				m.video.Seek(0)
 				m.video.Play()
+			else if msg = "seek" then
+				m.video.Seek(right(msg, len(msg)-5).toInt())
             else if left(msg, 7) = "v_delay" then
                 s = msg.GetString()
                 r = CreateObject("roRegex", " ", "")

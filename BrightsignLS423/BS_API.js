@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.4'; //version
+		this.api = '0.0.5'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -101,7 +101,7 @@ class BS_API{
 	    this.remList = [];
 	    this.getRemList;//function to retrieve remote media file list
 	/*****media details***************/
-		/*this.ls423Resolutions = ["640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i","720x576x50p",
+		/*this.resolutions = ["640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i","720x576x50p",
 								"640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i", "720x576x50p","800x600x60p",
 								"800x600x75p","800x1280x60p","848x480x60p","960x960x60p","1024x768x60p","1024x768x75p","1200x1920x60p",
 								"1280x720x23.976p","1280x720x24p","1280x720x25p","1280x720x50p","1280x720x59.94p","1280x720x60p","1280x768x60p",
@@ -113,12 +113,36 @@ class BS_API{
 		this.resolutions = "";
 		this.fileResolution = "";
 		this.location = "";
+
+	/*******Clock***************/
+		this.startMs;// = Date.now();
+        this.startSecs;// = Math.floor(this.startMs / 1000);
+        this.firstOffset;// = 1000 - this.startMs % 1000;
+        this.currentTime  = 0;
+        this.clocker; //the setInterval counting seconds
+        //this.seconds;
+		this.file;//the file to play
+        this.seek = 0;
+        this.atThisTime = 0;
+        this.events = require('events');
+		this.eventEmitter = new this.events.EventEmitter();
+		//this.queues = [];
+		this.schedule = false;
+		this.syncServer = false;//
+		this.syncGroup = ["172.16.1.22","172.16.1.93"];// list of IPs to sync
+
+		this.cron = require('node-cron');
 	}
 
 	initialize(callback){
 		console.log('initializing BS API');
 		//this.loadConfig();//formerly had a call back to configured()
 		console.log(this.configDict);
+
+		if(this.configDict.playbackSync){
+			this.initializeClock();
+			console.log("clock started");
+		}
 
 		this.displayIP = this.configDict.displayIP;
 		//this.postURL = this.configDictionary.postURL;
@@ -279,6 +303,10 @@ class BS_API{
 	playFile(arg){
 		this.dgramSend("file " + arg);
 		this.currentFile = arg;
+	}
+
+	seekFile(arg){
+		this.dgramSend("seek " + arg);
 	}
 
 	setVolume(arg){
@@ -480,7 +508,7 @@ class BS_API{
           this.downloadIndex = 0;
           this.downloadIncrement();
         }
-    }, 10000);
+    }, 30000);
   }
 
 //increments through all the files that need to be downloaded
@@ -675,9 +703,54 @@ class BS_API{
 	  }
 	}
 
-	scheduler(aTime){
+	//update clock info
+    updateClock() {
+    	this.currentTime = Date.now();//Math.floor(Date.now() * 0.001) * 1000;//concactinate seconds
+        //let ms = Date.now();
+        //let secs = Math.floor(ms / 1000);
+        //let dSecs = secs - this.startSecs;
+        //console.log(dSecs);
+        if(this.schedule && this.currentTime >= this.atThisTime){
+        	//this.eventEmitter.emit('queue');//trigger event
+        	this.schedule = false;
+        	console.log("Queued!");
+        }
 
-	}
+        //console.log(this.currentTime);
+    }
+		
+    initializeClock(){
+    	//get the ms offset from an exact second
+		this.startMs = Date.now();
+        //this.startSecs = Math.floor(this.startMs / 1000);
+        this.firstOffset = 1000 - this.startMs % 1000;
+
+        setTimeout(()=> {
+	        this.updateClock();
+	        this.clocker = setInterval(()=>{this.updateClock()}, 1000);//run tick every second
+	    }, this.firstOffset);
+    }
+
+    createQueue(arg){
+    	this.eventEmitter.emit('queue');//trigger event
+
+    	this.atThisTime = arg;
+    	this.schedule = true;
+
+    }
+
+    sendSync(thisTime){
+    	this.createQueue(thisTime);
+    	let queueInfo = new Object();
+		queueInfo['queue'] = thisTime;
+
+    	for(let c = 0; c < this.syncGroup.length; c++){
+    		if(this.syncGroup[c] != this.myIP){
+    			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");
+    			console.log("send sync");
+    		}
+    	}
+    }
+
 
 }
-

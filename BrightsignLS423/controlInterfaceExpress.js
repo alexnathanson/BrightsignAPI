@@ -53,7 +53,6 @@ app.get('/api', function (req, res){
 });
 
 app.post('/command',function(req,res){
-  console.log(req.body);
 
   if(Object.keys(req.body)[0] == "volume"){
     setVolume(req.body.volume);
@@ -63,8 +62,8 @@ app.post('/command',function(req,res){
     controlPlayback(req.body.playback);
   } else if (Object.keys(req.body)[0] == "file"){
     BS.playFile(req.body.file);
-  } else if (Object.keys(req.body)[0] == "scene"){
-    sceneChange(req.body.scene);
+  } else if (Object.keys(req.body)[0] == "queue"){
+    BS.createQueue(req.body.queue);
   } else if (Object.keys(req.body)[0] == "global"){
     globalCommand(req.body.global);
   } else if (Object.keys(req.body)[0] == "mute"){
@@ -73,7 +72,9 @@ app.post('/command',function(req,res){
     scheduler(req.body.schedule);
   }
 
-  res.send();//removed response text
+  res.send();//removed response tex
+
+  console.log(req.body);
 
 });
 
