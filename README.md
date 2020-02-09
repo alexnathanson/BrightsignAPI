@@ -14,7 +14,8 @@ There are three main components to this system.
 	Presently, this system works with video files ("MPG","WMV","MOV","MP4","VOB","TS") and MP3 files only. Not WAV files. In the future this functionality could be added via a roAudioPlayer and some logic to seperate out content types.
 </p>
 
-![alt text](/references/BS_API_illustration_Feb5_2020.jpg)
+![API Illustration](/references/BS_API_illustration_Feb5_2020.jpg)
+
 ## Brightsign APIs as a class - BS_API.js
 * the BS_API class combines a variety of BS tools with Node modules to create a more complete way to interact with the BS with a standardized syntax
 
