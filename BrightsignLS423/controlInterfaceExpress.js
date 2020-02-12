@@ -63,6 +63,7 @@ app.post('/command',function(req,res){
   } else if (Object.keys(req.body)[0] == "file"){
     BS.playFile(req.body.file);
   } else if (Object.keys(req.body)[0] == "queue"){
+    //console.log("queue received");
     BS.createQueue(req.body.queue);
   } else if (Object.keys(req.body)[0] == "global"){
     globalCommand(req.body.global);

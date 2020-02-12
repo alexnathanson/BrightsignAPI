@@ -98,7 +98,7 @@ The download system on the Brightsign parse the directory on the server via a GE
 * The brightsign posts its mac address and ip address to the end point specified in postIP.js
 * You can setup the end points on the server however you see fit. This repository includes 2 examples you could implement.
 	* standalone Node JS app
-	* iisnode app
+	* iisnode app (logs available at IPADRRESS/node/deviceInfo/iisnode/)
 * Presently global commands sent from the server interface are routed through this script to avoid CORS errors.
 
 ### 3) Server Interface

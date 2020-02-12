@@ -13,6 +13,8 @@ BS.loadConfig(configured);
 //spin up UDP receiver port for media end events
 BS.dgramReceive(mediaEnded);
 
+BS.syncGroup = [/*"172.16.0.104","172.16.0.105","172.16.0.106","172.16.0.107",*/"172.16.0.108","172.16.0.109","172.16.0.110"];
+
 let dirList; //remote directory list
 
 
@@ -63,14 +65,18 @@ function setVolume(arg){
 }
 
 function scene2(){
+  BS.maskIt(true);
   BS.playFile(BS.localFileList[1]);
+  BS.playback("pause");
   BS.mediaEndFlag = true;
   
   console.log('scene 2');
 }
 
 function mediaEnded(){
-  BS.playFile(BS.localFileList[0]);
+  BS.maskIt(false);
+  //BS.playFile(BS.localFileList[0]);
+  BS.playback("resume");
   console.log('scene 1');
 }
 

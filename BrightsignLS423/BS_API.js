@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.5'; //version
+		this.api = '0.0.6'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -75,7 +75,7 @@ class BS_API{
 
 
 	/******Post Device Info******************/
-		this.postInterval = 2 * 60000;//2 minutes * 60000 to convert to unix time
+		this.postInterval = 3 * 60000;//3 minutes * 60000 to convert to unix time
 		this.postTimer;
 
 	/*****Config File***********************/
@@ -129,7 +129,7 @@ class BS_API{
 		//this.queues = [];
 		this.schedule = false;
 		this.syncServer = false;//
-		this.syncGroup = ["172.16.1.22","172.16.1.93"];// list of IPs to sync
+		this.syncGroup = [];// list of IPs to sync
 
 		this.cron = require('node-cron');
 	}
@@ -711,7 +711,7 @@ class BS_API{
         //let dSecs = secs - this.startSecs;
         //console.log(dSecs);
         if(this.schedule && this.currentTime >= this.atThisTime){
-        	//this.eventEmitter.emit('queue');//trigger event
+        	this.eventEmitter.emit('queue');//trigger event
         	this.schedule = false;
         	console.log("Queued!");
         }
@@ -732,14 +732,17 @@ class BS_API{
     }
 
     createQueue(arg){
-    	this.eventEmitter.emit('queue');//trigger event
+    	console.log('got queue ' + arg);
 
-    	this.atThisTime = arg;
-    	this.schedule = true;
-
+    	if(arg == 'now'){
+    		this.eventEmitter.emit('queue');//trigger event
+    	} else {
+			this.atThisTime = arg;
+    		this.schedule = true;
+    	}
     }
 
-    sendSync(thisTime){
+    sendTimedSync(thisTime){
     	this.createQueue(thisTime);
     	let queueInfo = new Object();
 		queueInfo['queue'] = thisTime;
@@ -748,9 +751,24 @@ class BS_API{
     		if(this.syncGroup[c] != this.myIP){
     			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");
     			console.log("send sync");
+    			//console.log(queueInfo)
     		}
     	}
     }
 
+    sendSync(){
+    	let thisTime = "now";
+    	this.createQueue(thisTime);
+    	let queueInfo = new Object();
+		queueInfo['queue'] = thisTime;
+
+    	for(let c = 0; c < this.syncGroup.length; c++){
+    		if(this.syncGroup[c] != this.myIP){
+    			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");
+    			console.log("send sync");
+    			//console.log(queueInfo)
+    		}
+    	}
+    }
 
 }
