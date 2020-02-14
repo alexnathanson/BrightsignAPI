@@ -134,35 +134,29 @@ preload FILENAME SEEKPOINT
 GET<br>
 Example: http://192.168.1.83:8000/volume<br>
 
-/volume<br>
-* returns the volume<br>
-/file<br>
-* returns the local file list<br>
-/screen<br>
-* captures a new screenshot<br>
-/id<br>
-* returns the device ID/ serial number<br>
-/api<br>
-* returns the BS_API version number<br>
+* /volume<br>
+	* returns the volume<br>
+* /file<br>
+	* returns the local file list<br>
+* /screen<br>
+	* captures a new screenshot<br>
+* /id<br>
+	* returns the device ID/ serial number<br>
+* /api<br>
+	* returns the BS_API version number<br>
 
-POST<br>
+POST
 
-{volume: INT}<br>
-{comm: VALUE}<br>
-<p>
-* reboot = reboots device<br>
-* ip = toggles ip display<br>
-</p>
-{playback: VALUE}<br>
-<p>
-* pause = pauses video<br>
-* play = plays file from position 0<br>
-* resume = plays file from wherever it left off when paused<br>
-</p>
-{file: FILENAME}<br>
-{queue: [MS,FILENAME]}<br>
-{triggerSync: [MS,FILENAME]}<br>
-{global: VALUE}<br>
-<p>
-* ip = toggle IP on for 30 seconds<br>
-</p>
+* {volume: INT}<br>
+* {comm: VALUE}<br>
+	* reboot = reboots device<br>
+	* ip = toggles ip display<br>
+*{playback: VALUE}<br>
+	* pause = pauses video<br>
+	* play = plays file from position 0<br>
+	* resume = plays file from wherever it left off when paused<br>
+* {file: FILENAME}<br>
+* {queue: [MS,FILENAME]}<br>
+* {triggerSync: [MS,FILENAME]}<br>
+* {global: VALUE}<br>
+	* ip = toggle IP on for 30 seconds<br>
