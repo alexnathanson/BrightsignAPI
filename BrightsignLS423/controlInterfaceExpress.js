@@ -65,13 +65,17 @@ app.post('/command',function(req,res){
   } else if (Object.keys(req.body)[0] == "queue"){
     //console.log("queue received");
     BS.createQueue(req.body.queue);
+  } else if (Object.keys(req.body)[0] == "triggerSync"){
+    console.log("trigger received");
+    console.log("req.body");
+    BS.sendSync(req.body.triggerSync);
   } else if (Object.keys(req.body)[0] == "global"){
     globalCommand(req.body.global);
-  } else if (Object.keys(req.body)[0] == "mute"){
+  } /*else if (Object.keys(req.body)[0] == "mute"){
     globalCommand(req.body.mute);
-  } else if (Object.keys(req.body)[0] == "schedule"){
+  }*/ /*else if (Object.keys(req.body)[0] == "schedule"){
     scheduler(req.body.schedule);
-  }
+  }*/
 
   res.send();//removed response tex
 
@@ -122,9 +126,9 @@ function globalCommand(message){
       }
       console.log('clear IP');
     },30000);
-  } else if (message == 'mute'){
+  } /*else if (message == 'mute'){
 
   } else if (message == 'unmute'){
 
-  }
+  }*/
 }

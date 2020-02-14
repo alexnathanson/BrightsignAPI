@@ -70,7 +70,7 @@ function scene2(){
   //setTimeout(()=>{
     //this might need to be a callback
     BS.mediaEndFlag = true;
-    BS.playFile(BS.localFileList[1]);
+    BS.playFile(BS.queueFile);
     console.log('scene 2');
   //},5000);
 }

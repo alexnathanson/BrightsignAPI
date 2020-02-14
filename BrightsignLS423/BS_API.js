@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.6'; //version
+		this.api = '0.0.7'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -121,9 +121,9 @@ class BS_API{
         this.currentTime  = 0;
         this.clocker; //the setInterval counting seconds
         //this.seconds;
-		this.file;//the file to play
         this.seek = 0;
-        this.atThisTime = 0;
+        this.atThisTime = 0; 
+        this.queueFile = "";
         this.events = require('events');
 		this.eventEmitter = new this.events.EventEmitter();
 		//this.queues = [];
@@ -754,22 +754,21 @@ class BS_API{
 	    }, this.firstOffset);
     }
 
-    createQueue(arg){
-    	console.log('got queue ' + arg);
-
+    createQueue(aFile, aTime){
+    	console.log('got queue ' + aTime);
+    	this.queueFile = aFile;
     	if(arg == 'now'){
     		this.eventEmitter.emit('queue');//trigger event
     	} else {
-			this.atThisTime = arg;
+			this.atThisTime = aTime;
     		this.schedule = true;
     	}
     }
 
-    sendTimedSync(thisTime){
+    sendTimedSync(thisFile, thisTime){
     	this.createQueue(thisTime);
     	let queueInfo = new Object();
-		queueInfo['queue'] = thisTime;
-
+		queueInfo['queue'] = [thisTime, thisFile];
     	for(let c = 0; c < this.syncGroup.length; c++){
     		if(this.syncGroup[c] != this.myIP){
     			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");
@@ -779,12 +778,11 @@ class BS_API{
     	}
     }
 
-    sendSync(){
+    sendSync(thisFile){
     	let thisTime = "now";
     	this.createQueue(thisTime);
     	let queueInfo = new Object();
-		queueInfo['queue'] = thisTime;
-
+		queueInfo['queue'] = [thisTime, thisFile];
     	for(let c = 0; c < this.syncGroup.length; c++){
     		if(this.syncGroup[c] != this.myIP){
     			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");

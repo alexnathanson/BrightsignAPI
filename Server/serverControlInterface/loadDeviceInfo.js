@@ -11,7 +11,7 @@ let devData;
 
 let Global = new GlobalCommands();
 
-let minuteWindow = 2;//threshhold for a time to be considered up to date
+let minuteWindow = 3;//threshhold for a time to be considered up to date
 let currentTime;
 
 let classNames = ['green','yellow','red'];

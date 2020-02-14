@@ -130,3 +130,33 @@ mask
 preload FILENAME SEEKPOINT
 
 ### HTTP Endpoints
+
+GET
+Example: http://192.168.1.83:8000/volume
+
+/volume
+* returns the volume
+/file
+* returns the local file list
+/screen
+* captures a new screenshot
+/id
+* returns the device ID/ serial number
+/api
+* returns the BS_API version number
+
+POST
+
+{volume: INT}
+{comm: VALUE}
+* reboot = reboots device
+* ip = toggles ip display
+{playback: VALUE}
+* pause = pauses video
+* play = plays file from position 0
+* resume = plays file from wherever it left off when paused
+{file: FILENAME}
+{queue: [MS,FILENAME]}
+{triggerSync: [MS,FILENAME]}
+{global: VALUE}
+* ip = toggle IP on for 30 seconds

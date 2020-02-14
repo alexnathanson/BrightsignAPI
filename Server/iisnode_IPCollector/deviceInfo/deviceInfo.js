@@ -88,7 +88,7 @@ function findReplace(data){
     console.log("new entry");
     netInfo.push(data);
   }
-  //console.log(netInfo);
+  console.log(netInfo);
 
   let newData = JSON.stringify(netInfo, null, 2);
   /*fs.writeFile(fileName, newData, (err) => {
