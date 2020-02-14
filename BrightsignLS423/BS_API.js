@@ -754,21 +754,23 @@ class BS_API{
 	    }, this.firstOffset);
     }
 
-    createQueue(aFile, aTime){
-    	console.log('got queue ' + aTime);
-    	this.queueFile = aFile;
-    	if(arg == 'now'){
+    createQueue(qInfo){
+    	console.log('got queue');
+    	console.log(qInfo);
+    	this.queueFile = qInfo[1];
+    	if(qInfo[0] == 'now'){
     		this.eventEmitter.emit('queue');//trigger event
     	} else {
-			this.atThisTime = aTime;
+			this.atThisTime = qInfo[0];
     		this.schedule = true;
     	}
     }
 
     sendTimedSync(thisFile, thisTime){
-    	this.createQueue(thisTime);
+    	this.createQueue([thisTime,thisFile);
     	let queueInfo = new Object();
-		queueInfo['queue'] = [thisTime, thisFile];
+		queueInfo['queue'] = thisTime;
+		queueInfo['file'] = thisFile;
     	for(let c = 0; c < this.syncGroup.length; c++){
     		if(this.syncGroup[c] != this.myIP){
     			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");
@@ -780,9 +782,10 @@ class BS_API{
 
     sendSync(thisFile){
     	let thisTime = "now";
-    	this.createQueue(thisTime);
+    	this.createQueue([thisTime,thisFile]);
     	let queueInfo = new Object();
-		queueInfo['queue'] = [thisTime, thisFile];
+		queueInfo['queue'] = thisTime;
+		queueInfo['file'] = thisFile;
     	for(let c = 0; c < this.syncGroup.length; c++){
     		if(this.syncGroup[c] != this.myIP){
     			this.postHTTP(queueInfo,"http://"+this.syncGroup[c]+":8000/command");

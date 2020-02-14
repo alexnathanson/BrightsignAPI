@@ -150,13 +150,13 @@ POST<br>
 {volume: INT}<br>
 {comm: VALUE}<br>
 * reboot = reboots device<br>
-* ip = toggles ip display<br>
+* ip = toggles ip display
 {playback: VALUE}<br>
 * pause = pauses video<br>
 * play = plays file from position 0<br>
-* resume = plays file from wherever it left off when paused<br>
+* resume = plays file from wherever it left off when paused
 {file: FILENAME}<br>
 {queue: [MS,FILENAME]}<br>
 {triggerSync: [MS,FILENAME]}<br>
 {global: VALUE}<br>
-* ip = toggle IP on for 30 seconds<br>
+* ip = toggle IP on for 30 seconds

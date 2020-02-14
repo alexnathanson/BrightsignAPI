@@ -63,8 +63,8 @@ app.post('/command',function(req,res){
   } else if (Object.keys(req.body)[0] == "file"){
     BS.playFile(req.body.file);
   } else if (Object.keys(req.body)[0] == "queue"){
-    //console.log("queue received");
-    BS.createQueue(req.body.queue);
+    console.log("queue received");
+    BS.createQueue([req.body.queue,req.body.file]);
   } else if (Object.keys(req.body)[0] == "triggerSync"){
     console.log("trigger received");
     console.log("req.body");
@@ -75,7 +75,10 @@ app.post('/command',function(req,res){
     globalCommand(req.body.mute);
   }*/ /*else if (Object.keys(req.body)[0] == "schedule"){
     scheduler(req.body.schedule);
-  }*/
+  }*/else {
+    console.log("else");
+    console.log(req.body);
+  }
 
   res.send();//removed response tex
 
