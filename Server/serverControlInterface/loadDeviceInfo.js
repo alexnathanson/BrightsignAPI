@@ -44,6 +44,7 @@ function showData(jsonObj) {
 
 	let devList =  document.getElementById("bsList");
 
+  let amtFresh = 0;
   // As long as <ul> has a child node, remove it
   while (devList.hasChildNodes()) {  
     devList.removeChild(devList.firstChild);
@@ -54,6 +55,10 @@ function showData(jsonObj) {
 		let myH1 = document.createElement('h3');
 
     myH1.className = classNames[checkFreshness(jsonObj[j][Object.keys(devData[j])]['time'])];
+
+    if(myH1.className == 'yellow' || myH1.className == 'green'){
+      amtFresh++;
+    }
 
     myH1.textContent = parseFileName(jsonObj[j][Object.keys(devData[j])]['file']) + " " +Object.keys(jsonObj[j])[0];
 
@@ -99,6 +104,8 @@ function showData(jsonObj) {
 
 		devList.appendChild(myL);
 	}
+
+  devAmount(amtFresh);
 }
 
 function convertTimestamp(t){
@@ -163,4 +170,10 @@ window.onclick = function(event) {
       }
     }
   }
+}
+
+function devAmount(anAmount){
+  let amount = document.getElementById("amount");
+
+  amount.innerHTML = (amount.innerHTML + " " + anAmount);
 }
