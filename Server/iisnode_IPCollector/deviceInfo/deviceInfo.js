@@ -71,7 +71,7 @@ function writeFile(newStuff){
 //check the existing file and up entry or add new entry
 function findReplace(data){
 
-  readFile();
+  //readFile();
 
   let exists = false;
 

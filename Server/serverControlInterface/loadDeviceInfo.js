@@ -5,13 +5,13 @@ let jsonEndpoint = '/node/deviceInfo/deviceInfo.json';
 
 let request = new XMLHttpRequest();
 
-let refreshRate = 1 * 60 * 1000;
+let refreshRate = 2 * 60 * 1000;
 
 let devData;
 
 let Global = new GlobalCommands();
 
-let minuteWindow = 3;//threshhold for a time to be considered up to date
+let minuteWindow = 2;//threshhold for a time to be considered up to date
 let currentTime;
 
 let classNames = ['green','yellow','red'];

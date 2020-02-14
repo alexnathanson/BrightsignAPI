@@ -151,12 +151,12 @@ POST
 * {comm: VALUE}<br>
 	* reboot = reboots device<br>
 	* ip = toggles ip display<br>
-*{playback: VALUE}<br>
+* {playback: VALUE}<br>
 	* pause = pauses video<br>
 	* play = plays file from position 0<br>
 	* resume = plays file from wherever it left off when paused<br>
 * {file: FILENAME}<br>
-* {queue: [MS,FILENAME]}<br>
+* {queue: MS or "now", file:FILENAME]}<br>
 * {triggerSync: [MS,FILENAME]}<br>
 * {global: VALUE}<br>
 	* ip = toggle IP on for 30 seconds<br>
