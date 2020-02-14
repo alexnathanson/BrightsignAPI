@@ -131,32 +131,32 @@ preload FILENAME SEEKPOINT
 
 ### HTTP Endpoints
 
-GET
-Example: http://192.168.1.83:8000/volume
+GET<br>
+Example: http://192.168.1.83:8000/volume<br>
 
-/volume
-* returns the volume
-/file
-* returns the local file list
-/screen
-* captures a new screenshot
-/id
-* returns the device ID/ serial number
-/api
-* returns the BS_API version number
+/volume<br>
+* returns the volume<br>
+/file<br>
+* returns the local file list<br>
+/screen<br>
+* captures a new screenshot<br>
+/id<br>
+* returns the device ID/ serial number<br>
+/api<br>
+* returns the BS_API version number<br>
 
-POST
+POST<br>
 
-{volume: INT}
-{comm: VALUE}
-* reboot = reboots device
-* ip = toggles ip display
-{playback: VALUE}
-* pause = pauses video
-* play = plays file from position 0
-* resume = plays file from wherever it left off when paused
-{file: FILENAME}
-{queue: [MS,FILENAME]}
-{triggerSync: [MS,FILENAME]}
-{global: VALUE}
-* ip = toggle IP on for 30 seconds
+{volume: INT}<br>
+{comm: VALUE}<br>
+* reboot = reboots device<br>
+* ip = toggles ip display<br>
+{playback: VALUE}<br>
+* pause = pauses video<br>
+* play = plays file from position 0<br>
+* resume = plays file from wherever it left off when paused<br>
+{file: FILENAME}<br>
+{queue: [MS,FILENAME]}<br>
+{triggerSync: [MS,FILENAME]}<br>
+{global: VALUE}<br>
+* ip = toggle IP on for 30 seconds<br>
