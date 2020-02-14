@@ -114,3 +114,19 @@ The download system on the Brightsign parse the directory on the server via a GE
 
 ## Links
 * Brightsign documentation https://docs.brightsign.biz/display/DOC/BrightSign+Documentation
+
+## API Layers
+
+### BS hardware to Node JS via UDP
+
+play
+pause
+resume
+seek
+duration
+volume
+file FILENAME
+mask
+preload FILENAME SEEKPOINT
+
+### HTTP Endpoints

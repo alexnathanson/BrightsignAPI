@@ -269,6 +269,8 @@ sub main()
 	m.video = CreateObject("roVideoPlayer")
 	m.video.SetVideoDelay(150)
     m.video.SetPort(m.mPort)
+    'mRec = CreateObject("roRectangle",0,0,1920,1080)
+    'm.video.SetRectangle(mRec)
 	m.udpReceiver = CreateObject("roDatagramReceiver", 13131)
 	m.UdpSender = CreateObject("roDatagramSender")
 	m.udpReceiver.SetPort(m.mPort)
@@ -280,12 +282,9 @@ sub main()
 	' create and hide the mask
 	' wait for UDP message to show mask
 	if m.params["mask"] = "true" then
-		'r = CreateObject("roRectangle",0,0,1920,1080)
 		m.mask=createobject("roImagePlayer")
-		'm.mask.SetRectangle(r)
-		'make this autodetect file name at a later date
 		m.mask.DisplayFile("mask.png")
-		m.mask.Hide()
+		m.mask.Hide()		
 	end if
 
 	'm.video.PreloadFile(m.videoFile)
@@ -305,7 +304,6 @@ sub main()
 
     'set video player audio output
     m.video.SetVolume(m.params["volume"].toInt())
-    
 
 	if m.params["playback_mode"] <> "normal" then
 		configurePTP()
@@ -379,7 +377,7 @@ sub main()
 			else if msg = "play" then
 				m.video.Seek(0)
 				m.video.Play()
-			else if msg = "seek" then
+			else if left(msg, 4) = "seek" then
 				m.video.Seek(right(msg, len(msg)-5).toInt())
             else if left(msg, 7) = "v_delay" then
                 s = msg.GetString()
@@ -396,13 +394,31 @@ sub main()
 	 			m.video.PlayFile(right(msg, len(msg)-5))
 	 			print right(msg, len(msg)-5)
 	 			' print
+	 			'sendMessage(m.video.GetStreamInfo())
+	 		' to show mask "mask show"
+	 		' to hide mask "mask hide"
 	 		else if left(msg, 4) = "mask" then
-	 			if right(msg, len(msg)-5) = "true" then
+	 			if right(msg, len(msg)-5) = "show" then
 	 				m.mask.Show()
-	 			else if right(msg, len(msg)-5) = "false" then
+	 			else if right(msg, len(msg)-5) = "hide" then
 	 				m.mask.Hide()
 	 			end if
 	 			print msg
+	 		else if msg = "timecode" then
+	 			print m.video.GetPlaybackPosition().ToStr()
+	 			sendUDP("timecode " + m.video.GetPlaybackPosition().ToStr())
+	 		else if msg = "duration" then
+	 			sendUDP("duration " + m.video.GetDuration().ToStr())
+	 		else if left(msg, 7) = "preload"
+	 			pf=CreateObject("roAssociativeArray")
+	 			values = right(msg, len(msg)-8).Tokenize(",")
+				pf["Filename"] = values[0]
+				'pf["FadeInLength"] = 1000
+	 			m.video.PreloadFile(pf)
+	 			m.video.Seek(values[1].toInt())
+	 			m.video.Play()
+	 		'else
+	 			'print msg
             end if
 		end if 
 	end if

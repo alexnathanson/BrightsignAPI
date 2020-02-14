@@ -130,7 +130,8 @@ class BS_API{
 		this.schedule = false;
 		this.syncServer = false;//
 		this.syncGroup = [];// list of IPs to sync
-
+		this.timecode = 0;
+		this.duration = 0;
 		this.cron = require('node-cron');
 	}
 
@@ -255,7 +256,7 @@ class BS_API{
 /*************for receiving event data back from the autorun script**************/
 	dgramReceive(callback){
 		this.receiver.on('error', (err) => {
-		  console.log(`server error:\n${err.stack}`);
+		  console.log(`dgram receiver server error:\n${err.stack}`);
 		  this.receiver.close();
 		});
 
@@ -265,6 +266,14 @@ class BS_API{
 		  if(msg == 'media ended' && this.mediaEndFlag){
 		  	callback();
 		  	this.mediaEndFlag = false;
+		  } else if (msg.includes("timecode")){
+		  	this.timecode = msg.toString().slice(9);
+		  	console.log(this.timecode);
+		  } else if (msg.includes("duration")){
+		  	this.duration = msg.toString().slice(9);
+		  	console.log(this.duration);
+		  } else {
+		  	console.log(msg.toString());
 		  }
 		});
 
@@ -305,6 +314,10 @@ class BS_API{
 		this.currentFile = arg;
 	}
 
+	preload(aFile,seekTime){
+    	this.dgramSend("preload " + aFile + "," + seekTime);
+    }
+
 	seekFile(arg){
 		this.dgramSend("seek " + arg);
 	}
@@ -313,8 +326,18 @@ class BS_API{
 		this.dgramSend("volume " + arg);
 	}
 
-	maskIt(aBool){
-		this.dgramSend("mask " + aBool);
+	maskIt(arg){
+		//to show mask: arg = show
+		//to hide mask: arg = hide
+		this.dgramSend("mask " + arg);
+	}
+
+	getDuration(){
+		this.dgramSend("duration");
+	}
+
+	getTimecode(){
+		this.dgramSend("timecode");
 	}
 
 /******Post Device Info to Remote Server******************/
