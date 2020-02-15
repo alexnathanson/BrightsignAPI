@@ -344,6 +344,7 @@ sub main()
 	' Process messages from video player
 
 	if Type(msg) = "roVideoEvent" then
+		print msg
 	 	if msg.GetInt() = 8 then
 	 		sendUDP("media ended")
 	 		if m.params["playback_mode"] = "normal" then

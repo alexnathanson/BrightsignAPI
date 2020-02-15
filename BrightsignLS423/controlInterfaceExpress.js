@@ -10,6 +10,7 @@ let f = {file: BS.currentFile};
 let s = {screen: true};
 let i = {id: BS.deviceInfo.deviceUniqueId};
 let aV = {api: BS.api};
+let d = {duration:BS.duration};
 
 //console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
@@ -50,6 +51,14 @@ app.get('/id', function (req, res){
 
 app.get('/api', function (req, res){
   res.send(aV);
+});
+
+app.get('/duration', function (req,res){
+  BS.dgramSend("duration")
+  setTimeout(()=>{
+    d = {duration: BS.duration}
+    res.send(d)
+  },500);
 });
 
 app.post('/command',function(req,res){

@@ -175,5 +175,5 @@ window.onclick = function(event) {
 function devAmount(anAmount){
   let amount = document.getElementById("amount");
 
-  amount.innerHTML = (amount.innerHTML + " " + anAmount);
+  amount.innerHTML = "Devices detected in the last 10 minutes: " + anAmount;
 }

@@ -97,7 +97,7 @@ class BS_API{
 	    this.writer;
 	    this.soFar;
 	    this.contentLength;
-	    this.ilog = false;
+	    this.ilog = true;
 	    this.remList = [];
 	    this.getRemList;//function to retrieve remote media file list
 	/*****media details***************/
@@ -531,7 +531,7 @@ class BS_API{
           this.downloadIndex = 0;
           this.downloadIncrement();
         }
-    }, 30000);
+    }, 60000);
   }
 
 //increments through all the files that need to be downloaded
@@ -767,7 +767,7 @@ class BS_API{
     }
 
     sendTimedSync(thisFile, thisTime){
-    	this.createQueue([thisTime,thisFile);
+    	this.createQueue([thisTime,thisFile]);
     	let queueInfo = new Object();
 		queueInfo['queue'] = thisTime;
 		queueInfo['file'] = thisFile;
@@ -794,5 +794,12 @@ class BS_API{
     		}
     	}
     }
+
+    getFilesizeInBytes(filename) {
+    	let stats = this.fs.statSync(filename)
+    	console.log(stats);
+    	let fileSizeInBytes = stats["size"]
+	    return fileSizeInBytes
+	}
 
 }
