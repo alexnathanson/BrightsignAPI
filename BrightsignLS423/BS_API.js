@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.7'; //version
+		this.api = '0.0.8'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -132,7 +132,12 @@ class BS_API{
 		this.syncGroup = [];// list of IPs to sync
 		this.timecode = 0;
 		this.duration = 0;
+
+		//https://www.npmjs.com/package/node-cron
 		this.cron = require('node-cron');
+		this.task;
+		this.cronString = "";
+		this.cronCallback;
 	}
 
 	initialize(callback){
@@ -140,9 +145,10 @@ class BS_API{
 		//this.loadConfig();//formerly had a call back to configured()
 		console.log(this.configDict);
 
-		if(this.configDict.playbackSync){
-			this.initializeClock();
-			console.log("clock started");
+		if(this.configDict.playbackSync && this.configDict.syncLeader){
+			//this.initializeClock();
+			//console.log("clock started");
+			this.createTask(this.cronString,this.cronCallback);
 		}
 
 		this.displayIP = this.configDict.displayIP;
@@ -807,6 +813,21 @@ class BS_API{
     	//console.log(stats);
     	let fileSizeInBytes = stats["size"]
 	    return fileSizeInBytes
+	}
+
+	createTask(timing, callback){
+		this.task = this.cron.schedule(timing, () => {
+    		console.log("Cron Job: " + Date.now());
+		    callback();
+		  });
+	}
+
+	stopTask(){
+		this.task.stop();
+	}
+
+	destroyTask(){
+		this.task.destroy();
 	}
 
 }

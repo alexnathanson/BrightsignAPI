@@ -42,8 +42,11 @@ app.post('/node/deviceInfo/checkin/global',function(req,res){
 
   } else if (Object.keys(req.body)[0] == "ipToggle"){
     sendPost('comm','ip',req.body.ipToggle);
-  } else if (Object.keys(req.body)[0] == "scene"){
+  } else if (Object.keys(req.body)[0] == "sync"){
 
+    sendGet(req.body.sync + ":8000/file",(res)=>{
+      sendPost('triggerSync', ???, req.body.sync);
+    }, )
   }
   
   res.end("global command " + Object.keys(req.body)[0] +" sent");
@@ -134,4 +137,26 @@ function sendPost(aType, aMess, anIp){
   req.write(data)
   req.end()
 
+}
+
+function sendGet(dst, callback){
+
+  http.get(dst, (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      console.log(JSON.parse(data));
+      callback(data);
+    });
+
+    resp.on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+  }
 }

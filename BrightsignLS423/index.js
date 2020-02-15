@@ -22,6 +22,10 @@ BS.eventEmitter.on('queue',()=>{
       scene2();
 });
 
+let syncCounter = 1;
+BS.cronString = '*/10 * * * *'; //initialize cron job every 10 minutes
+BS.cronCallback = incrementSync;
+
 //once config file has been ingested...
 function configured(){
   
@@ -86,9 +90,14 @@ function indexLog(arg){
   }
 }
 
-function cronIt(){
-  BS.cron.schedule('*/5 * * * *', () => {
-    console.log('running a task every 5 minutes');
-    scene2();
-  });
+//skip the first file and increment the rest
+function incrementSync(){
+  
+  if(BS.localFileList.length > 1){
+     if(syncCounter >= BS.localFileList.length){
+      syncCounter=1;
+    }
+    BS.sendSync(BS.localFileList[syncCounter]);
+    syncCounter++;
+  }
 }
