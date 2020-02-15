@@ -4,6 +4,7 @@ class GlobalCommands{
 		this.serverIP = "172.16.0.4";
 		this.globalEndpoint = "/node/deviceInfo/checkin/global";
 		this.allIP = [];
+		this.syncGroups = {3:"172.16.0.110"};
 	}
 
 	ipList(addr){
@@ -15,6 +16,10 @@ class GlobalCommands{
 	    //callback(this.allIP[g]);
 	    this.sendGlobalPost(dst, this.allIP[g]);
 	  }
+	}
+
+	sync(syncGroup){
+		this.sendGlobalPost("sync",this.syncGroups[syncGroup]);
 	}
 
 	//send the message

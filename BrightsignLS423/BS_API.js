@@ -537,7 +537,10 @@ class BS_API{
 //increments through all the files that need to be downloaded
   downloadIncrement(){
     if(this.downloadIndex < this.downloadQueue.length){//was <= len +1
-          this.downloadFiles(this.downloadQueue[this.downloadIndex]);
+    	//pause video when downloading
+        this.playback("pause");
+
+        this.downloadFiles(this.downloadQueue[this.downloadIndex]);
     } else {
       /*if all files have been downloaded restart the listener
       to detect remote updates*/
@@ -607,8 +610,8 @@ class BS_API{
     //compares remote directory to local directory to create the download queue
   checkDirectory(files, remFiles){
     this.remList  = remFiles ;
-    this.downloadLog('Local Files:');
-    this.downloadLog(files);
+    //this.downloadLog('Local Files:');
+    //this.downloadLog(files);
     this.downloadQueue = [];
       for(let f = 0;f<this.remList.length;f++){
         //listing all files using forEach
@@ -626,8 +629,10 @@ class BS_API{
           this.downloadQueue.push(this.remList[f]);
         }
       }
-      this.downloadLog("Download Queue:");
-      this.downloadLog(this.downloadQueue);
+      if(this.downloadQueue.length > 0){
+      	//this.downloadLog("Download Queue:");
+      	//this.downloadLog(this.downloadQueue);
+      }
       
       //remove the old files from the local device
       this.removeFiles(this.getDelList(files,this.remList));
@@ -655,8 +660,10 @@ class BS_API{
       }
     });
 
-    this.downloadLog("Remove Queue:");
-    this.downloadLog(delIt);
+    if(delIt.length > 0){
+    	this.downloadLog("Remove Queue:");
+    	this.downloadLog(delIt);
+    }
     
     return delIt;
   }
@@ -796,8 +803,8 @@ class BS_API{
     }
 
     getFilesizeInBytes(filename) {
-    	let stats = this.fs.statSync(filename)
-    	console.log(stats);
+    	let stats = this.fs.statSync(this.localDirectory + filename)
+    	//console.log(stats);
     	let fileSizeInBytes = stats["size"]
 	    return fileSizeInBytes
 	}
