@@ -12,6 +12,7 @@ let i = {id: BS.deviceInfo.deviceUniqueId};
 let aV = {api: BS.api};
 let d = {duration:BS.duration};
 let b = {bytes: BS.localFileBytes};
+let tc = {timecode: BS.timecode};
 
 
 //console.log("current file: " + currentFile);
@@ -58,14 +59,23 @@ app.get('/api', function (req, res){
 app.get('/duration', function (req,res){
   BS.dgramSend("duration")
   setTimeout(()=>{
-    d = {duration: BS.duration}
-    res.send(d)
+    d = {duration: BS.duration};
+    res.send(d);
   },500);
 });
 
 app.get('/bytes', function (req,res){
   b = {bytes: BS.localFileBytes};
   res.send(b);
+});
+
+app.get('/timecode', function (req,res){
+  BS.getTimecode();
+
+  setTimeout(()=>{
+    tc = {timecode: BS.timecode};
+    res.send(tc);
+  },500);
 });
 
 app.post('/command',function(req,res){
@@ -94,8 +104,6 @@ app.post('/command',function(req,res){
     } else {
       BS.setVolume(BS.getConfigValue('volume'));
     }
-  } else if (Object.keys(req.body)[0] == "timecode"){
-    BS.getTimecode();
   } /*else if (Object.keys(req.body)[0] == "schedule"){
     scheduler(req.body.schedule);
   }*/else {

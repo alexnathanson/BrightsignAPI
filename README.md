@@ -141,6 +141,8 @@ Example: http://192.168.1.83:8000/volume<br>
 	* returns the device ID/ serial number<br>
 * /api<br>
 	* returns the BS_API version number<br>
+* /timecode<br>
+	* returns the current timecode of the video in ms
 
 POST
 
@@ -157,6 +159,9 @@ POST
 * {triggerSync: [MS,FILENAME]}<br>
 * {global: VALUE}<br>
 	* ip = toggle IP on for 30 seconds<br>
+* {mute: 1 or 0}<br>
+	* 1 = mute
+	* 0 = unmute
 
 ## Known bugs and possible future additions
 * automatically downloading large files from the server often fails

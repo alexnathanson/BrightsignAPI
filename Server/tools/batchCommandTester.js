@@ -1,6 +1,6 @@
 const http = require('http')
 
-let targetDevices = ["172.16.1.160"/*"172.16.1.83","172.16.1.73","172.16.1.87"*/];
+let targetDevices = ["172.16.0.147","172.16.0.148","172.16.0.149","172.16.0.150","172.16.0.151","172.16.0.152"];
 
 /*for (let e = 0;e<targetDevices.length;e++){
 
@@ -11,7 +11,7 @@ let targetDevices = ["172.16.1.160"/*"172.16.1.83","172.16.1.73","172.16.1.87"*/
 for (let e = 0;e<targetDevices.length;e++){
 
 	//sendPost('file','switch',targetDevices[e]);
-	sendPost('mute',"1",targetDevices[e]);
+	sendPost('mute',"0",targetDevices[e]);
 	console.log("posted");
 }
 
