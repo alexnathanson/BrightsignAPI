@@ -43,6 +43,9 @@ function configured(){
   if(BS.localFileList.length  > 0){
     console.log('playing file 1');
     BS.playFile(BS.localFileList[0]);
+
+    BS.getAllFileSizes();
+
   }
 
   if(BS.configDict.media_sync){

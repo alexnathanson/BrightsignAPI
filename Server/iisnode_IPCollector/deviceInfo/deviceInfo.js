@@ -33,21 +33,21 @@ app.post('/node/deviceInfo/checkin/global',function(req,res){
   } else if (Object.keys(req.body)[0] == "reboot"){
     sendPost('comm','reboot',req.body.reboot);
   } else if (Object.keys(req.body)[0] == "mute"){
-
+    sendPost('mute','true',req.body.mute);
   } else if (Object.keys(req.body)[0] == "unmute"){
-
+    sendPost('mute','false',req.body.unmute);
   } else if (Object.keys(req.body)[0] == "hide"){
 
   } else if (Object.keys(req.body)[0] == "show"){
 
   } else if (Object.keys(req.body)[0] == "ipToggle"){
     sendPost('comm','ip',req.body.ipToggle);
-  } else if (Object.keys(req.body)[0] == "sync"){
+  } /*else if (Object.keys(req.body)[0] == "sync"){
 
     sendGet(req.body.sync + ":8000/file",(res)=>{
       sendPost('triggerSync', ???, req.body.sync);
     }, )
-  }
+  }*/
   
   res.end("global command " + Object.keys(req.body)[0] +" sent");
 });

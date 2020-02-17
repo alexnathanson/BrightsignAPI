@@ -44,7 +44,8 @@ There are three main components to this system.
 
 ### Trouble shooting and diagnostic functions
 * displays IP address on screen by default
-* Chrome diagnostic console on port 3000 (Chrome browsers only)
+* Chrome diagnostic console on port 3000
+	* This only works on certain versions of the Chrome/ Chromium browser. See https://docs.brightsign.biz/display/DOC/HTML+Best+Practices#HTMLBestPractices-ChromiumVersionCompatibility for info on version compatibility.
 	* This allows you to see error messages printed to the console and manually work with the BS_API class directly if accessible end points haven't been established.
 	* some frequently used commands:
 		* restart = BS.reboot()
@@ -108,10 +109,6 @@ The download system on the Brightsign parse the directory on the server via a GE
 * If the IP collector hasn't be established, you would need to enter the device info manually.
 * Presently global commands, like show IPs, are routed through the IP collector script to avoid CORS errors.
 
-## Possible future additions
-* redesign all the ends points not that the system is technically working
-* test the global commands function
-
 ## Links
 * Brightsign documentation https://docs.brightsign.biz/display/DOC/BrightSign+Documentation
 
@@ -119,15 +116,15 @@ The download system on the Brightsign parse the directory on the server via a GE
 
 ### BS hardware to Node JS via UDP
 
-play
-pause
-resume
-seek
-duration
-volume
-file FILENAME
-mask
-preload FILENAME SEEKPOINT
+* play
+* pause
+* resume
+* seek
+* duration
+* volume
+* file FILENAME
+* mask
+* preload FILENAME SEEKPOINT
 
 ### HTTP Endpoints
 
@@ -160,3 +157,7 @@ POST
 * {triggerSync: [MS,FILENAME]}<br>
 * {global: VALUE}<br>
 	* ip = toggle IP on for 30 seconds<br>
+
+## Known bugs and possible future additions
+* automatically downloading large files from the server often fails
+* all the ends points should be refactored for consistency

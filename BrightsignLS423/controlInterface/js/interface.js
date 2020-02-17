@@ -3,18 +3,22 @@ let HOST = window.location.hostname;
 
 let vol, volVal, title;
 
+let bytes = [];
+
 window.onload = function(){
   vol = document.getElementById("volume");
   volVal = document.getElementById("volVal");
   fileN = document.getElementById("fileName");
   title = document.getElementById("title");
   api = document.getElementById("apiVersion");
+  
+  sendGet("bytes");
+
   //retrieve stored volume value
   sendGet("volume");
   
   //retrieve file name
   sendGet("file");
-
   sendGet('id');
 
   sendGet('api');
@@ -45,7 +49,7 @@ function updateFileName(fName){
     let myLi = document.createElement('li');
     let myA = document.createElement("a");
     //myA.onclick = sendPost('file', fName[fn]);
-    let myLink = document.createTextNode(fName[fn]);               
+    let myLink = document.createTextNode(fName[fn] + " " + bytes[fn] + " bytes");               
     // Append the text node to anchor element. 
     myA.appendChild(myLink);     
     // Set the title. 
@@ -124,6 +128,8 @@ function sendGet(endPoint){
         updateTitle(resObj.id);
       } else if (Object.keys(resObj)[0]=="api"){
         updateAPI(resObj.api);
+      } else if (Object.keys(resObj)[0]=="bytes"){
+        bytes = resObj.bytes;
       } 
     }
   }

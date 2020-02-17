@@ -11,6 +11,8 @@ let s = {screen: true};
 let i = {id: BS.deviceInfo.deviceUniqueId};
 let aV = {api: BS.api};
 let d = {duration:BS.duration};
+let b = {bytes: BS.localFileBytes};
+
 
 //console.log("current file: " + currentFile);
 app.use(express.static('/storage/sd/controlInterface'));
@@ -61,6 +63,11 @@ app.get('/duration', function (req,res){
   },500);
 });
 
+app.get('/bytes', function (req,res){
+  b = {bytes: BS.localFileBytes};
+  res.send(b);
+});
+
 app.post('/command',function(req,res){
 
   if(Object.keys(req.body)[0] == "volume"){
@@ -80,9 +87,16 @@ app.post('/command',function(req,res){
     BS.sendSync(req.body.triggerSync);
   } else if (Object.keys(req.body)[0] == "global"){
     globalCommand(req.body.global);
-  } /*else if (Object.keys(req.body)[0] == "mute"){
-    globalCommand(req.body.mute);
-  }*/ /*else if (Object.keys(req.body)[0] == "schedule"){
+  } else if (Object.keys(req.body)[0] == "mute"){
+    //globalCommand(req.body.mute);
+    if (req.body.mute == 1){
+      BS.setVolume(0);
+    } else {
+      BS.setVolume(BS.getConfigValue('volume'));
+    }
+  } else if (Object.keys(req.body)[0] == "timecode"){
+    BS.getTimecode();
+  } /*else if (Object.keys(req.body)[0] == "schedule"){
     scheduler(req.body.schedule);
   }*/else {
     console.log("else");
@@ -139,8 +153,8 @@ function globalCommand(message){
       console.log('clear IP');
     },30000);
   } /*else if (message == 'mute'){
-
+    BS.setVolume(0);
   } else if (message == 'unmute'){
-
+    BS.setVolume(BS.getConfigValue('volume'));
   }*/
 }

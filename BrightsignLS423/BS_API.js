@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.8'; //version
+		this.api = '0.0.9'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -113,6 +113,7 @@ class BS_API{
 		this.resolutions = "";
 		this.fileResolution = "";
 		this.location = "";
+		this.downloading = false;
 
 	/*******Clock***************/
 		this.startMs;// = Date.now();
@@ -138,6 +139,8 @@ class BS_API{
 		this.task;
 		this.cronString = "";
 		this.cronCallback;
+
+		this.localFileBytes = [];
 	}
 
 	initialize(callback){
@@ -547,11 +550,19 @@ class BS_API{
         this.playback("pause");
 
         this.downloadFiles(this.downloadQueue[this.downloadIndex]);
+
+        this.downloading = true;
     } else {
       /*if all files have been downloaded restart the listener
       to detect remote updates*/
       this.readyToDownload = false;
-      this.downloadLog("All downloads completed");
+      
+      if(this.downloading == true){
+      	this.downloadLog("All downloads completed");
+      	this.getAllFileSizes();
+      	this.downloading = false;
+      }
+      
       this.getLocalFiles(this.downloadProcess());
     }
     this.downloadIndex++;
@@ -808,11 +819,22 @@ class BS_API{
     	}
     }
 
-    getFilesizeInBytes(filename) {
+    getFileSizeInBytes(filename) {
     	let stats = this.fs.statSync(this.localDirectory + filename)
     	//console.log(stats);
     	let fileSizeInBytes = stats["size"]
 	    return fileSizeInBytes
+	}
+
+	getAllFileSizes(){
+		this.localFileBytes = [];
+
+		for (let gB = 0; gB < this.localFileList.length; gB++){
+			this.localFileBytes.push(this.getFileSizeInBytes(this.localFileList[gB]));
+		}
+
+		console.log(this.localFileBytes);
+
 	}
 
 	createTask(timing, callback){
