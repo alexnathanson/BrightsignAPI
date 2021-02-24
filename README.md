@@ -82,7 +82,7 @@ The control interface uses a Node Express server (controlInterfaceExpress.js) to
 * if you are not syncing files via the media server, put your media files onto the SD manually.
 
 ## Media Server 
-The media server is not necessary for the API to run, but adds usefule additional functionality. The code included in the server directory will require adapting to your specific server configuration. There are 2 main functions of the media server machine:
+The media server is not necessary for the API to run, but adds useful additional functionality. The code included in the server directory will require adapting to your specific server configuration. There are 2 main functions of the media server machine:
 * 1) Distribute media content to the media players
 * 2) Collect IPs from the media players for API interaction and trouble shooting purposes.
 * 3) Interface displaying networked devices with links to API interface for that particular device.
@@ -126,7 +126,7 @@ The download system on the Brightsign parse the directory on the server via a GE
 * mask
 * preload FILENAME SEEKPOINT
 
-### HTTP Endpoints
+### Node JS HTTP Endpoints
 
 GET<br>
 Example: http://192.168.1.83:8000/volume<br>
@@ -163,6 +163,29 @@ POST
 	* 1 = mute
 	* 0 = unmute
 
-## Known bugs and possible future additions
-* automatically downloading large files from the server often fails
-* all the ends points should be refactored for consistency
+### To add
+* Brightsign
+	* GET display output info from BS - dims, framerate
+	* Create an inteface for syncing - and pass to server interface
+	* Fix the media file downloading systems... i.e. confirm file sizes, etc...
+	* is the queue post documentation missing a [
+	* look in to bundling the node stuff
+	* refactor end points for consistency
+	* method for reordering files
+	* look at how it loops an individual file vs playlist
+	* avoid conflicts with server stuff
+* Main Server
+	* Order the results on the server interface
+	* Filter by results by location
+	* Filter by freshness
+	* Open links in a new tab
+	* remove the "sync ramp 3" stuff
+	* API should return list of files to avoid directory browsing
+	* API should coordinate/ ensure full file is transferred - download feedback?
+	* better documentation for server side stuff
+	* refactor end points for consistency
+	* toggle boxes for selected devices to send commands to?
+	* remove DST argument from batchCommand function in GlobalCommands.js?
+* General
+	* Troubleshooting documentation
+	* add a test file directory to the server that gets pulled to each device...?
