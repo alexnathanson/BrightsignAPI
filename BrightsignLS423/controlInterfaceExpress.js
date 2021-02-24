@@ -13,6 +13,7 @@ let aV = {api: BS.api};
 let d = {duration:BS.duration};
 let b = {bytes: BS.localFileBytes};
 let tc = {timecode: BS.timecode};
+let vO = {vidOutput: BS.vResolution};
 
 
 //console.log("current file: " + currentFile);
@@ -76,6 +77,10 @@ app.get('/timecode', function (req,res){
     tc = {timecode: BS.timecode};
     res.send(tc);
   },500);
+});
+
+app.get('/vidOutput', function (req, res){
+  res.send(vO);
 });
 
 app.post('/command',function(req,res){

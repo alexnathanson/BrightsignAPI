@@ -11,6 +11,7 @@ window.onload = function(){
   fileN = document.getElementById("fileName");
   title = document.getElementById("title");
   api = document.getElementById("apiVersion");
+  vidOutput = document.getElementById("vidOutput");
   
   sendGet("bytes");
 
@@ -22,6 +23,8 @@ window.onload = function(){
   sendGet('id');
 
   sendGet('api');
+
+  sendGet('vidOutput');
 
   // Update the volume when the slider is released
   vol.onmouseup = function() {
@@ -71,6 +74,9 @@ function updateAPI(v){
     api.innerHTML = (api.innerHTML + " " + v);
 }
 
+function updateVideoOutput(o){
+  vidOutput.innerHTML = (vidOutput.innerHTML + "" o);
+}
 
 /****BUTTONS**********/
 function confirmReboot() {
@@ -130,6 +136,8 @@ function sendGet(endPoint){
         updateAPI(resObj.api);
       } else if (Object.keys(resObj)[0]=="bytes"){
         bytes = resObj.bytes;
+      } else if (Object.keys(resObj)[0]=="vidOutput"){
+        updateVideoOutput(JSON.stringify(resObj.vidOutput));
       } 
     }
   }

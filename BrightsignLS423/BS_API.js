@@ -11,7 +11,7 @@ class BS_API{
 
 	/*******JS API******************************************************/
 
-		//https://docs.brightsign.biz/display/DOC/system
+		// https://docs.brightsign.biz/display/DOC/system
 		this.SystemClass = require("@brightsign/system");
 		this.system = new this.SystemClass();
 
@@ -32,12 +32,12 @@ class BS_API{
 		//https://docs.brightsign.biz/display/DOC/BSDeviceInfo
 		this.deviceInfo = new BSDeviceInfo();
 
-		//https://docs.brightsign.biz/display/DOC/BSControlPort#BSControlPort-Examples
+		// https://docs.brightsign.biz/display/DOC/BSControlPort#BSControlPort-Examples
 		//using the equivalent GPIO object in brightscript can cause unpredictable GPIO behaviour
 		//Expander-0-GPIO is for use with the USB to GPIO expander
 		this.gpio;
 
-		//https://docs.brightsign.biz/display/DOC/BSTicker
+		// https://docs.brightsign.biz/display/DOC/BSTicker
 		this.tickerX = 10;
 		this.tickerY = 110;
 		this.tickerW = 600;
@@ -47,9 +47,10 @@ class BS_API{
 
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
+		this.vResolution;
 
-		/*this.VideoModeConfigurationClass = require("@brightsign/videomodeconfiguration");
-		this.videoConfig = new this.VideoModeConfigurationClass();*/
+		this.VideoModeConfigurationClass = require("@brightsign/videomodeconfiguration");
+		this.videoConfig = new this.VideoModeConfigurationClass();
 
 		//this.videoMode = CreateObject("roVideoMode")
 
@@ -178,10 +179,18 @@ class BS_API{
 			this.postInfo();
 		}
 
-		//added 1/27
+		this.getDeviceInfo()
+		
 		this.getLocalFiles(callback);
-		//callback();
 
+	}
+
+	getDeviceInfo(){
+
+		videoOutputHDMI.getOutputStatus().then(
+	        function(data) {
+	            this.vResolution=(data);
+	        })
 	}
 
 	getLocalFiles(callback){

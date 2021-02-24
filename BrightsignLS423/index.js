@@ -6,14 +6,14 @@ let ilog = true;
 
 let BS = new BS_API();
 
-
 //run first to initialize and configure the API
 BS.loadConfig(configured);
 
 //spin up UDP receiver port for media end events
 BS.dgramReceive(mediaEnded);
 
-BS.syncGroup = ["172.16.0.104","172.16.0.105","172.16.0.106","172.16.0.107","172.16.0.108","172.16.0.109","172.16.0.110"];
+//list of IPs to sync with
+//BS.syncGroup = [];
 
 let dirList; //remote directory list
 
