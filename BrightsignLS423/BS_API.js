@@ -187,8 +187,7 @@ class BS_API{
 
 	getDeviceInfo(){
 
-		videoOutputHDMI.getOutputStatus().then(
-	        function(data) {
+	    this.videoOutputHDMI.getOutputResolution().then((data)=>{
 	            this.vResolution=(data);
 	        })
 	}

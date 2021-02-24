@@ -165,7 +165,7 @@ POST
 
 ### To add
 * Brightsign
-	* GET display output info from BS - dims, framerate
+	* GET display output info from BS - dims, framerate (expand to check dims of an entire playlist?)
 	* Create an inteface for syncing - and pass to server interface
 	* Fix the media file downloading systems... i.e. confirm file sizes, etc...
 	* is the queue post documentation missing a [
@@ -190,4 +190,4 @@ POST
 	* Troubleshooting documentation
 	* add a test file directory to the server that gets pulled to each device...?
 * To Test
-	* test that display output refers to the output monitor...
+	* test that the output resolution changes when using a different output device

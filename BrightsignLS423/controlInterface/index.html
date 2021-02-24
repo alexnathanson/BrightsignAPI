@@ -16,27 +16,33 @@
     <p>
        <img id="screen" src="/images/screen.jpg" alt="screenshot">
     </p>
-    <p>
-      <button type="button" onclick="playback('play')">Play</button> 
-      <!--<button type="button">Play file</button> -->
-      <button type="button" onclick="playback('pause')">Pause</button> 
-      <button type="button" onclick="playback('resume')">Resume</button> 
-    </p>
-    <p>
-      <button type="button" onclick="newScreen()">Update Screen Shot</button> 
-      <!--<button type="button">Play file</button> -->
-      <button type="button" onclick="displayIP()">Display IP</button> 
-      <button type="button" onclick="confirmReboot()">Restart</button> 
-    </p>
-    <p>
-      <div id="volStuff">
-        <div id="volVal">Volume:</div>
-        <input type="range" min="1" max="500" value="50" class="slider" id="volume">
-      </div>
-    </p><h3>Device Info</h3>
-      <div id="vidOutput">Video dimensions:</div>
-      <div id="poe"></div>
-    <p>
-    </p>
+    <div>
+      <h2>Playback Controls</h2>
+      <p>
+        <button type="button" onclick="playback('play')">Play</button> 
+        <!--<button type="button">Play file</button> -->
+        <button type="button" onclick="playback('pause')">Pause</button> 
+        <button type="button" onclick="playback('resume')">Resume</button> 
+      </p>
+      <p>
+        <button type="button" onclick="newScreen()">Update Screen Shot</button> 
+        <!--<button type="button">Play file</button> -->
+        <button type="button" onclick="displayIP()">Display IP</button> 
+        <button type="button" onclick="confirmReboot()">Restart</button> 
+      </p>
+      <p>
+        <div id="volStuff">
+          <div id="volVal">Volume:</div>
+          <input type="range" min="1" max="500" value="50" class="slider" id="volume">
+        </div>
+      </p>
+    </div>
+    <div>
+      <h2>Device Info</h2>
+      <div id="vidOutputMode">Video Output Mode (set via config.txt):</div>
+      <div id="vidFileDim">Video file dimensions:</div>
+      <div id="vidOutputDim">Video output dimensions:</div>
+      <div id="vidOutputDeviceDim">Display hardware dimensions:</div>
+    </div>
   </body>
 </html>

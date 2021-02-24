@@ -8,6 +8,7 @@
 
 video_output_mode = 1920x1080x60p
 #video_output_mode = 640x480x60p
+#video_output_mode = auto
 
 # playback_mode 
 # set to normal, master or slave

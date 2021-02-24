@@ -11,7 +11,7 @@ window.onload = function(){
   fileN = document.getElementById("fileName");
   title = document.getElementById("title");
   api = document.getElementById("apiVersion");
-  vidOutput = document.getElementById("vidOutput");
+  vidOutputDim = document.getElementById("vidOutputDim");
   
   sendGet("bytes");
 
@@ -74,8 +74,9 @@ function updateAPI(v){
     api.innerHTML = (api.innerHTML + " " + v);
 }
 
-function updateVideoOutput(o){
-  vidOutput.innerHTML = (vidOutput.innerHTML + "" o);
+function updateVidOutputDim(o){
+  vidOutputDim.innerHTML = (vidOutput.innerHTML + " " + o);
+  console.log(o);
 }
 
 /****BUTTONS**********/
@@ -137,7 +138,8 @@ function sendGet(endPoint){
       } else if (Object.keys(resObj)[0]=="bytes"){
         bytes = resObj.bytes;
       } else if (Object.keys(resObj)[0]=="vidOutput"){
-        updateVideoOutput(JSON.stringify(resObj.vidOutput));
+/*        updateVidOutput(JSON.stringify(resObj.vidOutput));*/
+        updateVidOutputDim(resObj.vidOutput);
       } 
     }
   }
