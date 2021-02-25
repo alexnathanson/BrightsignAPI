@@ -17,6 +17,16 @@ app.use(bodyParser.json());
 let fileName = 'deviceInfo.json';
 let netInfo;
 
+//return the directory
+//this should probably be a GET, but need to figure out how to take the ending of the URL as the arg...
+app.post('node/deviceInfo/checkin/fileList', function (req, res){
+  //vO = {vidOutput: BS.vResolution};
+ 
+  fs.readdir(req.body, (err, files) => {
+      res.send(files);
+  });
+});
+
 app.post('/node/deviceInfo/checkin/ip',function(req,res){
   console.log(req.body);
   findReplace(req.body);

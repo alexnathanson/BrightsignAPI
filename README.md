@@ -168,7 +168,7 @@ POST
 	* Create an inteface for syncing - and pass to server interface
 	* Fix the media file downloading systems... i.e. confirm file sizes, etc...
 	* is the queue post documentation missing a [
-	* look in to bundling the node stuff
+	* look in to bundling the node stuff - webpack
 	* refactor end points for consistency
 	* method for reordering files
 	* look at how it loops an individual file vs playlist

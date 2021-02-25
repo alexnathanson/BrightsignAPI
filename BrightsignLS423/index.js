@@ -35,6 +35,8 @@ function configured(){
 
   dirList = new HTMLDirectory(BS.remoteServerBase,BS.remoteServerDirectory);
   BS.getRemList = (arg)=>{dirList.getDir(arg)};
+  console.log(getRemList);//added 2/25
+  BS.postHTTP(BS.remoteServerBase + "/node/deviceInfo/checkin/fileList", BS.remoteServerDirectory);//added 2/25
 
   dirList.log=false;
 
