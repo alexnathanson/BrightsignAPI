@@ -4,3 +4,8 @@
   margin: 5px;
   float: left;
 }
+
+#devInfo {
+	position: absolute;
+	float:left;
+}

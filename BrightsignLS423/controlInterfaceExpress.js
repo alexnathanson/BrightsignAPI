@@ -13,7 +13,7 @@ let aV = {api: BS.api};
 let d = {duration:BS.duration};
 let b = {bytes: BS.localFileBytes};
 let tc = {timecode: BS.timecode};
-let vO = {vidOutput: {output:BS.vResolution, mode:BS.configDict.video_output_mode}};
+let vO = {};
 
 
 //console.log("current file: " + currentFile);
@@ -79,8 +79,13 @@ app.get('/timecode', function (req,res){
   },500);
 });
 
-app.get('/vidOutput', function (req, res){
-  vO = {vidOutput: BS.vResolution};
+app.get('/vidInfo', function (req, res){
+  //vO = {vidOutput: BS.vResolution};
+  vO = {vidInfo: {output:BS.vOutput,
+                  mode:BS.configDict.video_output_mode,
+                  activeMode:BS.vMode,
+                  bestMode: BS.bestMode}};
+
   res.send(vO);
 });
 

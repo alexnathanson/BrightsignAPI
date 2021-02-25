@@ -165,7 +165,6 @@ POST
 
 ### To add
 * Brightsign
-	* GET display output info from BS - dims, framerate (expand to check dims of an entire playlist?)
 	* Create an inteface for syncing - and pass to server interface
 	* Fix the media file downloading systems... i.e. confirm file sizes, etc...
 	* is the queue post documentation missing a [
@@ -178,7 +177,6 @@ POST
 	* Order the results on the server interface
 	* Filter by results by location
 	* Filter by freshness
-	* Open links in a new tab
 	* remove the "sync ramp 3" stuff
 	* API should return list of files to avoid directory browsing
 	* API should coordinate/ ensure full file is transferred - download feedback?
@@ -191,3 +189,4 @@ POST
 	* add a test file directory to the server that gets pulled to each device...?
 * To Test
 	* test that the output resolution changes when using a different output device
+	* Server interface links open in a new tab

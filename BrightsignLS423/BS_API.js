@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.10'; //version
+		this.api = '0.0.11'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -47,11 +47,12 @@ class BS_API{
 
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
-		this.vResolution;
+		this.vOutput;
 
 		this.VideoModeConfigurationClass = require("@brightsign/videomodeconfiguration");
 		this.videoConfig = new this.VideoModeConfigurationClass();
-
+		this.vMode;
+		this.bestMode;
 		//this.videoMode = CreateObject("roVideoMode")
 
 		//this.sync = new BSSyncManager("domain1", "172.16.1.22", 1539);
@@ -188,7 +189,15 @@ class BS_API{
 	getDeviceInfo(){
 
 	    this.videoOutputHDMI.getOutputResolution().then((data)=>{
-	            this.vResolution=(data);
+	            this.vOutput=(data);
+	        })
+
+	    this.videoConfig.getActiveMode().then((data)=>{
+	            this.vMode=(data);
+	        })
+
+	    this.videoConfig.getBestMode('hdmi').then((data)=>{
+	            this.bestMode=(data);
 	        })
 	}
 

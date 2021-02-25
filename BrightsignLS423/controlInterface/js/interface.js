@@ -5,13 +5,14 @@ let vol, volVal, title;
 
 let bytes = [];
 
+let dims = {};
+
 window.onload = function(){
   vol = document.getElementById("volume");
   volVal = document.getElementById("volVal");
   fileN = document.getElementById("fileName");
   title = document.getElementById("title");
   api = document.getElementById("apiVersion");
-  vidOutputDim = document.getElementById("vidOutputDim");
   
   sendGet("bytes");
 
@@ -24,7 +25,7 @@ window.onload = function(){
 
   sendGet('api');
 
-  sendGet('vidOutput');
+  sendGet('vidInfo');
 
   // Update the volume when the slider is released
   vol.onmouseup = function() {
@@ -74,9 +75,23 @@ function updateAPI(v){
     api.innerHTML = (api.innerHTML + " " + v);
 }
 
-function updateVidOutputDim(o){
-  vidOutputDim.innerHTML = (vidOutput.innerHTML + " " + o);
+function updateVidDims(o){
   console.log(o);
+
+  dims = o;
+
+  outputMode = document.getElementById("vidOutputMode");
+  activeMode = document.getElementById("activeMode");
+  fileDim = document.getElementById("vidFileDim");
+  outputDim = document.getElementById("vidOutputDim");
+  outputDeviceDim = document.getElementById("vidOutputDeviceDim");
+
+  outputMode.innerHTML = outputMode.innerHTML + " " + dims.mode;
+  activeMode.innerHTML = activeMode.innerHTML + " " + dims.activeMode.modeName;
+  //fileDim.innerHTML = fileDim.innerHTML + " " + dims.file;
+  outputDim.innerHTML = (outputDim.innerHTML + " " + dims.output.width + " x " + dims.output.height);
+  outputDeviceDim.innerHTML = outputDeviceDim.innerHTML + " " + dims.bestMode;
+
 }
 
 /****BUTTONS**********/
@@ -137,9 +152,9 @@ function sendGet(endPoint){
         updateAPI(resObj.api);
       } else if (Object.keys(resObj)[0]=="bytes"){
         bytes = resObj.bytes;
-      } else if (Object.keys(resObj)[0]=="vidOutput"){
+      } else if (Object.keys(resObj)[0]=="vidInfo"){
 /*        updateVidOutput(JSON.stringify(resObj.vidOutput));*/
-        updateVidOutputDim(resObj.vidOutput);
+        updateVidDims(resObj.vidInfo);
       } 
     }
   }
