@@ -109,6 +109,12 @@ The download system on the Brightsign parse the directory on the server via a GE
 * If the IP collector hasn't be established, you would need to enter the device info manually.
 * Presently global commands, like show IPs, are routed through the IP collector script to avoid CORS errors.
 
+### Media Server Installation
+* The contents of the serverControlInterface directory need to be in the root directory of the server
+* The deviceInfo needs to be 
+* mediaDistribution
+
+
 ## Links
 * Brightsign documentation https://docs.brightsign.biz/display/DOC/BrightSign+Documentation
 

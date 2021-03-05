@@ -19,10 +19,12 @@ let netInfo;
 
 //return the directory
 //this should probably be a GET, but need to figure out how to take the ending of the URL as the arg...
-app.post('node/deviceInfo/checkin/fileList', function (req, res){
+app.get('node/fileList/', function (req, res){
   //vO = {vidOutput: BS.vResolution};
  
-  fs.readdir(req.body, (err, files) => {
+  let devDir = req.query.dev;
+
+  fs.readdir('/inetpub/wwwroot/' + devDir, (err, files) => {
       res.send(files);
   });
 });
