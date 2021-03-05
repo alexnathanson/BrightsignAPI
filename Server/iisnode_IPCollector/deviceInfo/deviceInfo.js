@@ -4,6 +4,8 @@ let express = require('express');
 const fs = require('fs');
 let bodyParser = require("body-parser");
 
+//const router = express.Router();
+
 const http = require('http')
 
 let app = express.createServer();
@@ -13,15 +15,16 @@ let app = express.createServer();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//app.use("/", router);
 
 let fileName = 'deviceInfo.json';
 let netInfo;
 
 //return the directory
-app.get('/node/deviceInfo/checkin/files', function (req, res){
+app.get('/node/deviceInfo/files', function (req, res){
   //vO = {vidOutput: BS.vResolution};
   
-  res.send('hi!');
+  res.send("hi!");
   /*let devDir = req.query.dev;
 
   fs.readdir('/inetpub/wwwroot/' + devDir, (err, files) => {
