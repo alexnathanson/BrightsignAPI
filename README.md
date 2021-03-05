@@ -110,6 +110,7 @@ The download system on the Brightsign parse the directory on the server via a GE
 * Presently global commands, like show IPs, are routed through the IP collector script to avoid CORS errors.
 
 ### Media Server Installation
+* Node.JS on IIS -> https://github.com/Azure/iisnode
 * The contents of the serverControlInterface directory need to be in the root directory of the server
 * The deviceInfo needs to be 
 * mediaDistribution
