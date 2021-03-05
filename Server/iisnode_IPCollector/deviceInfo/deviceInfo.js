@@ -18,8 +18,7 @@ let fileName = 'deviceInfo.json';
 let netInfo;
 
 //return the directory
-//this should probably be a GET, but need to figure out how to take the ending of the URL as the arg...
-app.get('/node/deviceInfo/files', function (req, res){
+app.get('/node/deviceInfo/checkin/files', function (req, res){
   //vO = {vidOutput: BS.vResolution};
   
   res.send('hi!');
