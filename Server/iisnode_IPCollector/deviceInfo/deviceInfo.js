@@ -1,5 +1,12 @@
 //console logs available at localhost/node/deviceInfo/iisnode/
 
+//mediaContentRoot is the directory where all the folders for each device are located
+//this string must end with a "/"
+let mediaContentRoot = 'D:/BrightsignAPI/Server/'/*'/inetpub/wwwroot/';*/
+
+//media subdirectory is the name for the subdirectory for the actual files, if no subdirectory in use set it as an empty string
+let mediaSubDirectory = '/media/';
+
 let express = require('express');
 const fs = require('fs');
 let bodyParser = require("body-parser");
@@ -22,14 +29,94 @@ let netInfo;
 
 //return the directory
 app.get('/node/deviceInfo/files', function (req, res){
-  //vO = {vidOutput: BS.vResolution};
-  
-  res.send("hi!");
-  /*let devDir = req.query.dev;
+    
+  let devDir = req.query.dev;
 
-  fs.readdir('/inetpub/wwwroot/' + devDir, (err, files) => {
-      res.send(files);
-  });*/
+  let dirPath = mediaContentRoot + devDir + mediaSubDirectory;
+
+  //console.log(dirPath);
+
+  try {
+    if (fs.existsSync(dirPath)) {
+      console.log("Directory exists.")
+      fs.readdir(dirPath, (err, files) => {
+          /*console.log(files);
+          console.log(typeof files);*/
+          res.send(files);
+      });
+    } else {
+      console.log("Directory does not exist.");
+      res.end("Directory does not exist.");
+    }
+  } catch(e) {
+    console.log("An error occurred.");
+    res.end("An error occurred.");
+  }
+
+});
+
+//get the file size from the server
+app.get('/node/deviceInfo/fileSize', function(req,res){
+
+  let devDir = req.query.dev;
+  let fileN = req.query.file;
+
+  //console.log(req.query);
+
+  let filePath = mediaContentRoot + devDir + mediaSubDirectory + fileN;
+
+  try {
+    if (fs.existsSync(filePath)) {
+      console.log('file exists');
+      let stats = fs.statSync(filePath);
+      let fileSizeInBytes = stats.size;
+      console.log(fileSizeInBytes);
+      res.send({"bytes":fileSizeInBytes});
+    } else {
+      res.send({"response":"File does not exist"});
+    }
+  } catch(err) {
+    console.error(err)
+    res.send(err);
+  }  
+});
+
+//stream file to client
+// src https://dev.to/itayp1/javascript-working-with-stream-and-large-files-2c8k
+// src https://nodejs.org/en/knowledge/advanced/streams/how-to-use-fs-create-read-stream/
+
+app.get('/node/deviceInfo/stream', function(req,res){
+  let devDir = req.query.dev;
+  let fileN = req.query.file;
+
+  //console.log(req.query);
+
+  let filePath = mediaContentRoot + devDir + mediaSubDirectory + fileN;
+
+  try {
+    if (fs.existsSync(filePath)) {
+      console.log('file exists');
+      // This line opens the file as a readable stream
+      let readStream = fs.createReadStream(filePath);
+
+      // This will wait until we know the readable stream is actually valid before piping
+      readStream.on('open', function () {
+        // This just pipes the read stream to the response object (which goes to the client)
+        readStream.pipe(res);
+      });
+
+      // This catches any errors that happen while creating the readable stream (usually invalid names)
+      readStream.on('error', function(err) {
+        res.end(err);
+      });
+    } else {
+      res.send({"response":"File does not exist"});
+    }
+  } catch(err) {
+    console.error(err)
+    res.send(err);
+  } 
+
 });
 
 app.post('/node/deviceInfo/checkin/ip',function(req,res){
@@ -67,7 +154,14 @@ app.post('/node/deviceInfo/checkin/global',function(req,res){
   res.end("global command " + Object.keys(req.body)[0] +" sent");
 });
 
-app.listen(process.env.PORT);
+//use this on iis
+//app.listen(process.env.PORT);
+
+//use this on local test environment
+let port = 8000
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`)
+})
 
 readFile();
 
