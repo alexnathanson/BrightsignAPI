@@ -89,13 +89,27 @@ app.get('/node/deviceInfo/stream', function(req,res){
   let devDir = req.query.dev;
   let fileN = req.query.file;
 
-  //console.log(req.query);
-
+/*  console.log(res.headers);
+*/
   let filePath = mediaContentRoot + devDir + mediaSubDirectory + fileN;
 
   try {
-    if (fs.existsSync(filePath)) {
+    fs.stat(filePath, function(error, stat){
+
+   /* }
+    if (fs.existsSync(filePath)) {*/
       console.log('file exists');
+
+     /* res.set('Content-Length', stat.size);
+      res.set('Access-Control-Expose-Headers', 'Content-Length');
+*/    console.log(typeof stat.size.toString());
+      // Setting the response 
+      res.header('Content-Length', stat.size.toString()); 
+      //res.writeHead();
+      //res.set('Access-Control-Expose-Headers', 'Content-Length');
+
+      console.log(res.headers);
+
       // This line opens the file as a readable stream
       let readStream = fs.createReadStream(filePath);
 
@@ -109,9 +123,9 @@ app.get('/node/deviceInfo/stream', function(req,res){
       readStream.on('error', function(err) {
         res.end(err);
       });
-    } else {
-      res.send({"response":"File does not exist"});
-    }
+    /*} else {
+      res.send({"response":"File does not exist"});*/
+    });
   } catch(err) {
     console.error(err)
     res.send(err);
