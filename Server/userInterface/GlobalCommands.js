@@ -2,7 +2,7 @@ class GlobalCommands{
 	
 	constructor(){
 		this.serverIP = "172.16.0.4";
-		this.globalEndpoint = "/node/deviceInfo/checkin/global";
+		this.globalEndpoint = "/node/checkin/global";
 		this.allIP = [];
 		this.syncGroups = {3:"172.16.0.110"};
 	}

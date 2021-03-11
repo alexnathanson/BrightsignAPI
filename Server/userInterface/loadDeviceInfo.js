@@ -1,7 +1,7 @@
 let requestURL = window.location.href;
 console.log(requestURL);
 
-let jsonEndpoint = '/node/deviceInfo/deviceInfo.json';
+let jsonEndpoint = '/node/deviceInfo.json';
 
 let request = new XMLHttpRequest();
 
