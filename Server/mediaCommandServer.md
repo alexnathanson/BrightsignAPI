@@ -52,3 +52,9 @@ The contents of the userInterface directory should be in the server root.
 ## Server Configuration
 
 The Node.JS API can be configured as an application for a primary server. Currently, we are using IIS.
+
+## Notes
+
+To test:
+*  global commands
+* user interface functionality
