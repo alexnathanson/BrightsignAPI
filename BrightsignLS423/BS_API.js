@@ -366,7 +366,7 @@ class BS_API{
 		this.dgramSend("timecode");
 	}
 
-/******Post Device Info to Remote Server******************/
+/******Post and Get functions for interacting with media control server******************/
 	//post device info to server
 	postHTTP(postThis,postHere){
 		let xhr = new XMLHttpRequest();
@@ -395,13 +395,41 @@ class BS_API{
 		    devInfo[this.deviceInfo.deviceUniqueId].file = this.localFileList[0];
 		    devInfo[this.deviceInfo.deviceUniqueId].time = Date.now();
 
-		  	this.postHTTP(devInfo, this.configDict.postURL);
+		  	this.postHTTP(devInfo, this.configDict.postURL + "node/checkin/ip");
 
 		}, this.postInterval);
 	}
 
 	stopPost(){
 		clearInterval(this.postTimer);
+	}
+
+	formatFilesRequest(){
+		return  this.configDict.postURL +'node/media/files?dev=' + this.deviceInfo.deviceUniqueId;
+	}
+
+	formatFileSizeRequest(aFile){
+		return this.configDict.postURL + 'node/media/filesize?dev=' + this.deviceInfo.deviceUniqueId + '&file=' + aFile;
+	}
+
+	formatStreamRequest(aFile){
+		return this.configDict.postURL + 'node/media/stream?dev=' + this.deviceInfo.deviceUniqueId + '&file=' + aFile;
+	}
+
+	getHTTP(getDST,callback){
+		let xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		       // Typical action to be performed when the document is ready:
+		       callback();
+		    }
+		};
+		xhttp.open("GET", getDST, true);
+		xhttp.send();
+	}
+
+	parseDirectory(){
+
 	}
 
 /*****************Control Interface Server***********************/
@@ -589,7 +617,10 @@ class BS_API{
     
     this.writer = this.fs.createWriteStream(this.localDirectory + name, {defaultEncoding:'binary'});
 
-    let VIDEO_URL = this.remoteServerBase + this.remoteServerDirectory + name;
+    //this was the old one
+    //let VIDEO_URL = this.remoteServerBase + this.remoteServerDirectory + name;
+    let VIDEO_URL = formatStreamRequest(name);
+
     // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
     // arrive. XMLHttpRequest will cause device to run out of memory when used with
     // large video files.
@@ -836,6 +867,7 @@ class BS_API{
     	}
     }
 
+//this is the file on the local BS device. See the API for getting the file size on the media server
     getFileSizeInBytes(filename) {
     	let stats = this.fs.statSync(this.localDirectory + filename)
     	//console.log(stats);
@@ -843,6 +875,7 @@ class BS_API{
 	    return fileSizeInBytes
 	}
 
+//this is the file on the local BS device. See the API for getting the file size on the media server
 	getAllFileSizes(){
 		this.localFileBytes = [];
 

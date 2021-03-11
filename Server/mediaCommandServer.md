@@ -56,5 +56,4 @@ The Node.JS API can be configured as an application for a primary server. Curren
 ## Notes
 
 To test:
-*  global commands
-* user interface functionality
+* global commands

@@ -33,10 +33,10 @@ function configured(){
     BS.GPIOEvents(randomMedia);
   }
 
-  dirList = new HTMLDirectory(BS.remoteServerBase,BS.remoteServerDirectory);
+  //dirList = new HTMLDirectory(BS.remoteServerBase,BS.remoteServerDirectory);
   BS.getRemList = (arg)=>{dirList.getDir(arg)};
   console.log(getRemList);//added 2/25
-  //BS.postHTTP(BS.remoteServerBase + "/node/media/files", BS.remoteServerDirectory);//added 2/25
+  BS.getHTTP(BS.remoteServerBase + "/node/media/files/" + BS.remoteServerDirectory, BS.parseDirectory);
 
   dirList.log=false;
 

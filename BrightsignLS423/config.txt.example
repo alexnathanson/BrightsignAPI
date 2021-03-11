@@ -55,6 +55,6 @@ gpio = true
 
 #postIP to IP collector on media server
 postIP = true
-postURL = http://172.16.0.4:80/node/deviceInfo/checkin/ip
+postURL = http://172.16.0.4:80/
 
 password = password
