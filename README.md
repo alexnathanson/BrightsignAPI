@@ -171,6 +171,13 @@ POST
 	* 0 = unmute
 
 ### To add
+* Priority
+	* api for getting dir contents
+	* api for file sizes
+	* api for streaming video files
+	* brightsign to use new dir contents systems
+	* brightsign to use new streaming system
+	* Visual feedback for download process
 * Brightsign
 	* Create an inteface for syncing - and pass to server interface
 	* Fix the media file downloading systems... i.e. confirm file sizes, etc...
