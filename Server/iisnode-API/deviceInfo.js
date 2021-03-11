@@ -1,4 +1,4 @@
-//console logs available at localhost/node/deviceInfo/iisnode/
+//console logs available at localhost/node/iisnode/
 
 //mediaContentRoot is the directory where all the folders for each device are located
 //this string must end with a "/"
@@ -29,7 +29,7 @@ let fileName = 'deviceInfo.json';
 let netInfo;
 
 //return the directory
-app.get('/node/deviceInfo/media/files', function (req, res){
+app.get('/node/media/files', function (req, res){
     
   let devDir = req.query.dev;
 
@@ -57,7 +57,7 @@ app.get('/node/deviceInfo/media/files', function (req, res){
 });
 
 //get the file size from the server
-app.get('/node/deviceInfo/media/filesize', function(req,res){
+app.get('/node/media/filesize', function(req,res){
 
   let devDir = req.query.dev;
   let fileN = req.query.file;
@@ -86,7 +86,7 @@ app.get('/node/deviceInfo/media/filesize', function(req,res){
 // src https://dev.to/itayp1/javascript-working-with-stream-and-large-files-2c8k
 // src https://nodejs.org/en/knowledge/advanced/streams/how-to-use-fs-create-read-stream/
 
-app.get('/node/deviceInfo/media/stream', function(req,res){
+app.get('/node/media/stream', function(req,res){
   let devDir = req.query.dev;
   let fileN = req.query.file;
 
@@ -134,14 +134,14 @@ app.get('/node/deviceInfo/media/stream', function(req,res){
 
 });
 
-app.post('/node/deviceInfo/checkin/ip',function(req,res){
+app.post('/node/checkin/ip',function(req,res){
   console.log(req.body);
   findReplace(req.body);
   res.end("checked in");
 });
 
 //added 1/29
-app.post('/node/deviceInfo/checkin/global',function(req,res){
+app.post('/node/checkin/global',function(req,res){
   console.log('global!!!');
   console.log(req.body);
 
