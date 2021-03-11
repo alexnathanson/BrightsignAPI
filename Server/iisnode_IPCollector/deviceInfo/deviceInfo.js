@@ -104,7 +104,7 @@ app.get('/node/deviceInfo/stream', function(req,res){
       res.set('Access-Control-Expose-Headers', 'Content-Length');
 */    console.log(typeof stat.size.toString());
       // Setting the response 
-      res.header('Content-Length', stat.size.toString()); 
+      res.header('Content-Length', stat.size); 
       //res.writeHead();
       //res.set('Access-Control-Expose-Headers', 'Content-Length');
 
