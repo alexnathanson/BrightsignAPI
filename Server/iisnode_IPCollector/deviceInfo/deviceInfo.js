@@ -2,8 +2,9 @@
 
 //mediaContentRoot is the directory where all the folders for each device are located
 //this string must end with a "/"
-let mediaContentRoot = 'D:/BrightsignAPI/Server/'/*'/inetpub/wwwroot/';*/
-
+let mediaContentRoot = '/inetpub/wwwroot/';*
+/*let mediaContentRoot = 'D:/BrightsignAPI/Server/'
+*/
 //media subdirectory is the name for the subdirectory for the actual files, if no subdirectory in use set it as an empty string
 let mediaSubDirectory = '/media/';
 
@@ -172,7 +173,8 @@ app.post('/node/deviceInfo/checkin/global',function(req,res){
 //app.listen(process.env.PORT);
 
 //use this on local test environment
-let port = 8000
+let port = process.env.PORT;
+
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`)
 })
