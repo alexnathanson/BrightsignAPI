@@ -29,7 +29,7 @@ let fileName = 'deviceInfo.json';
 let netInfo;
 
 //return the directory
-app.get('/node/media/files', function (req, res){
+app.get('/node/deviceInfo/media/files', function (req, res){
     
   let devDir = req.query.dev;
 
@@ -57,7 +57,7 @@ app.get('/node/media/files', function (req, res){
 });
 
 //get the file size from the server
-app.get('/node/media/fileSize', function(req,res){
+app.get('/node/deviceInfo/media/filesize', function(req,res){
 
   let devDir = req.query.dev;
   let fileN = req.query.file;
@@ -86,7 +86,7 @@ app.get('/node/media/fileSize', function(req,res){
 // src https://dev.to/itayp1/javascript-working-with-stream-and-large-files-2c8k
 // src https://nodejs.org/en/knowledge/advanced/streams/how-to-use-fs-create-read-stream/
 
-app.get('/node/media/stream', function(req,res){
+app.get('/node/deviceInfo/media/stream', function(req,res){
   let devDir = req.query.dev;
   let fileN = req.query.file;
 
