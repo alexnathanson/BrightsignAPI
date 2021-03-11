@@ -1,4 +1,5 @@
 //console logs available at localhost/node/iisnode/
+//the location of the logs was specified in the web.config file
 
 //mediaContentRoot is the directory where all the folders for each device are located
 //this string must end with a "/"
