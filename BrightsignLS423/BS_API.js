@@ -38,12 +38,19 @@ class BS_API{
 		this.gpio;
 
 		// https://docs.brightsign.biz/display/DOC/BSTicker
+		//IP display ticker
 		this.tickerX = 10;
 		this.tickerY = 110;
 		this.tickerW = 600;
 		this.tickerH = 30;
 		this.displayIP = true;
 		this.ticker = new BSTicker(this.tickerX,this.tickerY, this.tickerW,this.tickerH);
+
+		//Download process ticker
+		this.dTickerX = 10;
+		this.dTickerY = 140;
+		this.displayDownloadProgess = true;
+		this.dTicker = new BSTicker(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH);
 
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
@@ -91,8 +98,8 @@ class BS_API{
 
 	/******Server Syncing*************/
 		//removed 1/27
-		this.remoteServerBase = "";
-	    this.remoteServerDirectory = "";
+		this.mediaServer = "";
+	    this.mediaServerDirectory = "";
 	    this.downloadQueue = [];
 	    this.downloadIndex = 0;
 	    this.readyToDownload = false;
@@ -157,11 +164,9 @@ class BS_API{
 		}
 
 		this.displayIP = this.configDict.displayIP;
-		//this.postURL = this.configDictionary.postURL;
 		
-		//added 1/28
-		this.remoteServerBase = 'http://'+this.configDict['media_server'];
-		this.remoteServerDirectory = '/' + this.deviceInfo.deviceUniqueId + '/media/';
+		this.mediaServer = 'http://'+this.configDict['media_server'] + ":" + this.configDict['media_server_port'];
+		this.mediaServerDirectory = '/' + this.deviceInfo.deviceUniqueId + '/media/';
 
 		this.ticker.AddString(this.myIP);
 
@@ -320,6 +325,15 @@ class BS_API{
 		this.ticker.SetRectangle(-100,-100,1,1)
 	}
 
+/******* Download progress display *************************************/
+	downloadProcessTicker(bool){
+		if(bool){
+			this.dTicker.SetRectangle(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH)
+		} else {
+			this.dTicker.SetRectangle(-100,-100,1,1)
+		}
+	}
+
 /********* Playback and Media Controls ******************/
 	playback(arg){
 		if (arg == 'play'){
@@ -395,7 +409,7 @@ class BS_API{
 		    devInfo[this.deviceInfo.deviceUniqueId].file = this.localFileList[0];
 		    devInfo[this.deviceInfo.deviceUniqueId].time = Date.now();
 
-		  	this.postHTTP(devInfo, this.configDict.postURL + "node/checkin/ip");
+		  	this.postHTTP(devInfo, this.mediaServer + "/node/checkin/ip");
 
 		}, this.postInterval);
 	}
@@ -405,15 +419,17 @@ class BS_API{
 	}
 
 	formatFilesRequest(){
-		return  this.configDict.postURL +'node/media/files?dev=' + this.deviceInfo.deviceUniqueId;
+		return  this.mediaServer +'/node/media/files?dev=' + this.deviceInfo.deviceUniqueId;
 	}
 
 	formatFileSizeRequest(aFile){
-		return this.configDict.postURL + 'node/media/filesize?dev=' + this.deviceInfo.deviceUniqueId + '&file=' + aFile;
+		return this.mediaServer + '/node/media/filesize?dev=' + this.deviceInfo.deviceUniqueId + '&file=' + aFile;
 	}
 
 	formatStreamRequest(aFile){
-		return this.configDict.postURL + 'node/media/stream?dev=' + this.deviceInfo.deviceUniqueId + '&file=' + aFile;
+		let sr = this.mediaServer + '/node/media/stream?dev=' + this.deviceInfo.deviceUniqueId + '&file=' + aFile;
+		console.log(sr);
+		return sr;
 	}
 
 	getHTTP(getDST,callback){
@@ -572,8 +588,8 @@ class BS_API{
       //get remote directory
         //dirList.getDir((arg)=>{
         this.getRemList((arg)=>{
-        	/*console.log("Remote File List:");
-        	console.log(arg);*/
+        	console.log("Remote File List:");
+        	console.log(arg);
 
           	this.checkDirectory(this.localFileList, arg);
          
@@ -615,18 +631,25 @@ class BS_API{
 
   downloadFiles(name){
     
+    this.downloadProcessTicker(true);
+
     this.writer = this.fs.createWriteStream(this.localDirectory + name, {defaultEncoding:'binary'});
 
     //this was the old one
-    //let VIDEO_URL = this.remoteServerBase + this.remoteServerDirectory + name;
-    let VIDEO_URL = formatStreamRequest(name);
+    //let VIDEO_URL = this.mediaServer + this.mediaServerDirectory + name;
+    console.log("FILE NAME: " + name);
+    let VIDEO_URL = this.formatStreamRequest(name);
+
+    this.downloadLog("Fetching from " + VIDEO_URL);
 
     // Uses fetch instead of XMLHttpRequest to support saving fragments into file as they
     // arrive. XMLHttpRequest will cause device to run out of memory when used with
     // large video files.
     fetch(VIDEO_URL).then((res)=>{
       this.soFar = 0;
+      this.downloadLog(res.headers);
       this.contentLength = res.headers.get('Content-Length');
+      this.downloadLog("Content length: " + this.contentLength);
       // Content length might not be known, that is normal.
       if (this.contentLength)
         this.downloadLog("Content length is " + this.contentLength);
@@ -644,6 +667,7 @@ class BS_API{
     return reader.read().then((result)=>{
       if (result.done) {
         this.downloadLog("File Downloaded! " + this.soFar + " bytes total");
+        this.downloadProcessTicker(false);
         this.writer.end();
         
         //play a file
@@ -666,10 +690,18 @@ class BS_API{
   }
 
   updateProgress() {
-    if (this.contentLength)
+    if (this.contentLength){
       this.downloadLog((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
-    else
-      this.downloadLog(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+    	
+    	this.dTicker.AddString((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
+
+    }
+    else {
+      this.downloadLog(this.soFar + "/" + this.contentLength + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+	
+    	this.dTicker.AddString((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
+	}
+
   }
 
     //compares remote directory to local directory to create the download queue

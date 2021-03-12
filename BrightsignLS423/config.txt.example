@@ -39,6 +39,8 @@ enable_node = true
 media_sync = true
 
 media_server = 172.16.0.4
+media_server_port = 80
+postIP = true
 
 #display the player's IP address
 displayIP = true
@@ -54,7 +56,6 @@ mask = true
 gpio = true
 
 #postIP to IP collector on media server
-postIP = true
-postURL = http://172.16.0.4:80/
+#postURL = http://172.16.0.4:80/
 
 password = password
