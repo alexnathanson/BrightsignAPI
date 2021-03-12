@@ -5,7 +5,7 @@ this class combines Brightsign JS API, Brightscript-JavaScript Objects, Node JS 
 
 class BS_API{
 	constructor(){
-		this.api = '0.0.11'; //version
+		this.api = '0.0.12'; //version
 		this.localDirectory = '/storage/sd/';
 		this.localFileList = [];
 
@@ -51,6 +51,8 @@ class BS_API{
 		this.dTickerY = 140;
 		this.displayDownloadProgess = true;
 		this.dTicker = new BSTicker(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH);
+		//this.dTicker.SetPixelsPerSecond(30);
+		this.dTicker.SetAutoPop(true);
 
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
@@ -109,6 +111,7 @@ class BS_API{
 	    this.ilog = true;
 	    this.remList = [];
 	    this.getRemList;//function to retrieve remote media file list
+	    this.downloadPercent = 0;
 	/*****media details***************/
 		/*this.resolutions = ["640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i","720x576x50p",
 								"640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i", "720x576x50p","800x600x60p",
@@ -649,10 +652,9 @@ class BS_API{
       this.soFar = 0;
       this.downloadLog(res.headers);
       this.contentLength = res.headers.get('Content-Length');
-      this.downloadLog("Content length: " + this.contentLength);
       // Content length might not be known, that is normal.
       if (this.contentLength)
-        this.downloadLog("Content length is " + this.contentLength);
+        this.downloadLog("Content length is " + this.contentLength + " bytes");
       else
         this.downloadLog("Content length is not known");
 
@@ -691,18 +693,24 @@ class BS_API{
 
   updateProgress() {
     if (this.contentLength){
-      this.downloadLog((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
+
+    	this.downloadPercent = (this.soFar/this.contentLength*100).toFixed(2);
+      this.downloadLog(this.downloadPercent + "% is downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
     	
-    	this.dTicker.AddString((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
+    	this.updateDownloadTicker(this.downloadPercent + "% is downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
 
     }
     else {
-      this.downloadLog(this.soFar + "/" + this.contentLength + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+      this.downloadLog(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
 	
-    	this.dTicker.AddString((this.soFar/this.contentLength*100).toFixed(2) + "% is downloaded" + this.downloadIndex +'/'+this.downloadQueue.length);
+   	this.updateDownloadTicker(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
 	}
 
   }
+
+  updateDownloadTicker(aString){
+		this.dTicker.AddString
+	}
 
     //compares remote directory to local directory to create the download queue
   checkDirectory(files, remFiles){
@@ -766,14 +774,16 @@ class BS_API{
   }
 
   removeFiles(anArray){
+  	console.log("removeFiles()");
+  	console.log(anArray);
     //synchronously delete old files
     for(let r = 0;r<anArray.length;r++){
       let remPath = this.localDirectory + anArray[r];
       this.fs.unlinkSync(remPath, (err) => {
         if (err) {
-            console.log("failed to delete local file:"+err);
+            console.log("Failed to delete local file: "+err);
         } else {
-            console.log('successfully deleted local file');                                
+            console.log('Successfully deleted local file');                                
         }
       });
     }
@@ -789,6 +799,9 @@ class BS_API{
     }
   }
 
+  /*checkFileSize(){
+  	getHTTP(this.formatFileSizeRequest(),);
+  }*/
 
 /* enables parsing the file name if structured like: LOCATION_FILENAME_RESOLUTION.formatsuffix
  for example room34_MyCoolVideo_1920x1080x60p.mov*/

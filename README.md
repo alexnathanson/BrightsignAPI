@@ -178,6 +178,7 @@ POST
 	* brightsign to use new dir contents systems
 	* brightsign to use new streaming system
 	* Visual feedback for download process
+	* check local file sizes against remote file sizes
 * Brightsign
 	* Create an inteface for syncing - and pass to server interface
 	* Fix the media file downloading systems... i.e. confirm file sizes, etc...

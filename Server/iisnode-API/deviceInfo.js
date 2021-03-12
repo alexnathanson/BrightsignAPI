@@ -108,7 +108,7 @@ app.get('/node/media/stream', function(req,res){
       // Setting the response 
       res.header('Content-Length', stat.size); 
       //res.writeHead();
-      //res.set('Access-Control-Expose-Headers', 'Content-Length');
+      res.header('Access-Control-Expose-Headers', 'Content-Length');
 
       console.log(res.headers);
 
