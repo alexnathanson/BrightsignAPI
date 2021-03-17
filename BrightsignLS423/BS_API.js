@@ -48,11 +48,19 @@ class BS_API{
 
 		//Download process ticker
 		this.dTickerX = 10;
-		this.dTickerY = 140;
+		this.dTickerY = this.tickerY + this.tickerH;
 		this.displayDownloadProgess = true;
-		this.dTicker = new BSTicker(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH);
-		//this.dTicker.SetPixelsPerSecond(30);
+		this.dTicker = new BSTicker(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH);//initialize this height at 1x, so it forces the text to be that size when it doubles the height
+		this.dTicker.SetBackgroundColor(0xFFFF0000);
+		this.dTicker.SetPixelsPerSecond(250);
 		this.dTicker.SetAutoPop(true);
+		this.dTickerCount = 0;
+
+		this.dTickerBackgroundX =10;
+		this.dTickerBackgroundY=this.tickerY + (this.tickerH * 2);
+		this.dtickerBackgroundW=1;
+		this.dTickerBackground = new BSTicker(this.dTickerBackgroundX,this.dTickerBackgroundY, this.dtickerBackgroundW,this.tickerH);
+    	this.dTickerBackground.SetBackgroundColor(0xFF00FF00);
 
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
@@ -177,6 +185,8 @@ class BS_API{
 			this.hideIP();
 		}
 
+		this.downloadProcessTicker(false);
+
 		if(this.configDict.gpio){
 			this.gpio = new BSControlPort("Expander-0-GPIO");
 		}
@@ -190,6 +200,8 @@ class BS_API{
 
 		this.getDeviceInfo()
 		
+		//this.getAllFileSizes();
+
 		this.getLocalFiles(callback);
 
 	}
@@ -331,9 +343,10 @@ class BS_API{
 /******* Download progress display *************************************/
 	downloadProcessTicker(bool){
 		if(bool){
-			this.dTicker.SetRectangle(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH)
+			this.dTicker.SetRectangle(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH*2)
 		} else {
 			this.dTicker.SetRectangle(-100,-100,1,1)
+			this.dTickerBackground.SetRectangle(-100,-100,1,1)
 		}
 	}
 
@@ -439,8 +452,8 @@ class BS_API{
 		let xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
-		       // Typical action to be performed when the document is ready:
-		       callback();
+		       //Action to be performed when the document is ready:
+		       callback(this.responseText);
 		    }
 		};
 		xhttp.open("GET", getDST, true);
@@ -588,6 +601,8 @@ class BS_API{
     //check if its ready to download every 10 seconds
     let checkDownloadState = setInterval(()=>{
 
+    	this.checkFileSizes();
+
       //get remote directory
         //dirList.getDir((arg)=>{
         this.getRemList((arg)=>{
@@ -676,6 +691,7 @@ class BS_API{
         this.playFile(this.remList[0]);
 
         //BS.getLocalFiles();
+        //this.checkFileSizes();
 
         this.downloadIncrement();
         return;
@@ -695,21 +711,38 @@ class BS_API{
     if (this.contentLength){
 
     	this.downloadPercent = (this.soFar/this.contentLength*100).toFixed(2);
-      this.downloadLog(this.downloadPercent + "% is downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
     	
-    	this.updateDownloadTicker(this.downloadPercent + "% is downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+    	this.downloadLog(this.downloadPercent + "% is downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+    	
+    	this.updateDownloadTicker(this.downloadPercent + "% " + this.downloadIndex +'/'+this.downloadQueue.length);
 
+    	this.updateDownloadProgressBar(this.downloadPercent);
     }
     else {
       this.downloadLog(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
 	
-   	this.updateDownloadTicker(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
+   		this.updateDownloadTicker(this.soFar + " bytes " + this.downloadIndex +'/'+this.downloadQueue.length);
 	}
 
   }
 
   updateDownloadTicker(aString){
-		this.dTicker.AddString
+  		this.dTickerCount ++;
+  		if ( this.dTickerCount % 25 == 0){
+  			this.dTicker.AddString(aString);
+  		}
+	}
+
+	updateDownloadProgressBar(aPercent){
+		this.dtickerBackgroundW = (this.tickerW * aPercent * 0.01)+ 1;
+
+		console.log(this.dTickerBackgroundW);
+
+		if(this.dTickerBackgroundW < 1 ){
+			this.dTickerBackgroundW = 1;
+		}
+
+		this.dTickerBackground.SetRectangle(this.dTickerBackgroundX,this.dTickerBackgroundY, this.dtickerBackgroundW,this.tickerH);
 	}
 
     //compares remote directory to local directory to create the download queue
@@ -799,9 +832,29 @@ class BS_API{
     }
   }
 
-  /*checkFileSize(){
-  	getHTTP(this.formatFileSizeRequest(),);
-  }*/
+//add error handling!!!
+  checkFileSizes(){
+  	//getHTTP(this.formatFileSizeRequest(),);
+  	console.log("Checking file sizes");
+
+  	let wrongSize = [];
+
+  	this.getLocalFiles((lfl)=>{
+  		console.log("Local files:");
+  		console.log(lfl);
+
+  		for (let f = 0; f < lfl.length;f++){
+	  		this.getHTTP(this.formatFilesRequest(lfl[f]), (response)=>{
+	  			console.log(response);
+	  			if( response.bytes != this.localFileBytes[f]){
+	  				wrongSize.push(lfl[f]);
+	  			}
+	  		})
+	  	}
+  	})
+
+  	this.removeFiles(wrongSize);
+  }
 
 /* enables parsing the file name if structured like: LOCATION_FILENAME_RESOLUTION.formatsuffix
  for example room34_MyCoolVideo_1920x1080x60p.mov*/
