@@ -15,9 +15,6 @@ BS.dgramReceive(mediaEnded);
 //list of IPs to sync with
 //BS.syncGroup = [];
 
-let dirList; //remote directory list
-
-
 BS.eventEmitter.on('queue',()=>{
       scene2();
 });
@@ -32,13 +29,6 @@ function configured(){
   if(BS.configDict.gpio){
     BS.GPIOEvents(randomMedia);
   }
-
-  dirList = new HTMLDirectory(BS.mediaServer,BS.mediaServerDirectory);
-  BS.getRemList = (arg)=>{dirList.getDir(arg)};
-  console.log(getRemList);//added 2/25
-  //BS.getHTTP(BS.remoteServerBase + "/node/media/files/" + BS.remoteServerDirectory, BS.parseDirectory);
-
-  dirList.log=false;
 
   indexLog('Version: ' + BS.api);    
 

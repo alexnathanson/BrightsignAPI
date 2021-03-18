@@ -52,7 +52,7 @@ class BS_API{
 		this.displayDownloadProgess = true;
 		this.dTicker = new BSTicker(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH);//initialize this height at 1x, so it forces the text to be that size when it doubles the height
 		this.dTicker.SetBackgroundColor(0xFFFF0000);
-		this.dTicker.SetPixelsPerSecond(250);
+		this.dTicker.SetPixelsPerSecond(225);
 		this.dTicker.SetAutoPop(true);
 		this.dTickerCount = 0;
 
@@ -61,6 +61,10 @@ class BS_API{
 		this.dtickerBackgroundW=1;
 		this.dTickerBackground = new BSTicker(this.dTickerBackgroundX,this.dTickerBackgroundY, this.dtickerBackgroundW,this.tickerH);
     	this.dTickerBackground.SetBackgroundColor(0xFF00FF00);
+
+		this.downloadDisplayInterval = 1000;//1 second
+		this.downloadDisplayTimer;
+		this.downloadTickerString = "";
 
 		this.VideoOutputClass = require("@brightsign/videooutput");
 		this.videoOutputHDMI = new this.VideoOutputClass("hdmi");
@@ -118,7 +122,6 @@ class BS_API{
 	    this.contentLength;
 	    this.ilog = true;
 	    this.remList = [];
-	    this.getRemList;//function to retrieve remote media file list
 	    this.downloadPercent = 0;
 	/*****media details***************/
 		/*this.resolutions = ["640x480x60p","720x480x59.94p","720x480x60i","720x480x60p","720x576x50i","720x576x50p",
@@ -237,6 +240,19 @@ class BS_API{
 	  });
 	}
 
+	getRemList(callback){
+		//get remote file list
+	  	this.getHTTP(this.formatFilesRequest(),true,(response)=>{
+			this.remList = JSON.parse(response);
+			console.log("Remote List")
+			console.log(this.remList);
+
+			if(typeof callback == 'function'){
+				callback(this.remList);
+			}
+		})
+	}
+
 	filterMediaType(anArray){
 	  let mediaFiles = [];
 
@@ -344,9 +360,19 @@ class BS_API{
 	downloadProcessTicker(bool){
 		if(bool){
 			this.dTicker.SetRectangle(this.dTickerX,this.dTickerY, this.tickerW,this.tickerH*2)
+
+			//output updated percentage info
+	    	this.downloadDisplayTimer = setInterval(()=>{
+			    
+				this.dTicker.AddString(this.downloadTickerString);
+
+			}, this.downloadDisplayInterval);
+
 		} else {
 			this.dTicker.SetRectangle(-100,-100,1,1)
 			this.dTickerBackground.SetRectangle(-100,-100,1,1)
+
+			clearInterval(this.downloadDisplayTimer);
 		}
 	}
 
@@ -448,7 +474,8 @@ class BS_API{
 		return sr;
 	}
 
-	getHTTP(getDST,callback){
+	getHTTP(getDST,syncBool, callback){
+		//sync bool: true = asyncronous, false = syncronous
 		let xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 		    if (this.readyState == 4 && this.status == 200) {
@@ -456,7 +483,7 @@ class BS_API{
 		       callback(this.responseText);
 		    }
 		};
-		xhttp.open("GET", getDST, true);
+		xhttp.open("GET", getDST, syncBool);
 		xhttp.send();
 	}
 
@@ -714,24 +741,25 @@ class BS_API{
     	
     	this.downloadLog(this.downloadPercent + "% is downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
     	
-    	this.updateDownloadTicker(this.downloadPercent + "% " + this.downloadIndex +'/'+this.downloadQueue.length);
+    	this.downloadTickerString = this.downloadPercent + "% " + this.downloadIndex +'/'+this.downloadQueue.length;
 
     	this.updateDownloadProgressBar(this.downloadPercent);
     }
     else {
       this.downloadLog(this.soFar + " bytes are downloaded " + this.downloadIndex +'/'+this.downloadQueue.length);
 	
-   		this.updateDownloadTicker(this.soFar + " bytes " + this.downloadIndex +'/'+this.downloadQueue.length);
+	//make this a variable
+   		this.downloadTickerString = this.soFar + " bytes " + this.downloadIndex +'/'+this.downloadQueue.length;
 	}
 
   }
-
-  updateDownloadTicker(aString){
+//add addstring to the earlier function...
+/*  updateDownloadTicker(aString){
   		this.dTickerCount ++;
   		if ( this.dTickerCount % 25 == 0){
   			this.dTicker.AddString(aString);
   		}
-	}
+	}*/
 
 	updateDownloadProgressBar(aPercent){
 		this.dtickerBackgroundW = (this.tickerW * aPercent * 0.01)+ 1;
@@ -807,7 +835,7 @@ class BS_API{
   }
 
   removeFiles(anArray){
-  	console.log("removeFiles()");
+  	console.log("Removing files:");
   	console.log(anArray);
     //synchronously delete old files
     for(let r = 0;r<anArray.length;r++){
@@ -829,31 +857,54 @@ class BS_API{
       //update local file list
       this.getLocalFiles();
 
-    }
+    } /*else {
+    	this.reboot();
+    }*/
   }
 
-//add error handling!!!
   checkFileSizes(){
-  	//getHTTP(this.formatFileSizeRequest(),);
   	console.log("Checking file sizes");
 
   	let wrongSize = [];
 
-  	this.getLocalFiles((lfl)=>{
+  	//update local file list
+	this.getLocalFiles(()=>{
   		console.log("Local files:");
-  		console.log(lfl);
+  		//this.localFileList = lfl;
+  		console.log(this.localFileList);
 
-  		for (let f = 0; f < lfl.length;f++){
-	  		this.getHTTP(this.formatFilesRequest(lfl[f]), (response)=>{
-	  			console.log(response);
-	  			if( response.bytes != this.localFileBytes[f]){
-	  				wrongSize.push(lfl[f]);
-	  			}
-	  		})
-	  	}
+  		//update local file size list
+  		this.getAllFileSizes();
+
+	  	//get remote file list
+	  	//this.getHTTP(this.formatFilesRequest(),true,(response)=>{
+	  	this.getRemList((response)=>{
+			//this.remList = JSON.parse(response);
+			console.log("Remote List")
+			console.log(this.remList);
+
+	  		for (let f = 0; f < this.localFileList.length;f++){
+
+	  			//check if local file exists remotely
+	  			if(this.remList.includes(this.localFileList[f])){
+	  				this.getHTTP(this.formatFileSizeRequest(this.localFileList[f]),false, (response)=>{
+			  			//console.log(JSON.parse(response));
+			  			if( JSON.parse(response).bytes != parseInt(this.localFileBytes[f])){
+			  				wrongSize.push(this.localFileList[f]);
+			  			}
+			  		})
+	  			}	
+		  	}
+
+		  	if (wrongSize.length > 0){
+		  		//console.log("Removing bad files...");
+		  		this.removeFiles(wrongSize);
+		  	}
+	  	})
   	})
 
-  	this.removeFiles(wrongSize);
+  	
+
   }
 
 /* enables parsing the file name if structured like: LOCATION_FILENAME_RESOLUTION.formatsuffix

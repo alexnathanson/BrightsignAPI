@@ -91,7 +91,7 @@ The server must have a static IP, which must be listed in the BS config file.
 </p>
 
 ### 1) Media Distribution
-The download system on the Brightsign parse the directory on the server via a GET request. No additional code is needed on the server side for the distribution to work.
+A Node.JS API facilitates the media downloading on the server side.
 * This has been tested with a generic Windows IIS setup
 * Must enable directory browsing.
 * Place media files on server directory named "media" within a directory with the name of the device ID at the root server level.
@@ -171,30 +171,19 @@ POST
 	* 0 = unmute
 
 ### To add
-* Priority
-	* api for getting dir contents
-	* api for file sizes
-	* api for streaming video files
-	* brightsign to use new dir contents systems
-	* brightsign to use new streaming system
-	* Visual feedback for download process
-	* check local file sizes against remote file sizes
 * Brightsign
-	* Create an inteface for syncing - and pass to server interface
-	* Fix the media file downloading systems... i.e. confirm file sizes, etc...
-	* is the queue post documentation missing a [
+	* Create an inteface for syncing different brightsign together - and pass to server interface
+	* Refactory media file downloading systems to avoid redundant functions
+	* is the queue post documentation missing a [ ?
 	* look in to bundling the node stuff - webpack
-	* refactor end points for consistency
-	* method for reordering files
 	* look at how it loops an individual file vs playlist
-	* avoid conflicts with server stuff
+	* improve UI for downloading - maybe display download rate?
+	* identify why is only successfully downloads large files (~10GB) sometimes
 * Main Server
 	* Order the results on the server interface
 	* Filter by results by location
 	* Filter by freshness
 	* remove the "sync ramp 3" stuff
-	* API should return list of files to avoid directory browsing
-	* API should coordinate/ ensure full file is transferred - download feedback?
 	* better documentation for server side stuff
 	* refactor end points for consistency
 	* toggle boxes for selected devices to send commands to?
