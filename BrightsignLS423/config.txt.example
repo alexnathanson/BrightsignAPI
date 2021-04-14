@@ -53,9 +53,9 @@ volume = 55
 mask = true
 
 #enable gpio buttons
-gpio = true
+gpio = false
 
 #postIP to IP collector on media server
-#postURL = http://172.16.0.4:80/
+postURL = http://172.16.0.4:80/
 
 password = password
