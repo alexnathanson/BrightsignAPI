@@ -59,7 +59,7 @@ gpio = false
 #postIP to IP collector on media server
 #postURL = http://172.16.0.4:80/node/deviceInfo/checkin/ip
 
-password = srgm1071
+password = admin
 
 #parseFileName = true
 
