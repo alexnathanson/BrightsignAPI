@@ -5,10 +5,10 @@
 # Video output mode
 # Set this to change the player’s output mode
 # Default is 1920x1080x50p
+# setting it equal to "auto" enables autodetection of connected display hardware (not autodetection of file)
 
-#video_output_mode = 1920x1080x60p
-#video_output_mode = 640x480x60p
 video_output_mode = auto
+#video_output_mode = 1920x1200x60p
 
 # playback_mode 
 # set to normal, master or slave
@@ -25,13 +25,13 @@ playback_mode = normal
 ip_mode = dhcp
 
 # if the IP isn't present and its static it will use the old static IP
-#ip = 172.16.1.21
+#ip = 172.16.0.110
 
 # Netmask, may be needed for syncing
-#netmask = 255.255.0.0
+#netmask = 255.255.252.0
 
 # Gateway, may be needed for syncing
-#gateway = 172.16.1.1
+#gateway = 172.16.0.1
 
 # enable node (true or false)
 enable_node = true
@@ -49,7 +49,7 @@ displayIP = true
 #options: hdmi, usb
 audio_output = hdmi
 
-volume = 55
+volume = 100
 
 mask = true
 
@@ -57,12 +57,10 @@ mask = true
 gpio = false
 
 #postIP to IP collector on media server
-#postURL = http://172.16.0.4:80/
+#postURL = http://172.16.0.4:80/node/deviceInfo/checkin/ip
 
-#replace admin with your password
-password = admin
+password = srgm1071
 
-#disable
-#parseFileName = false
+#parseFileName = true
 
 playbackSync = false
