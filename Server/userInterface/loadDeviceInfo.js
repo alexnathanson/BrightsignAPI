@@ -165,6 +165,8 @@ function sortObjects(unsortedObj){
   
   let sort = urlParams.get('sort');
 
+  console.log(sort);
+  
   let sortedObj = unsortedObj;
 
   return sortedObj;
