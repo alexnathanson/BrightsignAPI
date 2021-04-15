@@ -40,7 +40,13 @@ function refreshData(){
 
 function showData(rawJsonObj) {
 
-  jsonObj = sortObjects(rawJsonObj);
+  for(let r = 0; r < Object.keys(rawJsonObj).length;r++){
+    jsonObj[Object.keys(rawJsonObj[r])] = rawJsonObj[r][Object.keys(rawJsonObj[r])];
+  }
+
+  console.log(jsonObj);
+
+  jsonObj = sortObjects(jsonObj);
 
 	console.log(jsonObj);
 
