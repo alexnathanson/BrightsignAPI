@@ -32,7 +32,7 @@ end function
 
 function configureNetwork()
 	nc = CreateObject("roNetworkConfiguration", 0)
-	' nc.SetTimeServer("time.brightsignnetwork.com/")
+	nc.SetTimeServer("time.brightsignnetwork.com")
 	if m.params["ip_mode"] = "static" then
 		if Type(m.params["ip"]) <> "Invalid" then
 	        nc.SetIP4Address(m.params["ip"])

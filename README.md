@@ -76,7 +76,6 @@ The control interface uses a Node Express server (controlInterfaceExpress.js) to
 ### Brightsign Installation Instructions
 
 * update the firmware on the BS
-* remove the .example suffix from the config file
 * update network info, password, and additional params as necessary in config.txt
 * drag all of contents of the BrightsignLS423 directory to the SD card
 * if you are not syncing files via the media server, put your media files onto the SD manually.
@@ -93,7 +92,6 @@ The server must have a static IP, which must be listed in the BS config file.
 ### 1) Media Distribution
 A Node.JS API facilitates the media downloading on the server side.
 * This has been tested with a generic Windows IIS setup
-* Must enable directory browsing.
 * Place media files on server directory named "media" within a directory with the name of the device ID at the root server level.
 	* root/[deviceID]/media
 

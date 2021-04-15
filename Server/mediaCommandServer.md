@@ -10,7 +10,7 @@ This system uses iisnode. https://github.com/Azure/iisnode
 
 ## NodeJS-API
 
-The Node.JS script runs as a proxy server behind IIS. IIS creates a virtual path to required destination. The contents of this directory should be placed in the root directory that IIS is redirecting to. The virtual path for the application is set via the "View Applications" tab in IIS.
+The Node.JS script runs as a proxy server behind IIS. IIS creates a virtual path to required destination. The contents of this "iisnode-API" directory should be placed in the root directory that IIS is redirecting to. The virtual path for the application is set via the "View Applications" tab in IIS.
 
 ### media
 

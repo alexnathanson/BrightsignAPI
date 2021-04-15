@@ -56,11 +56,10 @@ mask = true
 #enable gpio buttons
 gpio = false
 
+# delete postURL... no longer used
 #postIP to IP collector on media server
 #postURL = http://172.16.0.4:80/node/deviceInfo/checkin/ip
 
 password = admin
-
-#parseFileName = true
 
 playbackSync = false
