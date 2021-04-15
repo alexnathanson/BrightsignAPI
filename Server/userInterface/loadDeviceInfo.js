@@ -1,4 +1,5 @@
-let requestURL = window.location.href;
+let requestURL = window.location.protocol + "//" + window.location.host;
+
 console.log(requestURL);
 
 let jsonEndpoint = '/node/deviceInfo.json';
@@ -11,7 +12,7 @@ let devData;
 
 let Global = new GlobalCommands();
 
-let minuteWindow = 2;//threshhold for a time to be considered up to date
+let minuteWindow = 3;//threshhold for a time to be considered up to date
 let currentTime;
 
 let classNames = ['green','yellow','red'];
@@ -37,9 +38,9 @@ function refreshData(){
   }
 }
 
-function showData(jsonObj) {
+function showData(rawJsonObj) {
 
-  jsonObj = sortObjects(jsonObj);
+  jsonObj = sortObjects(rawJsonObj);
 
 	console.log(jsonObj);
 
@@ -166,7 +167,7 @@ function sortObjects(unsortedObj){
   let sort = urlParams.get('sort');
 
   console.log(sort);
-  
+
   let sortedObj = unsortedObj;
 
   return sortedObj;
