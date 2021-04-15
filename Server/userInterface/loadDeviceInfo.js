@@ -170,14 +170,21 @@ function sortObjects(unsortedObj){
 
   let sortVal;
 
+  let sortedObj;
+
   if(sort == "serial"){
-    return Object.keys(unsortedObj).sort().reduce(function (result, key) {
-      result[key] = obj[key];
+    /*return Object.keys(unsortedObj).sort().reduce(function (result, key) {
+      result[key] = unsortedObj[key];
       return result;
-    }, {});
+    });*/
+    for (let uK in Object.keys(unsortedObj).sort()){
+      sortedObj[uK] = unsortedObj[uK];
+    }
   } else{
-    return unsortedObj.sort(function(a, b){return a[sort] - b[sort]}); 
+    sortedObj = unsortedObj.sort(function(a, b){return a[sort] - b[sort]}); 
   }
+
+  return sortedObj;
 }
 /*
 function sortObj(obj) {
