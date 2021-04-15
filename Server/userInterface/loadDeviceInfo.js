@@ -40,8 +40,10 @@ function refreshData(){
 
 function showData(rawJsonObj) {
 
+  let jsonObj = new Object();
+
   for(let r = 0; r < Object.keys(rawJsonObj).length;r++){
-    jsonObj[Object.keys(rawJsonObj[r])] = rawJsonObj[r][Object.keys(rawJsonObj[r])];
+    jsonObj[Object.keys(rawJsonObj[r])[0]] = rawJsonObj[r][Object.keys(rawJsonObj[r])[0]];
   }
 
   console.log(jsonObj);
@@ -176,7 +178,7 @@ function sortObjects(unsortedObj){
 
   let sortVal;
 
-  let sortedObj;
+  let sortedObj = new Object();
 
   if(sort == "serial"){
     /*return Object.keys(unsortedObj).sort().reduce(function (result, key) {
