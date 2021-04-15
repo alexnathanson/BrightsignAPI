@@ -5,7 +5,7 @@ let jsonEndpoint = '/node/deviceInfo.json';
 
 let request = new XMLHttpRequest();
 
-let refreshRate = 2 * 60 * 1000;
+let refreshRate = 3 * 60 * 1000;
 
 let devData;
 
@@ -38,6 +38,9 @@ function refreshData(){
 }
 
 function showData(jsonObj) {
+
+  jsonObj = sortObjects(jsonObj);
+
 	console.log(jsonObj);
 
   currentTime = Date.now();
@@ -153,6 +156,18 @@ function parseFileName(aString){
   }
 
   return returnThis;
+}
+
+function sortObjects(unsortedObj){
+  
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  
+  let sort = urlParams.get('sort');
+
+  let sortedObj = unsortedObj;
+
+  return sortedObj;
 }
 
 /*****drop down menu stuff ****/

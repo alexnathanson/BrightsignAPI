@@ -16,7 +16,7 @@
     <p>
        <img id="screen" src="/images/screen.jpg" alt="screenshot">
     </p>
-    <div>
+    <div id="playback-controls">
       <h2>Playback Controls</h2>
       <p>
         <button type="button" onclick="playback('play')">Play</button> 
@@ -30,20 +30,19 @@
         <button type="button" onclick="displayIP()">Display IP</button> 
         <button type="button" onclick="confirmReboot()">Restart</button> 
       </p>
-      <p>
-        <div id="volStuff">
-          <div id="volVal">Volume:</div>
-          <input type="range" min="1" max="500" value="50" class="slider" id="volume">
-        </div>
-      </p>
+      <div id="volStuff">
+        <span id="volVal">Volume:</span><br>
+        <input type="range" min="1" max="500" value="50" class="slider" id="volume">
+      </div>
     </div>
+
     <div id="devInfo">
       <h2>Device Info</h2>
       <div id="vidOutputMode">Config.txt Output Mode:</div>
       <div id="activeMode">Active Mode:</div>
 <!--       <div id="vidFileDim">Video file dimensions:</div>-->
       <div id="vidOutputDim">Output dimensions:</div>
-      <div id="vidOutputDeviceDim">Best mode for display hardware:</div>
+      <div id="vidOutputDeviceDim">Best mode for display hardware (according to BS player):</div>
     </div>
   </body>
 </html>

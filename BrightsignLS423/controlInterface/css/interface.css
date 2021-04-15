@@ -1,11 +1,21 @@
-#volStuff {
-  border: 3px solid green;
-  padding: 20px;
-  margin: 5px;
-  float: left;
+
+#playback-controls{
+	border: solid;
+	padding: 10px;
+	margin: 5px;
 }
 
+#volStuff {
+  border: 3px solid green;
+  padding: 10px;
+  margin: 5px;
+  width: auto;
+/*  float: right;
+*/}
+
 #devInfo {
-	position: absolute;
 	float:left;
+	border: solid;
+	padding: 10px;
+	margin: 5px;
 }
