@@ -168,10 +168,24 @@ function sortObjects(unsortedObj){
 
   console.log(sort);
 
-  let sortedObj = unsortedObj;
+  let sortVal;
 
-  return sortedObj;
+  if(sort == "serial"){
+    return Object.keys(unsortedObj).sort().reduce(function (result, key) {
+      result[key] = obj[key];
+      return result;
+    }, {});
+  } else{
+    return unsortedObj.sort(function(a, b){return a[sort] - b[sort]}); 
+  }
 }
+/*
+function sortObj(obj) {
+  return Object.keys(obj).sort().reduce(function (result, key) {
+    result[key] = obj[key];
+    return result;
+  }, {});
+}*/
 
 /*****drop down menu stuff ****/
 function dropdown() {
