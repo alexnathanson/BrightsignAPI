@@ -175,20 +175,17 @@ POST
 	* is the queue post documentation missing a [ ?
 	* look in to bundling the node stuff - webpack
 	* look at how it loops an individual file vs playlist
-	* improve UI for downloading - maybe display download rate?
 	* identify why is only successfully downloads large files (~10GB) sometimes
+	* add interface for user to enter metadata for location and other info as needed
 * Main Server
-	* Order the results on the server interface
-	* Filter by results by location
-	* Filter by freshness
+	* Filter by results by location once meta data function is created
 	* remove the "sync ramp 3" stuff
 	* better documentation for server side stuff
 	* refactor end points for consistency
-	* toggle boxes for selected devices to send commands to?
+	* toggle boxes for selected devices to send commands to
 	* remove DST argument from batchCommand function in GlobalCommands.js?
 * General
 	* Troubleshooting documentation
 	* add a test file directory to the server that gets pulled to each device...?
 * To Test
 	* test that the output resolution changes when using a different output device
-	* Server interface links open in a new tab

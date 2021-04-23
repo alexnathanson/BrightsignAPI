@@ -8,8 +8,8 @@ let request = new XMLHttpRequest();
 
 let refreshRate = 3 * 60 * 1000;
 
-let devData;
-
+/*let devData;
+*/
 let Global = new GlobalCommands();
 
 let minuteWindow = 3;//threshhold for a time to be considered up to date
@@ -32,9 +32,7 @@ function refreshData(){
   request.send();
 
   request.onload = function() {
-    devData = request.response;
-    showData(devData);
-    //showData(devData);
+    showData(request.response);
   }
 }
 
@@ -48,7 +46,8 @@ function showData(rawJsonObj) {
 
   console.log(cleanJsonObj);
 
-  let jsonObj = sortObjects(cleanJsonObj);
+  let jsonObj = new Object();
+  jsonObj = sortObjects(cleanJsonObj);
 
 	console.log(jsonObj);
 
@@ -62,48 +61,52 @@ function showData(rawJsonObj) {
     devList.removeChild(devList.firstChild);
   } 
 
+  let jsonKeys = Object.keys(jsonObj);
+
 //loop through data for each device
-	for (let j =0;j<jsonObj.length;j++){
+	for (let j =0;j<jsonKeys.length;j++){
 		let myH1 = document.createElement('h3');
 
-    myH1.className = classNames[checkFreshness(jsonObj[j][Object.keys(devData[j])]['time'])];
+    myH1.className = classNames[checkFreshness(jsonObj[jsonKeys[j]]['time'])];
 
     if(myH1.className == 'yellow' || myH1.className == 'green'){
       amtFresh++;
     }
 
-    myH1.textContent = parseFileName(jsonObj[j][Object.keys(devData[j])]['file']) + " " +Object.keys(jsonObj[j])[0];
+    myH1.textContent = jsonKeys[j];
 
 		devList.appendChild(myH1);
 
 		let myL = document.createElement('ul');
 
-		let devKeys = Object.keys(jsonObj[j][Object.keys(devData[j])])
+		let devKeys = Object.keys(jsonObj[jsonKeys[j]])
+
+    console.log(devKeys);
 
 		for (let o = 0; o < devKeys.length;o++){
 			let myLi = document.createElement('li');
 
 			if(devKeys[o]=='time'){
 				//convert Unix time to human readable time
-				myLi.textContent = devKeys[o] + ": " + convertTimestamp(jsonObj[j][Object.keys(devData[j])][devKeys[o]])
+				myLi.textContent = devKeys[o] + ": " + convertTimestamp(jsonObj[jsonKeys[j]][devKeys[o]])
 			} else if (devKeys[o]=='ip'){
         //add the ip to the list while we're at it
-        Global.ipList(jsonObj[j][Object.keys(devData[j])][devKeys[o]]);
+        Global.ipList(jsonObj[jsonKeys[j]][devKeys[o]]);
 				//make it a hyperlink
 				myLi.textContent = devKeys[o] + ": ";
 
 				let myA = document.createElement("a");
 
-				let myLink = document.createTextNode(jsonObj[j][Object.keys(devData[j])][devKeys[o]]); 
+				let myLink = document.createTextNode(jsonObj[jsonKeys[j]][devKeys[o]]); 
                   
                 // Append the text node to anchor element. 
                 myA.appendChild(myLink);  
                   
                 // Set the title. 
-                myA.title = jsonObj[j][Object.keys(devData[j])][devKeys[o]];  
+                myA.title = jsonObj[jsonKeys[j]][devKeys[o]];  
                   
                 // Set the href property. 
-                myA.href = "http://" + jsonObj[j][Object.keys(devData[j])][devKeys[o]] + ":8000";  
+                myA.href = "http://" + jsonObj[jsonKeys[j]][devKeys[o]] + ":8000";  
                 
                 //target to blank
                 myA.target = "_blank";  
@@ -111,7 +114,7 @@ function showData(rawJsonObj) {
                 myLi.appendChild(myA);  
 
 			} else {
-				myLi.textContent = devKeys[o] + ": " + jsonObj[j][Object.keys(devData[j])][devKeys[o]];
+				myLi.textContent = devKeys[o] + ": " + jsonObj[jsonKeys[j]][devKeys[o]];
 			}
 			myL.appendChild(myLi);
 		}
@@ -172,24 +175,45 @@ function sortObjects(unsortedObj){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   
-  let sort = urlParams.get('sort');
-
-  console.log(sort);
-
+  let sort; 
+  
   let sortVal;
 
   let sortedObj = new Object();
 
+  if(urlParams.get('sort')){
+      sort = urlParams.get('sort');
+      console.log(sort);
+  } else {
+    sort = "time";
+  }
+
+
   if(sort == "serial"){
-    /*return Object.keys(unsortedObj).sort().reduce(function (result, key) {
-      result[key] = unsortedObj[key];
-      return result;
-    });*/
     for (let uK in Object.keys(unsortedObj).sort()){
-      sortedObj[uK] = unsortedObj[uK];
+      sortedObj[Object.keys(unsortedObj).sort()[uK]] = unsortedObj[Object.keys(unsortedObj).sort()[uK]];
     }
-  } else{
-    sortedObj = unsortedObj.sort(function(a, b){return a[sort] - b[sort]}); 
+  } else {
+    //convert to an array.
+    let sortArray = [];
+
+    for (let sA in Object.keys(unsortedObj)){
+      
+      //add serial into array so its easier to turn back in to object
+      unsortedObj[Object.keys(unsortedObj)[sA]]['serial']=Object.keys(unsortedObj)[sA];
+      sortArray.push(unsortedObj[Object.keys(unsortedObj)[sA]])
+    }
+
+    if (sort == "ip"){
+      //sort by last segment of IP      
+      for (let uK in sortArray.sort(function(a, b){return a[sort].split('.')[3] - b[sort].split('.')[3]})){
+        sortedObj[sortArray[uK]['serial']] = sortArray[uK];    
+      }
+    } else if (sort == "time"){
+      for (let uK in sortArray.sort(function(a, b){return b[sort] - a[sort]})){
+        sortedObj[sortArray[uK]['serial']] = sortArray[uK];    
+      }
+    }
   }
 
   return sortedObj;
