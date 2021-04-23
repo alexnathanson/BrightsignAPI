@@ -44,12 +44,8 @@ function showData(rawJsonObj) {
     cleanJsonObj[Object.keys(rawJsonObj[r])[0]] = rawJsonObj[r][Object.keys(rawJsonObj[r])[0]];
   }
 
-  console.log(cleanJsonObj);
-
   let jsonObj = new Object();
   jsonObj = sortObjects(cleanJsonObj);
-
-	console.log(jsonObj);
 
   currentTime = Date.now();
 
@@ -80,8 +76,6 @@ function showData(rawJsonObj) {
 		let myL = document.createElement('ul');
 
 		let devKeys = Object.keys(jsonObj[jsonKeys[j]])
-
-    console.log(devKeys);
 
 		for (let o = 0; o < devKeys.length;o++){
 			let myLi = document.createElement('li');
@@ -183,7 +177,6 @@ function sortObjects(unsortedObj){
 
   if(urlParams.get('sort')){
       sort = urlParams.get('sort');
-      console.log(sort);
   } else {
     sort = "time";
   }
