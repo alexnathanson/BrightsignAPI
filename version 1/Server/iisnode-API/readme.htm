@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>device checkin</title>
+    <style>
+        pre
+        {
+            background-color: eeeeee;
+        }
+    </style>
+</head>
+<body>
+    <h2>
+        Device Check-in</h2>
+    <p>
+        node.js apps that use the popular <a href="http://expressjs.com/">express</a> framework
+        can be hosted in IIS. Installation instructions at <a href="https://github.com/Azure/iisnode">https://github.com/Azure/iisnode</a>.</p>
+        <p>
+            Some specific settings and permissions in IIS may need to be changed as well. When I installed it originally, the home directory handler mappings in IIS needed to be set to read/write<<br>
+            - Feature Delagation -> Handler Mappings = Read/Write
+        </p>
+        <p>
+            Copy the entire deviceInfo directory to the Program Files/iisnode/www directory (or whatever IIS is redirecting to)
+        </p>
+    <p>
+    view logs at <a href="iisnode" target="_blank">iisnode</a><br>
+    debug the application at <a href="deviceInfo.js/debug" target="_blank">deviceInfo.js/debug</a> (requires WebKit enabled browser)<br />
+   </p>
+</body>
+</html>

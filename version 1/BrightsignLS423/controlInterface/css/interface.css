@@ -1,0 +1,61 @@
+body{
+	background: lightblue;
+}
+
+#content{
+	display: flex;
+	flex-direction: column;
+}
+
+.interfaceSection{
+	border: 1px solid;
+	padding: 10px;
+	margin: 5px;
+	background: lightgray;
+}
+
+.interfaceSection h2 {
+	margin-left: 5px;
+}
+
+.interfaceSubsection {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid;
+	background: lightgray;
+	padding: 15px;
+	margin: 5px;
+}
+
+.interfaceSubsubsection{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#pControls{
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*#volStuff {
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+  background: lightgray;
+}*/
+
+
+#metadata {
+	float:left;
+	border: solid;
+	padding: 10px;
+	margin: 5px;
+}
+
+#screen{
+	max-width: 100%;
+}

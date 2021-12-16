@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BS Control</title>
+    <link rel="stylesheet" type="text/css" href="/css/interface.css"> 
+    <script src="/js/interface.js"></script>
+    
+  </head>
+  <body>
+    <h1 id="title">Brightsign Control Interface</h1>
+    <div class="interfaceSection">
+      <a href="#status">Status</a> | <a href="#playback">Playback Controls</a> | <a href="#devInfo">Device Info</a> | <a href="#settings">Settings</a>
+    </div>
+
+    <div id="content">
+      <div class="interfaceSection">
+        <h2 id="status">Status</h2>
+        <div class="interfaceSubsection">
+        <div>
+          <img id="screen" src="/images/screen.jpg" alt="screenshot">
+        </div>
+        <div>
+            <button type="button" onclick="newScreen()">Update Screen Shot</button> 
+        </div>
+      </div>
+    </div>
+
+      <div class="interfaceSection">
+        <h2 id="playback">Playback Controls</h2>
+        <div class="interfaceSubsection">
+          <div id="fileName">Files: </div>
+        </div>
+
+      <div class="interfaceSubsection">
+
+        <div class="interfaceSubsubsection">
+          When in follower mode play, pause, resume, and seek are disabled and must be controlled from the leader. Sync playback is only enabled when in leader mode.
+          <div id="pControls">
+            <button type="button" onclick="playback('play')">Play</button> 
+            <!--<button type="button">Play file</button> -->
+            <button type="button" onclick="playback('pause')">Pause</button> 
+            <button type="button" onclick="playback('resume')">Resume</button> 
+            <button type="button" onclick="displayIP()">Display IP</button> 
+            <button type="button" onclick="syncUp()">Sync Playback</button> 
+            <button type="button" onclick="confirmReboot()">Restart</button> 
+          </div>
+        </div>
+
+          <div class="interfaceSubsubsection">
+            <form id="seekForm" name="seekForm">
+              Seek (0 - <span id="duration"></span> milliseconds): <input type="text" id="seek" name="seek">
+              <input type="submit" value="submit">
+            </form>
+          </div>
+
+          <div class="interfaceSubsubsection">
+            <span id="volVal">Volume:</span>
+            <div>
+              <input type="range" min="1" max="500" value="50" class="slider" id="volume">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="interfaceSection">
+        <h2 id="devInfo">Device Info</h2>
+        <div class="interfaceSubsection">
+          <div id="deviceID">Device ID: </div>
+          <div id="apiVersion">API Version: </div>
+        </div>
+        <div class="interfaceSubsection">
+          <h3>Output</h3>
+          <div id="vidOutputMode">Output mode specified in config file:</div>
+          <div id="activeMode">Active mode:</div>
+    <!--       <div id="vidFileDim">Video file dimensions:</div>-->
+          <div id="vidOutputDim">Output dimensions:</div>
+          <div id="vidOutputDeviceDim">Best mode for display hardware (according to BS player):</div>
+        </div>
+
+        <div class="interfaceSubsection">
+          <h3>Network Info</h3>
+          <div id="myIP">My IP: </div>
+          <div id="ipMode">IP Mode: </div>
+          <div id="netMask">Net Mask: </div>
+          <div id="gateway">Gateway: </div>
+        </div>
+
+        <div class="interfaceSubsection">
+          <h3>Input</h3>
+          <div id="gpioStatus">GPIO enabled: </div>
+        </div>
+
+      </div>
+
+      
+
+      <!-- <div id="metadata">
+        <h2>Additional Metadata</h2>
+
+        <form id="metadataForm" name="metadataForm">
+          Floor/Ramp Number: <input type="text" id="location" name="location"><br>
+          Bay/ Section: <input type="text" id="section" name="section"><br>
+          Subsection: <input type="text" id="subsection" name="subsection"><br>
+          Artist: <input type="text" id="artist" name="artist"><br>
+          Title: <input type="text" id="title" name="title"><br>
+          <input type="submit" value="submit">
+        </form>
+
+      </div>
+   -->
+      <div class="interfaceSection">
+        <h2 id="settings">Settings</h2>
+
+        <div class="interfaceSubsection">
+
+          <form id="syncForm" name="syncForm">
+            <h3>Playback Mode</h3>
+            <div class="interfaceSubsubsection">
+              Leader syncs at start of file. To manually trigger sync at file start for all files, press play on the leader's interface.
+            </div>
+            <div class="interfaceSubsubsection">
+            <label><strong>Sync Role:</strong></label><br>
+              <input type="radio" id="normal" name="role" value="normal">
+              <label for="normal">no sync</label><br>
+             <input type="radio" id="leader" name="role" value="leader">
+              <label for="leader">leader</label><br>
+              <input type="radio" id="follower" name="role" value="follower">
+              <label for="follower">follower</label><br>
+            </div>
+            
+            <div class="interfaceSubsubsection">
+              <label for="sGroup"><strong>Sync Group:</strong></label><br>
+              <input type="text" id="sGroup" name="sGroup" value="">
+            </div>
+
+            <div class="interfaceSubsubsection">
+              <label for="sLeader"><strong>Sync Leader IP:</strong><br>(only needed when in follower mode):</label><br>
+              <input type="text" id="sLeader" name="sLeader" value="">
+            </div>
+
+            <p>
+              <input type="submit" value="submit">
+            </p>
+          </form>
+        </div>
+
+        <div class="interfaceSubsection">
+
+          <form id="syncContentForm" name="syncContentForm">
+            <h3>Content Synchronization</h3>
+            <div class="syncSection">
+              <input type="checkbox" id="syncContent" name="syncContent" value=true>
+              <label for="syncContent"> Automatically synchronize media content from remote server</label><br>
+            </div>
+            
+            <!-- <div class="syncSection">
+              <label for="sIP"><strong>Server IP:</strong>:</label><br>
+              <input type="text" id="sIP" name="sIP" value="">
+            </div> -->
+
+            <p>
+              <input type="submit" value="submit">
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

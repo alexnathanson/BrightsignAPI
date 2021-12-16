@@ -1,0 +1,64 @@
+# Configuration file
+# Lines beginning with "#" are comments
+# Data structure is "parameter = value"
+
+# Video output mode
+# Set this to change the player’s output mode
+# Default is 1920x1080x50p
+# setting it equal to "auto" enables autodetection of connected display hardware (not autodetection of file)
+
+video_output_mode = auto
+#video_output_mode = 1920x1200x60p
+
+# playback_mode 
+# set to normal, leader, or follower
+# Default is normal
+
+playback_mode = normal
+#leader_ip = 172.16.1.81
+
+#sync_group = bsgroup
+
+# IP address of the machine
+# must be set for master and slave modes
+# modes: static or dhcp
+ip_mode = dhcp
+
+# if the IP isn't present and its static it will use the old static IP
+#ip = 172.16.0.110
+
+# Netmask, may be needed for syncing
+netmask = 255.255.255.0
+
+# Gateway, may be needed for syncing
+gateway = 192.168.1.1
+
+# enable node (true or false)
+enable_node = true
+
+# enable content sync with media server
+media_sync = false
+
+media_server = 172.16.0.4
+media_server_port = 80
+postIP = false
+
+#display the player's IP address
+displayIP = true
+
+#options: hdmi, usb
+audio_output = hdmi
+
+volume = 100
+
+mask = true
+
+#enable gpio buttons
+gpio = false
+
+# delete postURL... no longer used
+#postIP to IP collector on media server
+#postURL = http://172.16.0.4:80/node/deviceInfo/checkin/ip
+
+password = admin
+
